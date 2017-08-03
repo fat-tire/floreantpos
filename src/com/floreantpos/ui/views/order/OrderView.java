@@ -37,8 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.StaleObjectStateException;
@@ -81,6 +79,8 @@ import com.floreantpos.ui.tableselection.TableSelectorDialog;
 import com.floreantpos.ui.tableselection.TableSelectorFactory;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  *
  * @author  MShahriar
@@ -117,7 +117,9 @@ public class OrderView extends ViewPanel {
 	//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
 	private PosButton btnDeliveryInfo = new PosButton("DELIVERY INFO");
+	private PosButton btnTotal = new PosButton(POSConstants.SETTLE.toUpperCase());
 
+	
 	/** Creates new form OrderView */
 	private OrderView() {
 		initComponents();
@@ -271,6 +273,33 @@ public class OrderView extends ViewPanel {
 				ticketView.setAllowToLogOut(true);
 			}
 		});
+		
+		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
+			btnTotal.setEnabled(false);
+		}
+		
+		btnTotal.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (getCurrentTicket().getOrderType().isHasForHereAndToGo()) {
+					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(getCurrentTicket());
+					dialog.open();
+
+					if (dialog.isCanceled()) {
+						return;
+					}
+					String orderType = dialog.getSelectedOrderType();
+					if (orderType != null) {
+						getCurrentTicket().updateTicketItemPriceByOrderType(orderType);
+						ticketView.updateModel();
+						ticketView.updateView();
+					}
+				}
+				ticketView.doPayNow();
+			}
+		});
 
 		btnSend.addActionListener(new ActionListener() {
 			@Override
@@ -403,6 +432,7 @@ public class OrderView extends ViewPanel {
 		actionButtonPanel.add(btnHold);
 		actionButtonPanel.add(btnSend);
 		actionButtonPanel.add(btnCancel);
+		actionButtonPanel.add(btnTotal);
 		actionButtonPanel.add(btnDone);
 
 		btnCookingInstruction.setEnabled(false);

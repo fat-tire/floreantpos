@@ -21,4 +21,5 @@ import com.floreantpos.model.PaymentType;
 
 public interface CardInputListener {
 	void cardInputted(CardInputProcessor inputter , PaymentType cardType);
+	PaymentType getPaymentType();
 }

@@ -27,10 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.Messages;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.swing.POSTextField;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
@@ -38,18 +37,21 @@ import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 
+import net.miginfocom.swing.MigLayout;
+
 public class ManualCardEntryDialog extends POSDialog implements CardInputProcessor {
 	private CardInputListener cardInputListener;
 	private POSTextField tfCardNumber;
 	private POSTextField tfExpMonth;
 	private POSTextField tfExpYear;
+	private PaymentType paymentType;
 
 	public ManualCardEntryDialog(CardInputListener cardInputListener) {
 		this.cardInputListener = cardInputListener;
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
 
-			createUI();
+		createUI();
 
 	}
 
@@ -95,7 +97,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		panel_1.add(panel_2);
 
 		PosButton btnSwipeCard = new PosButton();
-		panel_2.add(btnSwipeCard,"grow");
+		panel_2.add(btnSwipeCard, "grow");
 		btnSwipeCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openSwipeCardDialog();
@@ -104,7 +106,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		btnSwipeCard.setText(Messages.getString("ManualCardEntryDialog.13")); //$NON-NLS-1$
 
 		PosButton btnEnterAuthorizationCode = new PosButton();
-		panel_2.add(btnEnterAuthorizationCode,"grow");
+		panel_2.add(btnEnterAuthorizationCode, "grow");
 		btnEnterAuthorizationCode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openAuthorizationCodeEntryDialog();
@@ -113,7 +115,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		btnEnterAuthorizationCode.setText(Messages.getString("ManualCardEntryDialog.14")); //$NON-NLS-1$
 
 		PosButton btnSubmit = new PosButton();
-		panel_2.add(btnSubmit,"grow");
+		panel_2.add(btnSubmit, "grow");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitCard();
@@ -122,7 +124,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		btnSubmit.setText(Messages.getString("ManualCardEntryDialog.15")); //$NON-NLS-1$
 
 		PosButton btnCancel = new PosButton();
-		panel_2.add(btnCancel,"grow");
+		panel_2.add(btnCancel, "grow");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setCanceled(true);
@@ -150,7 +152,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		setCanceled(true);
 		dispose();
 
-		AuthorizationCodeDialog dialog = new AuthorizationCodeDialog(cardInputListener);
+		AuthorizationCodeDialog dialog = new AuthorizationCodeDialog(paymentType, cardInputListener);
 		dialog.pack();
 		dialog.open();
 	}
@@ -165,7 +167,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		setCanceled(true);
 		dispose();
 
-		SwipeCardDialog swipeCardDialog = new SwipeCardDialog(cardInputListener);
+		SwipeCardDialog swipeCardDialog = new SwipeCardDialog(paymentType, cardInputListener);
 		swipeCardDialog.pack();
 		swipeCardDialog.open();
 	}
@@ -181,4 +183,5 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 	public String getExpYear() {
 		return tfExpYear.getText();
 	}
+
 }

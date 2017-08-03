@@ -32,8 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang.StringUtils;
@@ -68,6 +66,8 @@ import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.GlobalIdGenerator;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 //TODO: REVISE CODE
 public class GroupSettleTicketDialog extends POSDialog implements CardInputListener {
@@ -143,8 +143,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 		paymentView.setDefaultFocus();
 
 	}
-
-	
 
 	public void updateView() {
 		if (tickets == null && !tickets.isEmpty()) {
@@ -604,7 +602,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			CardReader cardReader = CardConfig.getCardReader();
 			switch (cardReader) {
 				case SWIPE:
-					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(paymentType, this);
 					swipeCardDialog.pack();
 					swipeCardDialog.open();
 					break;
@@ -616,7 +614,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 					break;
 
 				case EXTERNAL_TERMINAL:
-					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(paymentType, this);
 					authorizationCodeDialog.pack();
 					authorizationCodeDialog.open();
 					break;
@@ -807,4 +805,10 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 	public double getDueAmount() {
 		return totalDueAmount;
 	}
+
+	@Override
+	public PaymentType getPaymentType() {
+		return getPaymentType();
+	}
+
 }

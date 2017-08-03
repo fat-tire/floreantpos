@@ -31,8 +31,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
@@ -45,6 +43,8 @@ import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.ui.dialog.POSDialog;
 
+import net.miginfocom.swing.MigLayout;
+
 public class AuthorizationCodeDialog extends POSDialog implements CardInputProcessor {
 	private CardInputListener cardInputListener;
 	private FocusedTextField tfAuthorizationCode;
@@ -54,12 +54,12 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 	private POSToggleButton btnDiscoverCard;
 	private POSToggleButton btnDebitVisaCard;
 	private POSToggleButton btnDebitMasterCard;
+	private PaymentType paymentType;
 
-	public AuthorizationCodeDialog(CardInputListener cardInputListener) {
+	public AuthorizationCodeDialog(PaymentType paymentType, CardInputListener cardInputListener) {
 		super(Application.getPosWindow(), true);
-
+		this.paymentType = paymentType;
 		this.cardInputListener = cardInputListener;
-
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
 
@@ -119,8 +119,14 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 		centralPanel.add(panel, BorderLayout.CENTER);
 
 		JPanel cardPanel = new JPanel(new MigLayout("fill, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		cardPanel.add(creditCardPanel);
-		cardPanel.add(debitCardPanel);
+
+		if (paymentType == PaymentType.DEBIT_CARD || paymentType == PaymentType.DEBIT_MASTER_CARD || paymentType == PaymentType.DEBIT_VISA) {
+			cardPanel.add(debitCardPanel);
+		} 
+		else {
+			cardPanel.add(creditCardPanel);
+		}
+
 		centralPanel.add(cardPanel, BorderLayout.NORTH);
 
 		getContentPane().add(centralPanel, BorderLayout.CENTER);

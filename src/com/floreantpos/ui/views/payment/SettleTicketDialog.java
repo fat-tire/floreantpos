@@ -40,8 +40,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -80,6 +78,8 @@ import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 //TODO: REVISE CODE
 public class SettleTicketDialog extends POSDialog implements CardInputListener {
@@ -426,6 +426,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					payUsingCard(cardName, tenderAmount);
 					break;
 
+				case DEBIT_CARD:
 				case DEBIT_VISA:
 				case DEBIT_MASTER_CARD:
 					payUsingCard(cardName, tenderAmount);
@@ -643,7 +644,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			CardReader cardReader = CardConfig.getCardReader();
 			switch (cardReader) {
 				case SWIPE:
-					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(paymentType, this);
 					swipeCardDialog.pack();
 					swipeCardDialog.open();
 					break;
@@ -655,7 +656,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					break;
 
 				case EXTERNAL_TERMINAL:
-					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(paymentType, this);
 					authorizationCodeDialog.pack();
 					authorizationCodeDialog.open();
 					break;
@@ -863,4 +864,10 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 		this.ticket = ticket;
 		paymentView.updateView();
 	}
+
+	@Override
+	public PaymentType getPaymentType() {
+		return getPaymentType();
+	}
+
 }

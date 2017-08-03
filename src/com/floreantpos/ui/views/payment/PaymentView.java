@@ -72,6 +72,7 @@ public class PaymentView extends JPanel {
 	private com.floreantpos.swing.PosButton btnCash;
 	private com.floreantpos.swing.PosButton btnPrint;
 	private com.floreantpos.swing.PosButton btnCreditCard;
+	private com.floreantpos.swing.PosButton btnDebitCard;
 	private com.floreantpos.swing.PosButton btnGift;
 	private com.floreantpos.swing.PosButton btnOther;
 
@@ -435,6 +436,13 @@ public class PaymentView extends JPanel {
 		btnCreditCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.doSettle(PaymentType.CREDIT_CARD);
+			}
+		});
+		btnDebitCard = new PosButton("DEBIT CARD"); //$NON-NLS-1$
+		actionButtonPanel.add(btnDebitCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
+		btnDebitCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settleTicketView.doSettle(PaymentType.DEBIT_CARD);
 			}
 		});
 
