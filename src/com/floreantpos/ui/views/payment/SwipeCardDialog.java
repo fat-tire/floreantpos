@@ -42,10 +42,8 @@ public class SwipeCardDialog extends POSDialog implements CardInputProcessor {
 	private String cardString;
 	private PosButton btnEnterAuthorizationCode;
 	private PosButton btnManualEntry;
-	private PaymentType paymentType;
 
-	public SwipeCardDialog(PaymentType paymentType, CardInputListener cardInputListener) {
-		this.paymentType = paymentType;
+	public SwipeCardDialog(CardInputListener cardInputListener) {
 		this.cardInputListener = cardInputListener;
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -133,7 +131,7 @@ public class SwipeCardDialog extends POSDialog implements CardInputProcessor {
 		setCanceled(true);
 		dispose();
 
-		AuthorizationCodeDialog dialog = new AuthorizationCodeDialog(paymentType, cardInputListener);
+		AuthorizationCodeDialog dialog = new AuthorizationCodeDialog(cardInputListener);
 		dialog.setLocationRelativeTo(this);
 		dialog.pack();
 		dialog.open();

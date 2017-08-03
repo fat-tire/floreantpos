@@ -62,7 +62,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private PaymentType selectedPaymentType;
 	private OrderType orderType;
 	private List<ShopTable> selectedTables;
-	private PaymentType paymentType;
 
 	public NewBarTabAction(OrderType orderType, List selectedTables, Component parentComponent) {
 		this.orderType = orderType;
@@ -92,7 +91,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			return;
 		}
 
-		SwipeCardDialog dialog = new SwipeCardDialog(paymentType, this);
+		SwipeCardDialog dialog = new SwipeCardDialog(this);
 		dialog.setTitle(Messages.getString("NewBarTabAction.0")); //$NON-NLS-1$
 		dialog.pack();
 		dialog.open();

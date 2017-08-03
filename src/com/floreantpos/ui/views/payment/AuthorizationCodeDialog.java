@@ -54,11 +54,9 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 	private POSToggleButton btnDiscoverCard;
 	private POSToggleButton btnDebitVisaCard;
 	private POSToggleButton btnDebitMasterCard;
-	private PaymentType paymentType;
 
-	public AuthorizationCodeDialog(PaymentType paymentType, CardInputListener cardInputListener) {
+	public AuthorizationCodeDialog(CardInputListener cardInputListener) {
 		super(Application.getPosWindow(), true);
-		this.paymentType = paymentType;
 		this.cardInputListener = cardInputListener;
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -119,7 +117,7 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 		centralPanel.add(panel, BorderLayout.CENTER);
 
 		JPanel cardPanel = new JPanel(new MigLayout("fill, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
+		PaymentType paymentType = cardInputListener.getPaymentType();
 		if (paymentType == PaymentType.DEBIT_CARD || paymentType == PaymentType.DEBIT_MASTER_CARD || paymentType == PaymentType.DEBIT_VISA) {
 			cardPanel.add(debitCardPanel);
 		} 

@@ -602,7 +602,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 			CardReader cardReader = CardConfig.getCardReader();
 			switch (cardReader) {
 				case SWIPE:
-					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(paymentType, this);
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
 					swipeCardDialog.pack();
 					swipeCardDialog.open();
 					break;
@@ -614,7 +614,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 					break;
 
 				case EXTERNAL_TERMINAL:
-					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(paymentType, this);
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
 					authorizationCodeDialog.pack();
 					authorizationCodeDialog.open();
 					break;
@@ -808,7 +808,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 	@Override
 	public PaymentType getPaymentType() {
-		return getPaymentType();
+		return paymentType;
 	}
 
 }

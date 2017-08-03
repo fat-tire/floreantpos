@@ -644,7 +644,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 			CardReader cardReader = CardConfig.getCardReader();
 			switch (cardReader) {
 				case SWIPE:
-					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(paymentType, this);
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
 					swipeCardDialog.pack();
 					swipeCardDialog.open();
 					break;
@@ -656,7 +656,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 					break;
 
 				case EXTERNAL_TERMINAL:
-					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(paymentType, this);
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
 					authorizationCodeDialog.pack();
 					authorizationCodeDialog.open();
 					break;
@@ -867,7 +867,7 @@ public class SettleTicketDialog extends POSDialog implements CardInputListener {
 
 	@Override
 	public PaymentType getPaymentType() {
-		return getPaymentType();
+		return paymentType;
 	}
 
 }

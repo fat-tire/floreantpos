@@ -152,7 +152,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		setCanceled(true);
 		dispose();
 
-		AuthorizationCodeDialog dialog = new AuthorizationCodeDialog(paymentType, cardInputListener);
+		AuthorizationCodeDialog dialog = new AuthorizationCodeDialog(cardInputListener);
 		dialog.pack();
 		dialog.open();
 	}
@@ -167,7 +167,7 @@ public class ManualCardEntryDialog extends POSDialog implements CardInputProcess
 		setCanceled(true);
 		dispose();
 
-		SwipeCardDialog swipeCardDialog = new SwipeCardDialog(paymentType, cardInputListener);
+		SwipeCardDialog swipeCardDialog = new SwipeCardDialog(cardInputListener);
 		swipeCardDialog.pack();
 		swipeCardDialog.open();
 	}
