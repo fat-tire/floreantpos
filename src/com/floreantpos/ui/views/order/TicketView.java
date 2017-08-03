@@ -43,10 +43,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.ecs.xhtml.center;
-
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -77,6 +73,8 @@ import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * 
@@ -278,7 +276,9 @@ public class TicketView extends JPanel {
 
 	private void createPayButton() {
 		lblTotal = new JLabel();
-		lblTotal.setPreferredSize(new Dimension(0, 50));
+		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 16f));
+		//lblTotal.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		//lblTotal.setPreferredSize(new Dimension(0, 50));
 		lblTotal.setHorizontalAlignment(JLabel.CENTER);
 		add(lblTotal, BorderLayout.SOUTH);
 	}
