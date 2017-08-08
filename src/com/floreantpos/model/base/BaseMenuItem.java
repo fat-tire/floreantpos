@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -15,30 +16,30 @@ import java.io.Serializable;
 public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	public static String REF = "MenuItem"; //$NON-NLS-1$
-	public static String PROP_UNIT_NAME = "unitName"; //$NON-NLS-1$
-	public static String PROP_BUY_PRICE = "buyPrice"; //$NON-NLS-1$
-	public static String PROP_STOCK_AMOUNT = "stockAmount"; //$NON-NLS-1$
-	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
-	public static String PROP_BARCODE = "barcode"; //$NON-NLS-1$
-	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 	public static String PROP_SHOW_IMAGE_ONLY = "showImageOnly"; //$NON-NLS-1$
-	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
-	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
+	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
+	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
+	public static String PROP_PARENT = "parent"; //$NON-NLS-1$
+	public static String PROP_PIZZA_TYPE = "pizzaType"; //$NON-NLS-1$
+	public static String PROP_STOCK_AMOUNT = "stockAmount"; //$NON-NLS-1$
 	public static String PROP_SORT_ORDER = "sortOrder"; //$NON-NLS-1$
-	public static String PROP_TAX = "tax"; //$NON-NLS-1$
+	public static String PROP_UNIT_NAME = "unitName"; //$NON-NLS-1$
+	public static String PROP_DEFAULT_SELL_PORTION = "defaultSellPortion"; //$NON-NLS-1$
+	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
+	public static String PROP_DISCOUNT_RATE = "discountRate"; //$NON-NLS-1$
+	public static String PROP_DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO = "disableWhenStockAmountIsZero"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
+	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_PRICE = "price"; //$NON-NLS-1$
+	public static String PROP_BARCODE = "barcode"; //$NON-NLS-1$
 	public static String PROP_IMAGE_DATA = "imageData"; //$NON-NLS-1$
 	public static String PROP_FRACTIONAL_UNIT = "fractionalUnit"; //$NON-NLS-1$
-	public static String PROP_PIZZA_TYPE = "pizzaType"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_PRINTER_GROUP = "printerGroup"; //$NON-NLS-1$
-	public static String PROP_TEXT_COLOR_CODE = "textColorCode"; //$NON-NLS-1$
-	public static String PROP_DISABLE_WHEN_STOCK_AMOUNT_IS_ZERO = "disableWhenStockAmountIsZero"; //$NON-NLS-1$
-	public static String PROP_RECEPIE = "recepie"; //$NON-NLS-1$
-	public static String PROP_DEFAULT_SELL_PORTION = "defaultSellPortion"; //$NON-NLS-1$
-	public static String PROP_PRICE = "price"; //$NON-NLS-1$
-	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode"; //$NON-NLS-1$
+	public static String PROP_TAX_GROUP = "taxGroup"; //$NON-NLS-1$
+	public static String PROP_VISIBLE = "visible"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_BUY_PRICE = "buyPrice"; //$NON-NLS-1$
+	public static String PROP_BUTTON_COLOR_CODE = "buttonColorCode"; //$NON-NLS-1$
 
 
 	// constructors
@@ -102,7 +103,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 	// many to one
 	private com.floreantpos.model.MenuGroup parent;
-	private com.floreantpos.model.Tax tax;
+	private com.floreantpos.model.TaxGroup taxGroup;
 	private com.floreantpos.model.Recepie recepie;
 	private com.floreantpos.model.PrinterGroup printerGroup;
 
@@ -508,18 +509,18 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: TAX_ID
+	 * Return the value associated with the column: TAX_GROUP_ID
 	 */
-	public com.floreantpos.model.Tax getTax () {
-					return tax;
+	public com.floreantpos.model.TaxGroup getTaxGroup () {
+					return taxGroup;
 			}
 
 	/**
-	 * Set the value related to the column: TAX_ID
-	 * @param tax the TAX_ID value
+	 * Set the value related to the column: TAX_GROUP_ID
+	 * @param taxGroup the TAX_GROUP_ID value
 	 */
-	public void setTax (com.floreantpos.model.Tax tax) {
-		this.tax = tax;
+	public void setTaxGroup (com.floreantpos.model.TaxGroup taxGroup) {
+		this.taxGroup = taxGroup;
 	}
 
 
@@ -714,7 +715,7 @@ public abstract class BaseMenuItem  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.MenuItem)) return false;
 		else {
 			com.floreantpos.model.MenuItem menuItem = (com.floreantpos.model.MenuItem) obj;
-			if (null == this.getId() || null == menuItem.getId()) return this == obj;
+			if (null == this.getId() || null == menuItem.getId()) return false;
 			else return (this.getId().equals(menuItem.getId()));
 		}
 	}

@@ -21,9 +21,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.floreantpos.model.base.BaseTax;
 
-@XmlRootElement(name="tax")
+@XmlRootElement
 public class Tax extends BaseTax {
 	private static final long serialVersionUID = 1L;
+	private Boolean enable;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public Tax () {
@@ -50,7 +51,7 @@ public class Tax extends BaseTax {
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
-	
+
 	public String getUniqueId() {
 		return ("tax_" + getName() + "_" + getId()).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
@@ -58,5 +59,13 @@ public class Tax extends BaseTax {
 	@Override
 	public String toString() {
 		return getName() + " (" + getRate() + "%)"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public Boolean isEnable() {
+		return enable == null ? false : enable;
+	}
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
 	}
 }

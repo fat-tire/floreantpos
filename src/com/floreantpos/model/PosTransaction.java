@@ -72,7 +72,7 @@ public class PosTransaction extends BasePosTransaction {
 	
 	@Override
 	protected void initialize() {
-		setGlobalId(GlobalIdGenerator.generate());
+		setGlobalId(GlobalIdGenerator.generateGlobalId());
 	}
 
 	@Override

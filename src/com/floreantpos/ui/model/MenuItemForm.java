@@ -76,11 +76,11 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemShift;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PrinterGroup;
-import com.floreantpos.model.Tax;
+import com.floreantpos.model.TaxGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.PrinterGroupDAO;
-import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.TaxGroupDAO;
 import com.floreantpos.swing.CheckBoxList;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleDocument;
@@ -117,9 +117,8 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 	private javax.swing.JButton btnEditModifierGroup;
 	private javax.swing.JButton btnNewGroup;
 	private javax.swing.JButton btnNewModifierGroup;
-	private javax.swing.JButton btnNewTax;
 	private javax.swing.JComboBox cbGroup;
-	private javax.swing.JComboBox cbTax;
+	private javax.swing.JComboBox cbTaxGroup;
 	private javax.swing.JCheckBox chkVisible;
 	private javax.swing.JLabel lfname;
 	private javax.swing.JLabel lDiscountRate;
@@ -184,9 +183,9 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
 		cbGroup.setModel(new ComboBoxModel(foodGroups));
 
-		TaxDAO taxDAO = new TaxDAO();
-		List<Tax> taxes = taxDAO.findAll();
-		cbTax.setModel(new ComboBoxModel(taxes));
+		TaxGroupDAO taxDAO = new TaxGroupDAO();
+		List<TaxGroup> taxeGroups = taxDAO.findAll();
+		cbTaxGroup.setModel(new ComboBoxModel(taxeGroups));
 
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
@@ -272,8 +271,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfUnitName = new FixedLengthTextField(20);
 		lTax = new javax.swing.JLabel();
 		lTax.setHorizontalAlignment(SwingConstants.TRAILING);
-		cbTax = new javax.swing.JComboBox();
-		btnNewTax = new javax.swing.JButton();
+		cbTaxGroup = new javax.swing.JComboBox();
 		lDiscountRate = new javax.swing.JLabel();
 		lDiscountRate.setHorizontalAlignment(SwingConstants.TRAILING);
 		lPercentage = new javax.swing.JLabel();
@@ -318,7 +316,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		lblSortOrder = new JLabel(Messages.getString("MenuItemForm.lblSortOrder.text")); //$NON-NLS-1$
 		tfSortOrder.setText(""); //$NON-NLS-1$
 		lblBarcode = new JLabel(Messages.getString("MenuItemForm.lblBarcode.text")); //$NON-NLS-1$
-		cbTax.setPreferredSize(new Dimension(198, 0));
+		cbTaxGroup.setPreferredSize(new Dimension(198, 0));
 		///lblButtonColor = new JLabel(Messages.getString("MenuItemForm.lblButtonColor.text")); //$NON-NLS-1$
 		btnButtonColor = new JButton(); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(228, 40));
@@ -328,7 +326,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		cbShowTextWithImage = new JCheckBox(Messages.getString("MenuItemForm.40")); //$NON-NLS-1$
 		cbShowTextWithImage.setActionCommand(Messages.getString("MenuItemForm.41")); //$NON-NLS-1$
 		lTax.setText(Messages.getString("LABEL_TAX")); //$NON-NLS-1$
-		btnNewTax.setText("..."); //$NON-NLS-1$
 		cbFractionalUnit = new JCheckBox(Messages.getString("MenuItemForm.24")); //$NON-NLS-1$
 
 		btnNewGroup.setText("..."); //$NON-NLS-1$
@@ -348,13 +345,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tfPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
 		lTax.setText(Messages.getString("LABEL_TAX")); //$NON-NLS-1$
-
-		btnNewTax.setText("..."); //$NON-NLS-1$
-		btnNewTax.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnNewTaxdoCreateNewTax(evt);
-			}
-		});
 
 		lDiscountRate.setText(com.floreantpos.POSConstants.DISCOUNT_RATE + ":"); //$NON-NLS-1$
 
@@ -465,8 +455,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		tabGeneral.add(cbPrinterGroup, "cell 3 1,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lTax, "cell 2 2,right"); //$NON-NLS-1$
-		tabGeneral.add(cbTax, "cell 3 2"); //$NON-NLS-1$
-		tabGeneral.add(btnNewTax, "cell 3 2,grow"); //$NON-NLS-1$
+		tabGeneral.add(cbTaxGroup, "cell 3 2"); //$NON-NLS-1$
 
 		/*tabGeneral.add(lblButtonColor, "cell 2 3,right"); //$NON-NLS-1$
 		tabGeneral.add(btnButtonColor, "cell 3 3,grow"); //$NON-NLS-1$
@@ -715,11 +704,6 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void btnNewTaxdoCreateNewTax(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTaxdoCreateNewTax
-		BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), new TaxForm());
-		dialog.open();
-	}//GEN-LAST:event_btnNewTaxdoCreateNewTax
-
 	private void btnNewModifierGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewModifierGroupActionPerformed
 
 	}//GEN-LAST:event_btnNewModifierGroupActionPerformed
@@ -845,7 +829,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		}
 
 		cbGroup.setSelectedItem(menuItem.getParent());
-		cbTax.setSelectedItem(menuItem.getTax());
+		cbTaxGroup.setSelectedItem(menuItem.getTaxGroup());
 
 		cbPrinterGroup.setSelectedItem(menuItem.getPrinterGroup());
 
@@ -881,7 +865,7 @@ public class MenuItemForm extends BeanEditor<MenuItem> implements ActionListener
 		menuItem.setBuyPrice(tfBuyPrice.getDouble());
 		menuItem.setPrice(Double.valueOf(tfPrice.getText()));
 		menuItem.setUnitName(tfUnitName.getText());
-		menuItem.setTax((Tax) cbTax.getSelectedItem());
+		menuItem.setTaxGroup((TaxGroup) cbTaxGroup.getSelectedItem());
 		menuItem.setStockAmount(Double.parseDouble(tfStockCount.getText()));
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());

@@ -84,6 +84,7 @@ import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.TableBookingInfo;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.TaxGroup;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.TerminalPrinters;
 import com.floreantpos.model.Ticket;
@@ -187,6 +188,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration.addClass(PizzaModifierPrice.class);
 		configuration.addClass(Multiplier.class);
 		configuration.addClass(ModifierMultiplierPrice.class);
+		configuration.addClass(TaxGroup.class);
 
 		configureInventoryClasses(configuration);
 

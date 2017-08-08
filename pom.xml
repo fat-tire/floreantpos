@@ -467,7 +467,7 @@
 		<dependency>
 			<groupId>com.orocube</groupId>
 			<artifactId>orocube-common-classes</artifactId>
-			<version>1.1</version>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -503,6 +503,11 @@
             <groupId>net.java.dev.jna</groupId> 
             <artifactId>jna-platform</artifactId> 
             <version>4.2.2</version> 
+        </dependency>
+        <dependency> 
+            <groupId>com.floreantpos</groupId> 
+            <artifactId>ploader</artifactId> 
+            <version>1.1</version> 
         </dependency>
 	</dependencies>
 

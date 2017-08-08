@@ -138,6 +138,11 @@ public class BeanTableModel<M> extends AbstractTableModel {
 		getRows().set(index, row);
 	}
 	
+	public void setRows(List rows) {
+		this.rows = rows;
+		fireTableDataChanged();
+	}
+	
 	public M getRow(int index) {
 		return getRows().get(index);
 	}

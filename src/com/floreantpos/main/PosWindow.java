@@ -22,11 +22,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -66,7 +68,8 @@ public class PosWindow extends JFrame implements WindowListener {
 
 		JPanel statusBarContainer = new JPanel(new BorderLayout());
 		statusBarContainer.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
-
+		ImageIcon icon = IconFactory.getIcon("/images/", "footer-logo.png");
+		statusLabel.setIcon(icon);
 		statusBarContainer.add(statusBar);
 		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
 	}

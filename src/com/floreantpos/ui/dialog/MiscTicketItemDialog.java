@@ -38,9 +38,10 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.TaxGroup;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.PrinterGroupDAO;
-import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.TaxGroupDAO;
 import com.floreantpos.swing.ComboBoxModel;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
@@ -53,7 +54,7 @@ import com.floreantpos.swing.QwertyKeyPad;
  */
 public class MiscTicketItemDialog extends OkCancelOptionDialog {
 	private TicketItem ticketItem;
-	private javax.swing.JComboBox cbTax;
+	private javax.swing.JComboBox cbTaxGroup;
 	private FixedLengthTextField tfItemName;
 	private DoubleTextField tfItemPrice;
 	private JComboBox cbPrinterGroup;
@@ -90,9 +91,9 @@ public class MiscTicketItemDialog extends OkCancelOptionDialog {
 		PosComboRenderer comboRenderer = new PosComboRenderer();
 		comboRenderer.setEnableDefaultValueShowing(false);
 
-		cbTax = new JComboBox();
-		cbTax.setRenderer(comboRenderer);
-		contentPane.add(cbTax, "w 200!, h 40"); //$NON-NLS-1$
+		cbTaxGroup = new JComboBox();
+		cbTaxGroup.setRenderer(comboRenderer);
+		contentPane.add(cbTaxGroup, "w 200!, h 40"); //$NON-NLS-1$
 
 		contentPane.add(new JLabel(Messages.getString("MiscTicketItemDialog.15")), "alignx trailing"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -109,18 +110,19 @@ public class MiscTicketItemDialog extends OkCancelOptionDialog {
 	}
 
 	private void initData() {
-		List<Tax> taxes = TaxDAO.getInstance().findAll();
 
-		cbTax.addItem("Select Tax");
-		for (Tax tax : taxes) {
-			cbTax.addItem(tax);
+		List<TaxGroup> taxGroups = TaxGroupDAO.getInstance().findAll();
+
+		cbTaxGroup.addItem(null); //$NON-NLS-1$
+		for (TaxGroup tax : taxGroups) {
+			cbTaxGroup.addItem(tax);
 		}
-		int defaultTaxId = TerminalConfig.getMiscItemDefaultTaxId();
-		if (defaultTaxId != -1) {
-			for (int i = 0; i < taxes.size(); i++) {
-				Tax tax = taxes.get(i);
-				if (tax.getId() == defaultTaxId) {
-					cbTax.setSelectedIndex(i);
+		String defaultTaxId = TerminalConfig.getMiscItemDefaultTaxId();
+		if (!defaultTaxId.equals("-1")) {
+			for (int i = 0; i < taxGroups.size(); i++) {
+				TaxGroup tax = taxGroups.get(i);
+				if (tax.getId().equals(defaultTaxId)) {
+					cbTaxGroup.setSelectedIndex(i);
 					break;
 				}
 			}
@@ -159,13 +161,20 @@ public class MiscTicketItemDialog extends OkCancelOptionDialog {
 		ticketItem.setGroupName(com.floreantpos.POSConstants.MISC_BUTTON_TEXT);
 		ticketItem.setShouldPrintToKitchen(true);
 
-		Object selectedObject = cbTax.getSelectedItem();
+		Object selectedObject = cbTaxGroup.getSelectedItem();
 
-		if (selectedObject instanceof Tax) {
-			Tax tax = (Tax) selectedObject;
-			if (tax != null) {
-				ticketItem.setTaxRate(tax.getRate());
-				TerminalConfig.setMiscItemDefaultTaxId(tax.getId());
+		if (selectedObject instanceof TaxGroup) {
+			TaxGroup taxGroup = (TaxGroup) selectedObject;
+			if (taxGroup != null) {
+				List<Tax> taxes = taxGroup.getTaxes();
+				double defaultTax = 0;
+				if (taxes != null) {
+					for (Tax tax2 : taxes) {
+						defaultTax = tax2.getRate();
+					}
+				}
+				ticketItem.setTaxRate(defaultTax);
+				TerminalConfig.setMiscItemDefaultTaxId(taxGroup.getId());
 			}
 		}
 

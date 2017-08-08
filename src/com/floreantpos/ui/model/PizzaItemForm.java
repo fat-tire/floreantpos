@@ -82,12 +82,14 @@ import com.floreantpos.model.PizzaCrust;
 import com.floreantpos.model.PizzaPrice;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.TaxGroup;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.MenuItemSizeDAO;
 import com.floreantpos.model.dao.PizzaCrustDAO;
 import com.floreantpos.model.dao.PrinterGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.TaxGroupDAO;
 import com.floreantpos.swing.BeanTableModel;
 import com.floreantpos.swing.CheckBoxList;
 import com.floreantpos.swing.ComboBoxModel;
@@ -125,7 +127,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 	private JCheckBox cbDisableStockCount;
 	private IntegerTextField tfDefaultSellPortion;
 	private JComboBox<PrinterGroup> cbPrinterGroup;
-	private JComboBox cbTax;
+	private JComboBox cbTaxGroup;
 	private CheckBoxList orderList;
 	private JTextArea tfDescription;
 
@@ -159,9 +161,9 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		List<MenuGroup> foodGroups = foodGroupDAO.findAll();
 		cbGroup.setModel(new ComboBoxModel(foodGroups));
 
-		TaxDAO taxDAO = new TaxDAO();
-		List<Tax> taxes = taxDAO.findAll();
-		cbTax.setModel(new ComboBoxModel(taxes));
+		TaxGroupDAO taxDAO = new TaxGroupDAO();
+		List<TaxGroup> taxGroups = taxDAO.findAll();
+		cbTaxGroup.setModel(new ComboBoxModel(taxGroups));
 
 		menuItemModifierGroups = menuItem.getMenuItemModiferGroups();
 		shiftTable.setModel(shiftTableModel = new ShiftTableModel(menuItem.getShifts()));
@@ -223,7 +225,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		JLabel lTax = new javax.swing.JLabel();
 		lTax.setHorizontalAlignment(SwingConstants.TRAILING);
 
-		cbTax = new javax.swing.JComboBox();
+		cbTaxGroup = new javax.swing.JComboBox();
 		JButton btnNewTax = new javax.swing.JButton();
 
 		JPanel tabShift = new javax.swing.JPanel();
@@ -263,7 +265,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		JLabel lblTranslatedName = new JLabel(Messages.getString("MenuItemForm.lblTranslatedName.text")); //$NON-NLS-1$
 		tfSortOrder = new IntegerTextField(20);
 		tfSortOrder.setText(""); //$NON-NLS-1$
-		cbTax.setPreferredSize(new Dimension(198, 0));
+		cbTaxGroup.setPreferredSize(new Dimension(198, 0));
 		btnButtonColor = new JButton(); //$NON-NLS-1$
 		btnButtonColor.setPreferredSize(new Dimension(228, 40));
 		JLabel lblTextColor = new JLabel(Messages.getString("MenuItemForm.lblTextColor.text")); //$NON-NLS-1$
@@ -326,7 +328,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		tabGeneral.add(cbPrinterGroup, "cell 3 1,grow"); //$NON-NLS-1$
 
 		tabGeneral.add(lTax, "cell 2 2,right"); //$NON-NLS-1$
-		tabGeneral.add(cbTax, "cell 3 2"); //$NON-NLS-1$
+		tabGeneral.add(cbTaxGroup, "cell 3 2"); //$NON-NLS-1$
 		tabGeneral.add(btnNewTax, "cell 3 2,grow"); //$NON-NLS-1$
 
 		cbGroup = new javax.swing.JComboBox();
@@ -730,7 +732,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 			tfDefaultSellPortion.setText(String.valueOf(menuItem.getDefaultSellPortion()));
 
 		cbGroup.setSelectedItem(menuItem.getParent());
-		cbTax.setSelectedItem(menuItem.getTax());
+		cbTaxGroup.setSelectedItem(menuItem.getTaxGroup());
 
 		cbPrinterGroup.setSelectedItem(menuItem.getPrinterGroup());
 
@@ -763,7 +765,7 @@ public class PizzaItemForm extends BeanEditor<MenuItem> implements ActionListene
 		menuItem.setDescription(tfDescription.getText());
 		menuItem.setBarcode(tfBarcode.getText());
 		menuItem.setParent((MenuGroup) cbGroup.getSelectedItem());
-		menuItem.setTax((Tax) cbTax.getSelectedItem());
+		menuItem.setTaxGroup((TaxGroup) cbTaxGroup.getSelectedItem());
 		menuItem.setStockAmount(Double.parseDouble(tfStockCount.getText()));
 		menuItem.setVisible(chkVisible.isSelected());
 		menuItem.setShowImageOnly(cbShowTextWithImage.isSelected());

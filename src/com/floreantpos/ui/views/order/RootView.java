@@ -72,6 +72,9 @@ public class RootView extends com.floreantpos.swing.TransparentPanel {
 		add(headerPanel, BorderLayout.NORTH);
 
 		add(contentPanel);
+	}
+	
+	public void initializeViews() {
 		loginScreen = LoginView.getInstance();
 		addView(loginScreen);
 	}

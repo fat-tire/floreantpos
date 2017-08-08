@@ -5,31 +5,30 @@ import java.io.Serializable;
 
 
 /**
- * This is an object that contains data related to the TAX table.
+ * This is an object that contains data related to the TAX_GROUP table.
  * Do not modify this class because it will be overwritten if the configuration file
  * related to this class is modified.
  *
  * @hibernate.class
- *  table="TAX"
+ *  table="TAX_GROUP"
  */
 
-public abstract class BaseTax  implements Comparable, Serializable {
+public abstract class BaseTaxGroup  implements Comparable, Serializable {
 
-	public static String REF = "Tax"; //$NON-NLS-1$
-	public static String PROP_RATE = "rate"; //$NON-NLS-1$
+	public static String REF = "TaxGroup"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
 
 	// constructors
-	public BaseTax () {
+	public BaseTaxGroup () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseTax (java.lang.Integer id) {
+	public BaseTaxGroup (java.lang.String id) {
 		this.setId(id);
 		initialize();
 	}
@@ -37,8 +36,8 @@ public abstract class BaseTax  implements Comparable, Serializable {
 	/**
 	 * Constructor for required fields
 	 */
-	public BaseTax (
-		java.lang.Integer id,
+	public BaseTaxGroup (
+		java.lang.String id,
 		java.lang.String name) {
 
 		this.setId(id);
@@ -53,21 +52,23 @@ public abstract class BaseTax  implements Comparable, Serializable {
 	private int hashCode = Integer.MIN_VALUE;
 
 	// primary key
-	private java.lang.Integer id;
+	private java.lang.String id;
 
 	// fields
 		protected java.lang.String name;
-		protected java.lang.Double rate;
+
+	// collections
+	private java.util.List<com.floreantpos.model.Tax> taxes;
 
 
 
 	/**
 	 * Return the unique identifier of this class
      * @hibernate.id
-     *  generator-class="identity"
+     *  generator-class="com.floreantpos.util.GlobalIdGenerator"
      *  column="ID"
      */
-	public java.lang.Integer getId () {
+	public java.lang.String getId () {
 		return id;
 	}
 
@@ -75,7 +76,7 @@ public abstract class BaseTax  implements Comparable, Serializable {
 	 * Set the unique identifier of this class
 	 * @param id the new ID
 	 */
-	public void setId (java.lang.Integer id) {
+	public void setId (java.lang.String id) {
 		this.id = id;
 		this.hashCode = Integer.MIN_VALUE;
 	}
@@ -101,18 +102,23 @@ public abstract class BaseTax  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: RATE
+	 * Return the value associated with the column: taxes
 	 */
-	public java.lang.Double getRate () {
-									return rate == null ? Double.valueOf(0) : rate;
-					}
+	public java.util.List<com.floreantpos.model.Tax> getTaxes () {
+					return taxes;
+			}
 
 	/**
-	 * Set the value related to the column: RATE
-	 * @param rate the RATE value
+	 * Set the value related to the column: taxes
+	 * @param taxes the taxes value
 	 */
-	public void setRate (java.lang.Double rate) {
-		this.rate = rate;
+	public void setTaxes (java.util.List<com.floreantpos.model.Tax> taxes) {
+		this.taxes = taxes;
+	}
+
+	public void addTotaxes (com.floreantpos.model.Tax tax) {
+		if (null == getTaxes()) setTaxes(new java.util.ArrayList<com.floreantpos.model.Tax>());
+		getTaxes().add(tax);
 	}
 
 
@@ -121,11 +127,11 @@ public abstract class BaseTax  implements Comparable, Serializable {
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.Tax)) return false;
+		if (!(obj instanceof com.floreantpos.model.TaxGroup)) return false;
 		else {
-			com.floreantpos.model.Tax tax = (com.floreantpos.model.Tax) obj;
-			if (null == this.getId() || null == tax.getId()) return false;
-			else return (this.getId().equals(tax.getId()));
+			com.floreantpos.model.TaxGroup taxGroup = (com.floreantpos.model.TaxGroup) obj;
+			if (null == this.getId() || null == taxGroup.getId()) return false;
+			else return (this.getId().equals(taxGroup.getId()));
 		}
 	}
 

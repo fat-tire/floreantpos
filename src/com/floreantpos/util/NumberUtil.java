@@ -19,6 +19,7 @@ package com.floreantpos.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
@@ -27,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 public class NumberUtil {
 	private final static NumberFormat numberFormat = NumberFormat.getNumberInstance();
 	private final static NumberFormat numberFormat2 = NumberFormat.getNumberInstance();
+	private final static DecimalFormat decimalFormat = new DecimalFormat("#.##"); //$NON-NLS-1$
 
 	static {
 		numberFormat.setMinimumFractionDigits(2);
@@ -80,5 +82,18 @@ public class NumberUtil {
 		}
 
 		return numberFormat.parse(number);
+	}
+	public static String trimDecilamIfNotNeeded(Double number) {
+		if (number == null) {
+			return decimalFormat.format(0);
+		}
+
+		String value = decimalFormat.format(number);
+
+		if (value.startsWith("-")) { //$NON-NLS-1$
+			return decimalFormat.format(0);
+		}
+
+		return value;
 	}
 }

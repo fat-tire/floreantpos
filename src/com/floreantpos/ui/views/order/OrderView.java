@@ -37,9 +37,11 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.StaleObjectStateException;
+import org.hibernate.StaleStateException;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
@@ -79,8 +81,6 @@ import com.floreantpos.ui.tableselection.TableSelectorDialog;
 import com.floreantpos.ui.tableselection.TableSelectorFactory;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
 
-import net.miginfocom.swing.MigLayout;
-
 /**
  *
  * @author  MShahriar
@@ -119,7 +119,6 @@ public class OrderView extends ViewPanel {
 	private PosButton btnDeliveryInfo = new PosButton("DELIVERY INFO");
 	private PosButton btnTotal = new PosButton(POSConstants.SETTLE.toUpperCase());
 
-	
 	/** Creates new form OrderView */
 	private OrderView() {
 		initComponents();
@@ -245,8 +244,8 @@ public class OrderView extends ViewPanel {
 
 					ticketView.doFinishOrder();
 
-				} catch (StaleObjectStateException x) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.22")); //$NON-NLS-1$
+				} catch (StaleStateException x) {
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
 					return;
 				} catch (PosException x) {
 					POSMessageDialog.showError(x.getMessage());
@@ -273,31 +272,39 @@ public class OrderView extends ViewPanel {
 				ticketView.setAllowToLogOut(true);
 			}
 		});
-		
+
 		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
 			btnTotal.setEnabled(false);
 		}
-		
+
 		btnTotal.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if (getCurrentTicket().getOrderType().isHasForHereAndToGo()) {
-					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(getCurrentTicket());
-					dialog.open();
+				try {
+					if (getCurrentTicket().getOrderType().isHasForHereAndToGo()) {
+						OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(getCurrentTicket());
+						dialog.open();
 
-					if (dialog.isCanceled()) {
-						return;
+						if (dialog.isCanceled()) {
+							return;
+						}
+						String orderType = dialog.getSelectedOrderType();
+						if (orderType != null) {
+							getCurrentTicket().updateTicketItemPriceByOrderType(orderType);
+							ticketView.updateModel();
+							ticketView.updateView();
+						}
 					}
-					String orderType = dialog.getSelectedOrderType();
-					if (orderType != null) {
-						getCurrentTicket().updateTicketItemPriceByOrderType(orderType);
-						ticketView.updateModel();
-						ticketView.updateView();
-					}
+					ticketView.doPayNow();
+				} catch (StaleStateException x) {
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
+					return;
+				} catch (PosException x) {
+					POSMessageDialog.showError(x.getMessage());
+				} catch (Exception x) {
+					POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, x);
 				}
-				ticketView.doPayNow();
 			}
 		});
 
@@ -309,8 +316,8 @@ public class OrderView extends ViewPanel {
 					ticketView.sendTicketToKitchen();
 					ticketView.updateView();
 					POSMessageDialog.showMessage("Items sent to kitchen");
-				} catch (StaleObjectStateException x) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TicketView.22")); //$NON-NLS-1$
+				} catch (StaleStateException x) {
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
 					return;
 				} catch (PosException x) {
 					POSMessageDialog.showError(x.getMessage());
@@ -369,35 +376,44 @@ public class OrderView extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OrderType orderType = currentTicket.getOrderType();
-				if (orderType.isShowTableSelection() && orderType.isRequiredCustomerData()//fix
-						&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
-					//
+				try {
+					OrderType orderType = currentTicket.getOrderType();
+					if (orderType.isShowTableSelection() && orderType.isRequiredCustomerData()//fix
+							&& !Application.getCurrentUser().hasPermission(UserPermission.HOLD_TICKET)) {
+						//
 
-					String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
-					if (StringUtils.isEmpty(password)) {
-						return;
-					}
-
-					User user2 = UserDAO.getInstance().findUserBySecretKey(password);
-					if (user2 == null) {
-						POSMessageDialog.showError(Application.getPosWindow(), "No user found with that secret key");
-						return;
-					}
-					else {
-						if (!user2.hasPermission(UserPermission.HOLD_TICKET)) {
-							POSMessageDialog.showError(Application.getPosWindow(), "No permission");
+						String password = PasswordEntryDialog.show(Application.getPosWindow(), "Please enter privileged password");
+						if (StringUtils.isEmpty(password)) {
 							return;
 						}
-					}
-				}
 
-				if (!currentTicket.isBarTab() && (ticketView.getTicket().getTicketItems() == null || ticketView.getTicket().getTicketItems().size() == 0)) {
-					POSMessageDialog.showError(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
+						User user2 = UserDAO.getInstance().findUserBySecretKey(password);
+						if (user2 == null) {
+							POSMessageDialog.showError(Application.getPosWindow(), "No user found with that secret key");
+							return;
+						}
+						else {
+							if (!user2.hasPermission(UserPermission.HOLD_TICKET)) {
+								POSMessageDialog.showError(Application.getPosWindow(), "No permission");
+								return;
+							}
+						}
+					}
+
+					if (!currentTicket.isBarTab() && (ticketView.getTicket().getTicketItems() == null || ticketView.getTicket().getTicketItems().size() == 0)) {
+						POSMessageDialog.showError(com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
+						return;
+					}
+					ticketView.doHoldOrder();
+					ticketView.setAllowToLogOut(true);
+				} catch (StaleStateException x) {
+					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
 					return;
+				} catch (PosException x) {
+					POSMessageDialog.showError(x.getMessage());
+				} catch (Exception x) {
+					POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, x);
 				}
-				ticketView.doHoldOrder();
-				ticketView.setAllowToLogOut(true);
 			}
 		});
 

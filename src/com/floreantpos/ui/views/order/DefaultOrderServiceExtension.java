@@ -157,7 +157,12 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 
 	@Override
 	public String getId() {
-		return String.valueOf("DefaultOrderServiceExtension".hashCode()); //$NON-NLS-1$
+		return "DefaultOrderServiceExtension"; //$NON-NLS-1$
+	}
+	
+	@Override
+	public String getSecurityCode() {
+		return "-400343452";
 	}
 
 	@Override

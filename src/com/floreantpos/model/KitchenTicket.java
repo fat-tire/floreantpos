@@ -193,7 +193,7 @@ public class KitchenTicket extends BaseKitchenTicket {
 		List<KitchenTicket> kitchenTickets = new ArrayList<KitchenTicket>(4);
 
 		Ticket clonedTicket = (Ticket) SerializationUtils.clone(ticket);
-		clonedTicket.setGlobalId(GlobalIdGenerator.generate());
+		clonedTicket.setGlobalId(GlobalIdGenerator.generateGlobalId());
 		clonedTicket.consolidateTicketItems();
 		List<TicketItem> ticketItems = clonedTicket.getTicketItems();
 		if (ticketItems == null) {

@@ -5,6 +5,7 @@
 		<id column="ID" name="id" type="java.lang.Integer">
 			<generator class="identity" />
 		</id>
+		<version name="version" column="VERSION_NO" type="long" />
 		<property name="globalId" column="GLOBAL_ID" length="16" type="string" unique="true"/>
 		<property column="CREATE_DATE" index="ticketcreateDate" length="10" name="createDate" type="java.util.Date" />
 		<property column="CLOSING_DATE" index="ticketclosingDate" length="10" name="closingDate" type="java.util.Date" />

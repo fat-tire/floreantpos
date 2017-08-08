@@ -32,7 +32,7 @@ import com.floreantpos.ui.views.payment.CardProcessor;
 
 @PluginImplementation
 public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
-	public static final String ID = String.valueOf("Authorize.Net".hashCode()); //$NON-NLS-1$
+	public static final String ID = "Authorize.Net"; //$NON-NLS-1$
 	
 	protected DefaultMerchantGatewayConfigurationView view;
 	
@@ -80,6 +80,11 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	@Override
 	public String getId() {
 		return ID;
+	}
+	
+	@Override
+	public String getSecurityCode() {
+		return "-1956568219";
 	}
 
 	@Override

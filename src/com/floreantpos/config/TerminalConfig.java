@@ -380,12 +380,12 @@ public class TerminalConfig {
 		return config.getBoolean(USE_SETTLEMENT_PROMPT, Boolean.FALSE);
 	}
 
-	public static void setMiscItemDefaultTaxId(int id) {
+	public static void setMiscItemDefaultTaxId(String id) {
 		config.setProperty("mistitemdefaulttaxid", id); //$NON-NLS-1$
 	}
 
-	public static int getMiscItemDefaultTaxId() {
-		return config.getInt("mistitemdefaulttaxid", -1); //$NON-NLS-1$
+	public static String getMiscItemDefaultTaxId() {
+		return config.getString("mistitemdefaulttaxid", "-1"); //$NON-NLS-1$
 	}
 
 	public static void setDrawerPortName(String drawerPortName) {

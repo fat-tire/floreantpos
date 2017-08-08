@@ -32,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang.StringUtils;
@@ -66,8 +68,6 @@ import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.GlobalIdGenerator;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
-
-import net.miginfocom.swing.MigLayout;
 
 //TODO: REVISE CODE
 public class GroupSettleTicketDialog extends POSDialog implements CardInputListener {
@@ -482,7 +482,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 				}
 
 				transaction = (PosTransaction) SerializationUtils.clone(posTransaction);
-				transaction.setGlobalId(GlobalIdGenerator.generate());
+				transaction.setGlobalId(GlobalIdGenerator.generateGlobalId());
 				transaction.setTicket(ticket);
 				setTransactionAmounts(transaction);
 
@@ -717,7 +717,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 				cardTransaction = (PosTransaction) SerializationUtils.clone(transaction);
 				cardTransaction.setId(null);
-				cardTransaction.setGlobalId(GlobalIdGenerator.generate());
+				cardTransaction.setGlobalId(GlobalIdGenerator.generateGlobalId());
 
 				cardTransaction.setTicket(ticket);
 				setTransactionAmounts(cardTransaction);

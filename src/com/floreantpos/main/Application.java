@@ -132,7 +132,6 @@ public class Application {
 		rootView = RootView.getInstance();
 		posWindow.getContentPane().add(rootView);
 		posWindow.setVisibleWelcomeHeader(false);
-		rootView.addView(LoginView.getInstance());
 		initializeSystem();
 	}
 
@@ -170,11 +169,17 @@ public class Application {
 			initLengthUnit();
 			initPlugins();
 
+			RootView.getInstance().initializeViews();
 			LoginView.getInstance().initializeOrderButtonPanel();
+			LoginView.getInstance().setTerminalId(terminal.getId());
 			//if (hasUpdateScheduleToday())
 			//	checkAvailableUpdates();
 			setSystemInitialized(true);
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 
+			if (paymentGateway instanceof InginicoPlugin) {
+				new PosServer();
+			}
 		} catch (DatabaseConnectionException e) {
 			e.printStackTrace();
 			PosLog.error(getClass(), e);
@@ -259,6 +264,7 @@ public class Application {
 	}
 
 	private void initPlugins() {
+		ExtensionManager.getInstance().initialize(Main.class);
 		List<FloreantPlugin> plugins = ExtensionManager.getPlugins();
 		for (FloreantPlugin floreantPlugin : plugins) {
 			floreantPlugin.initUI();
@@ -285,9 +291,6 @@ public class Application {
 		if (terminal != null) {
 			TerminalConfig.setTerminalId(terminal.getId());
 			this.terminal = terminal;
-			if (!headLess) {
-				LoginView.getInstance().setTerminalId(terminal.getId());
-			}
 			return;
 		}
 		int terminalId = TerminalConfig.getTerminalId();
@@ -315,11 +318,6 @@ public class Application {
 		}
 
 		TerminalConfig.setTerminalId(terminalId);
-
-		if (!headLess) {
-			LoginView.getInstance().setTerminalId(terminalId);
-		}
-
 		this.terminal = terminal;
 	}
 
@@ -340,12 +338,6 @@ public class Application {
 					posWindow.setStatus(Messages.getString("Application.42")); //$NON-NLS-1$
 				}
 			}
-			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-
-			if (paymentGateway instanceof InginicoPlugin) {
-				new PosServer();
-			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DatabaseConnectionException();

@@ -41,6 +41,7 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.TaxGroup;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
@@ -197,10 +198,10 @@ public class DataImportAction extends AbstractAction {
 						menuItem.setParent(menuGroup);
 					}
 
-					Tax tax = menuItem.getTax();
-					if (tax != null) {
-						tax = (Tax) objectMap.get(tax.getUniqueId());
-						menuItem.setTax(tax);
+					TaxGroup taxGroup = menuItem.getTaxGroup();
+					if (taxGroup != null) {
+						taxGroup = (TaxGroup) objectMap.get(taxGroup.getId());
+						menuItem.setTaxGroup(taxGroup);
 					}
 
 					List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();

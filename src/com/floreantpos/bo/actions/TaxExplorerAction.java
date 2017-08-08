@@ -25,7 +25,7 @@ import javax.swing.JTabbedPane;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BackOfficeWindow;
-import com.floreantpos.bo.ui.explorer.TaxExplorer;
+import com.floreantpos.bo.ui.explorer.TaxGroupExplorer;
 
 public class TaxExplorerAction extends AbstractAction {
 
@@ -43,16 +43,16 @@ public class TaxExplorerAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		BackOfficeWindow backOfficeWindow = com.floreantpos.util.POSUtil.getBackOfficeWindow();
-		
-		TaxExplorer explorer = null;
+
+		TaxGroupExplorer explorer = null;
 		JTabbedPane tabbedPane = backOfficeWindow.getTabbedPane();
 		int index = tabbedPane.indexOfTab(POSConstants.TAX_EXPLORER);
 		if (index == -1) {
-			explorer = new TaxExplorer();
+			explorer = new TaxGroupExplorer();
 			tabbedPane.addTab(POSConstants.TAX_EXPLORER, explorer);
 		}
 		else {
-			explorer = (TaxExplorer) tabbedPane.getComponentAt(index);
+			explorer = (TaxGroupExplorer) tabbedPane.getComponentAt(index);
 		}
 		tabbedPane.setSelectedComponent(explorer);
 	}

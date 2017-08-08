@@ -19,7 +19,6 @@ package com.floreantpos.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -317,7 +316,7 @@ public class Ticket extends BaseTicket {
 			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
 			if (menuItem != null) {
 				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(getOrderType()));
-				ticketItem.setTaxRate(menuItem.getTaxByOrderType(getOrderType()));
+				ticketItem.setTaxRate(menuItem.calculateTaxRate());
 			}
 		}
 	}
@@ -333,7 +332,7 @@ public class Ticket extends BaseTicket {
 			MenuItem menuItem = MenuItemDAO.getInstance().initialize(MenuItemDAO.getInstance().get(itemId));
 			if (menuItem != null) {
 				ticketItem.setUnitPrice(menuItem.getPriceByOrderType(name));
-				ticketItem.setTaxRate(menuItem.getTaxByOrderType(name));
+				ticketItem.setTaxRate(menuItem.calculateTaxRate());
 			}
 		}
 	}

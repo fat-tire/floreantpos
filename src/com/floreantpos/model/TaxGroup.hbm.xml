@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+  <class lazy="false" name="com.floreantpos.model.TaxGroup"  table="TAX_GROUP">
+    <id column="ID" name="id" type="java.lang.String"  length="128">
+      <generator class="com.floreantpos.util.GlobalIdGenerator" />
+    </id>
+    <property column="NAME" length="20" name="name" not-null="true" type="java.lang.String"/>
+    
+    <bag cascade="all,delete-orphan" inverse="false" lazy="false" name="taxes" table="GROUP_TAXES">
+			<key column="GROUP_ID" />
+			<many-to-many class="Tax" />
+	</bag>
+    <!-- Associations -->
+  </class>
+</hibernate-mapping>

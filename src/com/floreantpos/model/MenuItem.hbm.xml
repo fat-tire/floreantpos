@@ -70,9 +70,10 @@
 		</bag>
 
 		<!-- uni-directional many-to-one association to Tax -->
-		<many-to-one class="com.floreantpos.model.Tax" lazy="false" name="tax">
-			<column name="TAX_ID" />
+		<many-to-one class="com.floreantpos.model.TaxGroup" lazy="false" name="taxGroup">
+			<column name="TAX_GROUP_ID" />
 		</many-to-one>
+
 
 		<many-to-one class="com.floreantpos.model.Recepie" lazy="false" cascade="all" name="recepie">
 			<column name="RECEPIE" />

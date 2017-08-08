@@ -58,6 +58,7 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.MultiCurrencyTenderDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 
 public class PaymentView extends JPanel {
@@ -103,6 +104,7 @@ public class PaymentView extends JPanel {
 	private com.floreantpos.swing.PosButton btnAmount50;
 	private com.floreantpos.swing.PosButton btnAmount100;
 	private com.floreantpos.swing.PosButton btnExactAmount;
+	private com.floreantpos.swing.PosButton btnNoSale;
 
 	private JTextField txtTenderedAmount;
 	private JTextField txtDueAmount;
@@ -182,6 +184,8 @@ public class PaymentView extends JPanel {
 		btnAmount100.setFont(font2);
 
 		btnExactAmount = new com.floreantpos.swing.PosButton();
+
+		btnNoSale = new com.floreantpos.swing.PosButton();
 
 		btn7 = new com.floreantpos.swing.PosButton();
 		btn8 = new com.floreantpos.swing.PosButton();
@@ -345,19 +349,29 @@ public class PaymentView extends JPanel {
 		btnClear.setIcon(IconFactory.getIcon("/ui_icons/", "clear.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
 		btnClear.setText(Messages.getString("PaymentView.38")); //$NON-NLS-1$
 		btnClear.setFocusable(false);
-		calcButtonPanel.add(btnClear);
+		calcButtonPanel.add(btnClear,"wrap");
 
 		btnExactAmount.setAction(nextButtonAction);
 		btnExactAmount.setText(Messages.getString("PaymentView.20")); //$NON-NLS-1$
 		btnExactAmount.setActionCommand("exactAmount"); //$NON-NLS-1$
 		btnExactAmount.setFocusable(false);
-		calcButtonPanel.add(btnExactAmount, "span 2,grow"); //$NON-NLS-1$
+
+		btnNoSale.setAction(nextButtonAction);
+		btnNoSale.setText("NO SALE");
+		btnNoSale.setActionCommand("noSale");
+		btnNoSale.setFocusable(false);
 
 		btnNextAmount.setAction(nextButtonAction);
 		btnNextAmount.setText(Messages.getString("PaymentView.23")); //$NON-NLS-1$
 		btnNextAmount.setActionCommand("nextAmount"); //$NON-NLS-1$
 		btnNextAmount.setFocusable(false);
-		calcButtonPanel.add(btnNextAmount, "span 2,grow"); //$NON-NLS-1$
+		
+		JPanel centerPanel = new JPanel(new GridLayout(1, 0, 5, 5));
+		centerPanel.add(btnExactAmount);
+		centerPanel.add(btnNoSale);
+		centerPanel.add(btnNextAmount);
+		
+		calcButtonPanel.add(centerPanel, "span 4,growx"); //$NON-NLS-1$
 
 		btnGratuity = new PosButton(com.floreantpos.POSConstants.ADD_GRATUITY_TEXT);
 		btnGratuity.addActionListener(new ActionListener() {
@@ -366,14 +380,12 @@ public class PaymentView extends JPanel {
 			}
 		});
 
-		//calcButtonPanel.add(btnGratuity, "split 3,span,growx"); //$NON-NLS-1$
 		btnDiscount = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
 		btnDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settleTicketView.doApplyCoupon();
 			}
 		});
-		//calcButtonPanel.add(btnDiscount, "growx"); //$NON-NLS-1$
 
 		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
 		btnPrint.addActionListener(new java.awt.event.ActionListener() {
@@ -381,7 +393,6 @@ public class PaymentView extends JPanel {
 				ReceiptPrintService.printTicket(settleTicketView.getTicket());
 			}
 		});
-		//	calcButtonPanel.add(btnPrint, "growx"); //$NON-NLS-1$
 
 		JPanel panel4 = new JPanel(new GridLayout(1, 0, 5, 5));
 		panel4.add(btnGratuity);
@@ -605,6 +616,9 @@ public class PaymentView extends JPanel {
 
 					txtTenderedAmount.setText(String.valueOf(format.format(amount)));
 				}
+				else if (command.equals("noSale")) {
+					DrawerUtil.kickDrawer();
+				}
 				else {
 					if (clearPreviousAmount) {
 						txtTenderedAmount.setText("0"); //$NON-NLS-1$
@@ -665,9 +679,9 @@ public class PaymentView extends JPanel {
 
 	private void doPayByCash() {
 		try {
-//			if (!POSUtil.checkDrawerAssignment()) {
-//				return;
-//			}
+			//			if (!POSUtil.checkDrawerAssignment()) {
+			//				return;
+			//			}
 			double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
 
 			if (x < 0) {

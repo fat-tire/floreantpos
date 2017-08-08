@@ -93,7 +93,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		List<MenuItem> findAll = MenuItemDAO.getInstance().getMenuItems();
 		tableModel.addRows(findAll);
 		table = new JXTable(tableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		table.setRowHeight(60);
 

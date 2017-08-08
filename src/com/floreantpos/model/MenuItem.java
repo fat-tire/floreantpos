@@ -217,7 +217,7 @@ public class MenuItem extends BaseMenuItem {
 
 		//ticketItem.setTaxRate(this.getTax() == null ? 0 : this.getTax().getRate());
 
-		ticketItem.setTaxRate(getTaxByOrderType(orderType));
+		ticketItem.setTaxRate(calculateTaxRate());
 
 		ticketItem.setHasModifiers(hasModifiers());
 		if (this.getParent().getParent().isBeverage()) {
@@ -385,45 +385,76 @@ public class MenuItem extends BaseMenuItem {
 		}
 	}
 
-	public double getTaxByOrderType(OrderType type) {
-		if (this.getTax() == null) {
-			return 0;
-		}
-		double defaultTax = this.getTax().getRate();
-		if (type == null) {
+	public double calculateTaxRate() {
+		double defaultTax = 0;
+		if (getTaxGroup() == null) {
 			return defaultTax;
 		}
+		List<Tax> taxes = getTaxGroup().getTaxes();
 
-		String taxProp = getProperty(getStringWithUnderScore(type.name(), "_TAX")); //$NON-NLS-1$
-		if (taxProp == null)
-			return defaultTax;
-
-		try {
-			return Double.parseDouble(taxProp);
-		} catch (Exception e) {
-			return defaultTax;
+		if (taxes != null) {
+			for (Tax tax : taxes) {
+				defaultTax += tax.getRate();
+			}
 		}
+		return defaultTax;
 	}
 
-	public double getTaxByOrderType(String typeName) {
-		if (this.getTax() == null) {
-			return 0;
-		}
-		double defaultTax = this.getTax().getRate();
-		if (typeName == null) {
-			return defaultTax;
-		}
-
-		String taxProp = getProperty(getStringWithUnderScore(typeName, "_TAX")); //$NON-NLS-1$
-		if (taxProp == null)
-			return defaultTax;
-
-		try {
-			return Double.parseDouble(taxProp);
-		} catch (Exception e) {
-			return defaultTax;
-		}
-	}
+	//	public double getTaxByOrderType(OrderType type) {
+	//		if (this.getTaxGroup() == null) {
+	//			return 0;
+	//		}
+	//		double defaultTax = 0;
+	//		List<Tax> taxes = getTaxGroup().getTaxes();
+	//
+	//		if (taxes != null) {
+	//			for (Tax tax : taxes) {
+	//				defaultTax = tax.getRate();
+	//			}
+	//		}
+	//
+	//		if (type == null) {
+	//			return defaultTax;
+	//		}
+	//
+	//		String taxProp = getProperty(getStringWithUnderScore(type.name(), "_TAX")); //$NON-NLS-1$
+	//		if (taxProp == null)
+	//			return defaultTax;
+	//
+	//		try {
+	//			return Double.parseDouble(taxProp);
+	//		} catch (Exception e) {
+	//			return defaultTax;
+	//		}
+	//
+	//	}
+	//
+	//	public double getTaxByOrderType(String typeName) {
+	//		if (this.getTaxGroup() == null) {
+	//			return 0;
+	//		}
+	//		double defaultTax = 0;
+	//		List<Tax> taxes = getTaxGroup().getTaxes();
+	//
+	//		if (taxes != null) {
+	//			for (Tax tax : taxes) {
+	//				defaultTax = tax.getRate();
+	//			}
+	//		}
+	//		if (typeName == null) {
+	//			return defaultTax;
+	//		}
+	//
+	//		String taxProp = getProperty(getStringWithUnderScore(typeName, "_TAX")); //$NON-NLS-1$
+	//		if (taxProp == null)
+	//			return defaultTax;
+	//
+	//		try {
+	//			return Double.parseDouble(taxProp);
+	//		} catch (Exception e) {
+	//			return defaultTax;
+	//		}
+	//	}
 
 	public String getStringWithUnderScore(String orderType, String additionalString) {
 

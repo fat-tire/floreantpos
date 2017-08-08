@@ -36,7 +36,12 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 
 	@Override
 	public String getId() {
-		return String.valueOf("Inginico".hashCode()); // //$NON-NLS-1$
+		return "Inginico"; // //$NON-NLS-1$
+	}
+	
+	@Override
+	public String getSecurityCode() {
+		return "-1105096101";//$NON-NLS-1$
 	}
 
 	@Override

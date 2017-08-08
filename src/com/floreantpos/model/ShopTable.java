@@ -23,14 +23,14 @@ public class ShopTable extends BaseShopTable {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public ShopTable() {
+	public ShopTable () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public ShopTable(java.lang.Integer id) {
+	public ShopTable (java.lang.Integer id) {
 		super(id);
 	}
 
