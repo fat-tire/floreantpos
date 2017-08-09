@@ -17,7 +17,7 @@
  */
 package com.floreantpos.model.dao;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -29,6 +29,7 @@ import org.hibernate.criterion.Restrictions;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PaginatedTableModel;
 
@@ -137,20 +138,26 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 		try {
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
+			criteria.addOrder(Order.desc(KitchenTicket.PROP_CREATE_DATE));
 			criteria.add(Restrictions.eq(KitchenTicket.PROP_VOIDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(KitchenTicket.PROP_STATUS, KitchenTicketStatus.WAITING.name()));
 			if (orderType != null) {
 				criteria.add(Restrictions.eq(KitchenTicket.PROP_TICKET_TYPE, orderType.getName()));
 			}
+			List<KitchenTicket> tickets = criteria.list();
 			if (selectedKDSPrinter != null) {
-				List<String> list = new ArrayList<>();
-				list.add(selectedKDSPrinter);
-				criteria.createAlias(KitchenTicket.PROP_PRINTER_GROUP, "group");
-//				criteria.createAlias("group.printerNames", "names");
-				criteria.add(Restrictions.in("group.printerNames", list));
+				for (Iterator iterator = tickets.iterator(); iterator.hasNext();) {
+					KitchenTicket kitchenTicket = (KitchenTicket) iterator.next();
+					PrinterGroup printerGroup = kitchenTicket.getPrinterGroup();
+					if (printerGroup != null && printerGroup.getPrinterNames() != null) {
+						if (!printerGroup.getPrinterNames().contains(selectedKDSPrinter)) {
+							iterator.remove();
+						}
+					}
+				}
 			}
-			criteria.addOrder(Order.desc(KitchenTicket.PROP_CREATE_DATE));
-			return criteria.list();
+			
+			return tickets;
 		} finally {
 			closeSession(session);
 		}
