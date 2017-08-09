@@ -17,15 +17,18 @@
  */
 package com.floreantpos.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.PaginatedTableModel;
 
@@ -51,6 +54,7 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			closeSession(session);
 		}
 	}
+
 	public List<KitchenTicket> findByParentId(Integer ticketId) {
 		Session session = null;
 
@@ -65,6 +69,7 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			closeSession(session);
 		}
 	}
+
 	public List<Ticket> findNextKitchenTickets(PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;
@@ -94,7 +99,7 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 			closeSession(session);
 		}
 	}
-	
+
 	public List<Ticket> findPreviousKitchenTickets(PaginatedTableModel tableModel) {
 		Session session = null;
 		Criteria criteria = null;
@@ -121,6 +126,31 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 
 			return kitchenTicketList;
 
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public List<KitchenTicket> findByPrinterAndOrderType(String selectedKDSPrinter, OrderType orderType) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(KitchenTicket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(KitchenTicket.PROP_STATUS, KitchenTicketStatus.WAITING.name()));
+			if (orderType != null) {
+				criteria.add(Restrictions.eq(KitchenTicket.PROP_TICKET_TYPE, orderType.getName()));
+			}
+			if (selectedKDSPrinter != null) {
+				List<String> list = new ArrayList<>();
+				list.add(selectedKDSPrinter);
+				criteria.createAlias(KitchenTicket.PROP_PRINTER_GROUP, "group");
+//				criteria.createAlias("group.printerNames", "names");
+				criteria.add(Restrictions.in("group.printerNames", list));
+			}
+			criteria.addOrder(Order.desc(KitchenTicket.PROP_CREATE_DATE));
+			return criteria.list();
 		} finally {
 			closeSession(session);
 		}

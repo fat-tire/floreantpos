@@ -55,7 +55,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 	public final static String VIEW_NAME = "KD"; //$NON-NLS-1$
 	private static KitchenDisplayView instance;
-	private JComboBox<Printer> cbPrinters = new JComboBox<Printer>();
+	private JComboBox<String> cbPrinters = new JComboBox<String>();
 	private JComboBox<OrderType> cbTicketTypes = new JComboBox<OrderType>();
 
 	private HeaderPanel headerPanel;
@@ -74,10 +74,10 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		setLayout(new BorderLayout(5, 5));
 		PosPrinters printers = Application.getPrinters();
 		List<Printer> kitchenPrinters = printers.getKitchenPrinters();
-		DefaultComboBoxModel<Printer> printerModel = new DefaultComboBoxModel<Printer>();
+		DefaultComboBoxModel<String> printerModel = new DefaultComboBoxModel<String>();
 		printerModel.addElement(null);
 		for (Printer printer : kitchenPrinters) {
-			printerModel.addElement(printer);
+			printerModel.addElement(printer.toString());
 		}
 
 		Font font = getFont().deriveFont(18f);
@@ -133,23 +133,23 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 		//topPanel.add(label);
 		//topPanel.add(cbPrinters);
-		
-		Dimension size=PosUIManager.getSize(60, 40); 
-		
+
+		Dimension size = PosUIManager.getSize(60, 40);
+
 		Font filterFont = getFont().deriveFont(Font.BOLD, 12f);
 		lblFilter = new JLabel("Filter: All Printers- All Orders"); //$NON-NLS-1$
 		lblFilter.setForeground(new Color(49, 106, 196));
 		lblFilter.setFont(filterFont);
 		topPanel.add(lblFilter);
-		topPanel.add(btnFilter,"w "+ size.width+"!,h "+size.height+"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		topPanel.add(btnBack, "w "+ size.width+"!, h "+size.height+"!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		topPanel.add(btnFilter, "w " + size.width + "!,h " + size.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		topPanel.add(btnBack, "w " + size.width + "!, h " + size.height + "!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		topPanel.setBackground(Color.white);
 
 		cbTicketTypes.setFont(font);
 		cbTicketTypes.setRenderer(new PosComboRenderer());
 		DefaultComboBoxModel<OrderType> ticketTypeModel = new DefaultComboBoxModel<OrderType>();
-		for(OrderType orderType:Application.getInstance().getOrderTypes()) {
-			ticketTypeModel.addElement(orderType); 
+		for (OrderType orderType : Application.getInstance().getOrderTypes()) {
+			ticketTypeModel.addElement(orderType);
 		}
 		ticketTypeModel.insertElementAt(null, 0);
 		cbTicketTypes.setModel(ticketTypeModel);
@@ -161,7 +161,7 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 
 		btnLogout = new PosButton(new LogoutAction(true, false)); //$NON-NLS-1$
 		//btnLogout.addActionListener(this);
-		topPanel.add(btnLogout, "w "+ size.width+"!, h "+size.height+"!, wrap"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		topPanel.add(btnLogout, "w " + size.width + "!, h " + size.height + "!, wrap"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		topPanel.add(new JSeparator(), "grow,span"); //$NON-NLS-1$
 
@@ -188,16 +188,6 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 	private synchronized void addTicket(KitchenTicket ticket, boolean updateView) {
 		if (!isShowing())
 			return;
-
-		Printer selectedPrinter = (Printer) cbPrinters.getSelectedItem();
-		if (selectedPrinter != null && !selectedPrinter.equals(ticket.getPrinters())) {
-			return;
-		}
-
-		OrderType selectedTicketType = (OrderType) cbTicketTypes.getSelectedItem();
-		if (selectedTicketType != null && selectedTicketType != ticket.getType()) {
-			return;
-		}
 
 		if (ticketPanel.addTicket(ticket)) {
 			if (updateView) {
@@ -246,7 +236,10 @@ public class KitchenDisplayView extends ViewPanel implements ActionListener {
 		try {
 			viewUpdateTimer.stop();
 
-			List<KitchenTicket> list = KitchenTicketDAO.getInstance().findAllOpen();
+			String selectedPrinter = (String) cbPrinters.getSelectedItem();
+			OrderType selectedTicketType = (OrderType) cbTicketTypes.getSelectedItem();
+
+			List<KitchenTicket> list = KitchenTicketDAO.getInstance().findByPrinterAndOrderType(selectedPrinter, selectedTicketType);
 
 			for (KitchenTicket kitchenTicket : list) {
 				addTicket(kitchenTicket, false);
