@@ -37,4 +37,12 @@ public class AppProperties {
 		return properties.getString("floreantpos.version"); //$NON-NLS-1$
 		
 	}
+	
+	public static String getAppName() {
+		return properties.getString("app.name"); //$NON-NLS-1$
+	}
+	
+	public static String getAppVersion() {
+		return properties.getString("app.version"); //$NON-NLS-1$
+	}
 }
