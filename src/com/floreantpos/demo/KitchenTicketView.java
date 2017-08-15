@@ -81,16 +81,9 @@ public class KitchenTicketView extends JPanel {
 
 	public KitchenTicketView(KitchenTicket ticket) {
 		this.kitchenTicket = ticket;
-
-		//		Border emptyBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-		//		setBorder(BorderFactory.createCompoundBorder(emptyBorder,
-		//				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY), emptyBorder)));
 		setLayout(new BorderLayout(1, 1));
-
 		createHeader(ticket);
-
 		createTable(ticket);
-
 		createButtonPanel();
 
 		statusSelector = new KitchenTicketStatusSelector((Frame) SwingUtilities.getWindowAncestor(this), ticket);

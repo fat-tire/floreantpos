@@ -17,6 +17,7 @@
  */
 package com.floreantpos.model.dao;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import com.floreantpos.model.KitchenTicket.KitchenTicketStatus;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PrinterGroup;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.swing.PaginatedListModel;
 import com.floreantpos.swing.PaginatedTableModel;
 
 public class KitchenTicketDAO extends BaseKitchenTicketDAO {
@@ -132,18 +134,43 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 		}
 	}
 
-	public List<KitchenTicket> findByPrinterAndOrderType(String selectedKDSPrinter, OrderType orderType) {
+	public int getRowCount(String selectedKDSPrinter, OrderType orderType) {
 		Session session = null;
 		Criteria criteria = null;
 		try {
 			session = createNewSession();
 			criteria = session.createCriteria(getReferenceClass());
-			criteria.addOrder(Order.desc(KitchenTicket.PROP_CREATE_DATE));
 			criteria.add(Restrictions.eq(KitchenTicket.PROP_VOIDED, Boolean.FALSE));
 			criteria.add(Restrictions.eq(KitchenTicket.PROP_STATUS, KitchenTicketStatus.WAITING.name()));
 			if (orderType != null) {
 				criteria.add(Restrictions.eq(KitchenTicket.PROP_TICKET_TYPE, orderType.getName()));
 			}
+			criteria.setProjection(Projections.rowCount());
+			Number rowCount = (Number) criteria.uniqueResult();
+			if (rowCount != null) {
+				return rowCount.intValue();
+			}
+		} finally {
+			closeSession(session);
+		}
+		return 0;
+	}
+
+	public void loadKitchenTickets(String selectedKDSPrinter, OrderType orderType, PaginatedListModel listModel) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(KitchenTicket.PROP_VOIDED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(KitchenTicket.PROP_STATUS, KitchenTicketStatus.WAITING.name()));
+			if (orderType != null) {
+				criteria.add(Restrictions.eq(KitchenTicket.PROP_TICKET_TYPE, orderType.getName()));
+			}
+			criteria.setFirstResult(listModel.getCurrentRowIndex());
+			criteria.setMaxResults(listModel.getPageSize());
+			criteria.addOrder(Order.desc(KitchenTicket.PROP_CREATE_DATE));
+
 			List<KitchenTicket> tickets = criteria.list();
 			if (selectedKDSPrinter != null) {
 				for (Iterator iterator = tickets.iterator(); iterator.hasNext();) {
@@ -152,12 +179,15 @@ public class KitchenTicketDAO extends BaseKitchenTicketDAO {
 					if (printerGroup != null && printerGroup.getPrinterNames() != null) {
 						if (!printerGroup.getPrinterNames().contains(selectedKDSPrinter)) {
 							iterator.remove();
+							listModel.setNumRows(listModel.getNumRows() - 1);
 						}
 					}
 				}
 			}
-			
-			return tickets;
+			if (tickets == null) {
+				tickets = new ArrayList<>();
+			}
+			listModel.setData(tickets);
 		} finally {
 			closeSession(session);
 		}

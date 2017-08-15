@@ -23,7 +23,6 @@ import javax.swing.JFrame;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
-import com.floreantpos.model.KitchenTicket;
 
 public class KitchenDisplayWindow extends JFrame {
 
@@ -34,16 +33,10 @@ public class KitchenDisplayWindow extends JFrame {
 		setIconImage(Application.getApplicationIcon().getImage());
 
 		add(view);
-		
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
-	public void addTicket(KitchenTicket ticket) {
-		view.addTicket(ticket);
-	}
-
-	
 	@Override
 	public void setVisible(boolean b) {
 		super.setVisible(b);

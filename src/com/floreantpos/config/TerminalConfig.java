@@ -98,6 +98,8 @@ public class TerminalConfig {
 
 	private static final String Kitchen_Display_Button = "kitchendisplay";
 
+	private static final String KDS_TICKETS_PER_PAGE = "kds.ticket.per_page";
+
 	private static PropertiesConfiguration config = AppConfig.getConfig();
 
 	public static int getTerminalId() {
@@ -532,5 +534,13 @@ public class TerminalConfig {
 
 	public static boolean isAllowedQuickMaintenance() {
 		return config.getBoolean(ALLOW_QUICK_MAINTENANCE, true);
+	}
+
+	public static void setKDSTicketsPerPage(int value) {
+		config.setProperty(KDS_TICKETS_PER_PAGE, value);
+	}
+
+	public static int getKDSTicketsPerPage() {
+		return config.getInt(KDS_TICKETS_PER_PAGE, 4);
 	}
 }

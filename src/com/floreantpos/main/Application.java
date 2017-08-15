@@ -131,8 +131,8 @@ public class Application {
 		posWindow.setVisible(true);
 		rootView = RootView.getInstance();
 		posWindow.getContentPane().add(rootView);
-		posWindow.setVisibleWelcomeHeader(false);
 		initializeSystem();
+		posWindow.setVisibleWelcomeHeader(false);
 	}
 
 	/*private void initializeTouchScroll() {
