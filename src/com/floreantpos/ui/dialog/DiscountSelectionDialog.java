@@ -276,7 +276,13 @@ public class DiscountSelectionDialog extends OkCancelOptionDialog implements Act
 		}
 
 		for (TicketItem ticketItem : ticket.getTicketItems()) {
+			if (ticketItem.getDiscounts() == null) {
+				continue;
+			}
 			for (TicketItemDiscount ticketItemDiscount : ticketItem.getDiscounts()) {
+				if (ticketItemDiscount == null) {
+					continue;
+				}
 				DiscountButton ticketDiscountButton = buttonMap.get(ticketItemDiscount.getDiscountId());
 				if (ticketDiscountButton != null) {
 					ticketDiscountButton.setSelected(true);
@@ -303,6 +309,9 @@ public class DiscountSelectionDialog extends OkCancelOptionDialog implements Act
 
 		for (Iterator iterator = ticket.getTicketItems().iterator(); iterator.hasNext();) {
 			TicketItem ticketItem = (TicketItem) iterator.next();
+			if (ticketItem.getDiscounts() == null) {
+				continue;
+			}
 			for (Iterator iterator2 = ticketItem.getDiscounts().iterator(); iterator2.hasNext();) {
 				TicketItemDiscount ticketItemDiscount = (TicketItemDiscount) iterator2.next();
 				if (clearTicketItemDiscounts.contains((Integer) ticketItemDiscount.getDiscountId())) {

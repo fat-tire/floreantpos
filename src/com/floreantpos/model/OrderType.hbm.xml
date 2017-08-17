@@ -24,6 +24,7 @@
 		<property column="HAS_FORHERE_AND_TOGO" name="hasForHereAndToGo" type="java.lang.Boolean" />
 		<property column="PRE_AUTH_CREDIT_CARD" name="preAuthCreditCard" type="java.lang.Boolean" />
 		<property column="BAR_TAB" name="barTab" type="java.lang.Boolean" />
+		<property column="RETAIL_ORDER" name="retailOrder" type="java.lang.Boolean" />
 		
 		<property name="showPriceOnButton" column="SHOW_PRICE_ON_BUTTON" type="java.lang.Boolean" />
 		<property name="showStockCountOnButton" column="SHOW_STOCK_COUNT_ON_BUTTON" type="java.lang.Boolean" />

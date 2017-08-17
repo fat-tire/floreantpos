@@ -43,6 +43,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -73,8 +75,6 @@ import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
-
-import net.miginfocom.swing.MigLayout;
 
 /**
  * 
@@ -419,7 +419,6 @@ public class TicketView extends JPanel {
 			if (!POSUtil.checkDrawerAssignment()) {
 				return;
 			}
-
 			updateModel();
 
 			OrderController.saveOrder(ticket);
@@ -618,6 +617,7 @@ public class TicketView extends JPanel {
 
 		ticketViewerTable.updateView();
 	}
+
 
 	public void addOrderListener(OrderListener listenre) {
 		orderListeners.add(listenre);

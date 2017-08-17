@@ -24,6 +24,7 @@
 package com.floreantpos.ui.views.order;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,8 +33,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -72,6 +76,8 @@ import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
+import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -80,25 +86,35 @@ import com.floreantpos.ui.dialog.SeatSelectionDialog;
 import com.floreantpos.ui.tableselection.TableSelectorDialog;
 import com.floreantpos.ui.tableselection.TableSelectorFactory;
 import com.floreantpos.ui.views.CookingInstructionSelectionView;
+import com.floreantpos.ui.views.order.actions.TicketEditListener;
+import com.floreantpos.ui.views.payment.PaymentListener;
+import com.floreantpos.ui.views.payment.PaymentView;
+import com.floreantpos.ui.views.payment.SettleTicketProcessor;
+import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 /**
  *
  * @author  MShahriar
  */
-public class OrderView extends ViewPanel {
+public class OrderView extends ViewPanel implements PaymentListener, TicketEditListener {
 	private HashMap<String, JComponent> views = new HashMap<String, JComponent>();
-
+	private SettleTicketProcessor ticketProcessor = new SettleTicketProcessor(Application.getCurrentUser());
 	public final static String VIEW_NAME = "ORDER_VIEW"; //$NON-NLS-1$
 	private static OrderView instance;
 
 	private Ticket currentTicket;
 
-	private com.floreantpos.ui.views.order.CategoryView categoryView = new com.floreantpos.ui.views.order.CategoryView();
-	private com.floreantpos.swing.TransparentPanel midContainer = new com.floreantpos.swing.TransparentPanel(new BorderLayout(5, 5));
-	private com.floreantpos.ui.views.order.TicketView ticketView = new com.floreantpos.ui.views.order.TicketView();
-
+	private CategoryView categoryView = new CategoryView();
 	private GroupView groupView = new GroupView();
 	private MenuItemView itemView = new MenuItemView();
+	private TicketView ticketView = new TicketView();
+
+	private TransparentPanel midContainer = new TransparentPanel(new BorderLayout(5, 5));
+	private JPanel ticketViewContainer = new JPanel(new BorderLayout());
+	private JPanel ticketSummaryView = createTicketSummeryPanel();
+
 	private OrderController orderController = new OrderController(this);
 
 	private JPanel actionButtonPanel = new JPanel(new MigLayout("fill, ins 2, hidemode 3", "sg, fill", ""));
@@ -119,9 +135,20 @@ public class OrderView extends ViewPanel {
 	private PosButton btnDeliveryInfo = new PosButton("DELIVERY INFO");
 	private PosButton btnTotal = new PosButton(POSConstants.SETTLE.toUpperCase());
 
+	private JTextField tfSubtotal;
+	private JTextField tfDiscount;
+	private JTextField tfDeliveryCharge;
+	private JTextField tfTax;
+	private JTextField tfGratuity;
+	private JTextField tfTotal;
+	private PaymentView paymentView;
+
 	/** Creates new form OrderView */
 	private OrderView() {
 		initComponents();
+		this.orderController.addTicketUpdateListener(this);
+		this.ticketView.getTicketViewerTable().addTicketUpdateListener(this);
+		this.ticketProcessor.addPaymentListener(this);
 	}
 
 	public void addView(final String viewName, final JComponent view) {
@@ -142,15 +169,20 @@ public class OrderView extends ViewPanel {
 		setOpaque(false);
 		setLayout(new java.awt.BorderLayout(2, 1));
 
+		JPanel ticketViewInnerCon = new JPanel(new BorderLayout());
+		ticketViewInnerCon.add(ticketView);
+		ticketViewInnerCon.add(ticketSummaryView, BorderLayout.SOUTH);
+		ticketViewContainer.add(ticketViewInnerCon);
+
 		midContainer.setOpaque(false);
 		midContainer.setBorder(null);
 		midContainer.add(groupView, BorderLayout.NORTH);
 		midContainer.add(itemView);
 
-		add(categoryView, java.awt.BorderLayout.EAST);
-		add(ticketView, java.awt.BorderLayout.WEST);
-		add(midContainer, java.awt.BorderLayout.CENTER);
-		add(actionButtonPanel, java.awt.BorderLayout.SOUTH);
+		//		add(categoryView, java.awt.BorderLayout.EAST);
+		//		add(ticketView, java.awt.BorderLayout.WEST);
+		//		add(midContainer, java.awt.BorderLayout.CENTER);
+		//		add(actionButtonPanel, java.awt.BorderLayout.SOUTH);
 
 		//		addView(GroupView.VIEW_NAME, groupView);
 		//		addView(MenuItemView.VIEW_NAME, itemView);
@@ -456,6 +488,121 @@ public class OrderView extends ViewPanel {
 		btnDeliveryInfo.setVisible(false);
 	}
 
+	private JPanel createTicketSummeryPanel() {
+		JLabel lblSubtotal = new javax.swing.JLabel();
+		lblSubtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblSubtotal.setText(com.floreantpos.POSConstants.SUBTOTAL + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfSubtotal = new javax.swing.JTextField(10);
+		tfSubtotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfSubtotal.setEditable(false);
+
+		JLabel lblDiscount = new javax.swing.JLabel();
+		lblDiscount.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblDiscount.setText(Messages.getString("TicketView.9") + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfDiscount = new javax.swing.JTextField(10);
+		//	tfDiscount.setFont(tfDiscount.getFont().deriveFont(Font.PLAIN, 16));
+		tfDiscount.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDiscount.setEditable(false);
+		//		tfDiscount.setText(ticket.getDiscountAmount().toString());
+
+		JLabel lblDeliveryCharge = new javax.swing.JLabel();
+		lblDeliveryCharge.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblDeliveryCharge.setText("Delivery Charge:" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfDeliveryCharge = new javax.swing.JTextField(10);
+		tfDeliveryCharge.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfDeliveryCharge.setEditable(false);
+
+		JLabel lblTax = new javax.swing.JLabel();
+		lblTax.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTax.setText(com.floreantpos.POSConstants.TAX + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfTax = new javax.swing.JTextField(10);
+		//	tfTax.setFont(tfTax.getFont().deriveFont(Font.PLAIN, 16));
+		tfTax.setEditable(false);
+		tfTax.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JLabel lblGratuity = new javax.swing.JLabel();
+		lblGratuity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblGratuity.setText(Messages.getString("SettleTicketDialog.5") + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+		tfGratuity = new javax.swing.JTextField(10);
+		tfGratuity.setEditable(false);
+		tfGratuity.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		JLabel lblTotal = new javax.swing.JLabel();
+		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));
+		lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+		lblTotal.setText(com.floreantpos.POSConstants.TOTAL + ":" + " " + CurrencyUtil.getCurrencySymbol()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		tfTotal = new javax.swing.JTextField(10);
+		tfTotal.setFont(tfTotal.getFont().deriveFont(Font.BOLD, PosUIManager.getFontSize(18)));
+		tfTotal.setHorizontalAlignment(SwingConstants.TRAILING);
+		tfTotal.setEditable(false);
+
+		JPanel ticketAmountPanel = new com.floreantpos.swing.TransparentPanel(new MigLayout("hidemode 3,ins 2 2 3 2,alignx trailing,fill", "[grow]2[]", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		ticketAmountPanel.add(lblSubtotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfSubtotal, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblDiscount, "newline,growx,aligny center"); //$NON-NLS-1$ //$NON-NLS-2$
+		ticketAmountPanel.add(tfDiscount, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTax, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTax, "growx,aligny center"); //$NON-NLS-1$
+		//		if (ticket.getOrderType().isDelivery() && !ticket.isCustomerWillPickup()) {
+		//			ticketAmountPanel.add(lblDeliveryCharge, "newline,growx,aligny center"); //$NON-NLS-1$
+		//			ticketAmountPanel.add(tfDeliveryCharge, "growx,aligny center"); //$NON-NLS-1$
+		//		}
+		ticketAmountPanel.add(lblGratuity, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfGratuity, "growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(lblTotal, "newline,growx,aligny center"); //$NON-NLS-1$
+		ticketAmountPanel.add(tfTotal, "growx,aligny center"); //$NON-NLS-1$
+
+		return ticketAmountPanel;
+	}
+
+	//	public void clearTicketSummeryView() {
+	//		tfSubtotal.setText(""); //$NON-NLS-1$
+	//		tfDiscount.setText(""); //$NON-NLS-1$
+	//		tfDeliveryCharge.setText(""); //$NON-NLS-1$
+	//		tfTax.setText(""); //$NON-NLS-1$
+	//		tfTotal.setText(""); //$NON-NLS-1$
+	//		tfGratuity.setText(""); //$NON-NLS-1$
+	//	}
+
+	public void updateTicketSummeryView() {
+		Ticket ticket = ticketView.getTicket();
+		if (ticket == null) {
+			tfSubtotal.setText(""); //$NON-NLS-1$
+			tfDiscount.setText(""); //$NON-NLS-1$
+			tfDeliveryCharge.setText(""); //$NON-NLS-1$
+			tfTax.setText(""); //$NON-NLS-1$
+			tfTotal.setText(""); //$NON-NLS-1$
+			tfGratuity.setText(""); //$NON-NLS-1$
+			return;
+		}
+		tfSubtotal.setText(NumberUtil.formatNumber(ticket.getSubtotalAmount()));
+		tfDiscount.setText(NumberUtil.formatNumber(ticket.getDiscountAmount()));
+		tfDeliveryCharge.setText(NumberUtil.formatNumber(ticket.getDeliveryCharge()));
+
+		if (Application.getInstance().isPriceIncludesTax()) {
+			tfTax.setText(Messages.getString("TicketView.35")); //$NON-NLS-1$
+		}
+		else {
+			tfTax.setText(NumberUtil.formatNumber(ticket.getTaxAmount()));
+		}
+		if (ticket.getGratuity() != null) {
+			tfGratuity.setText(NumberUtil.formatNumber(ticket.getGratuity().getAmount()));
+		}
+		else {
+			tfGratuity.setText("0.00"); //$NON-NLS-1$
+		}
+		tfTotal.setText(NumberUtil.formatNumber(ticket.getTotalAmount()));
+
+		//		doShowTicketDiscountPanel();
+	}
+
 	protected void doShowDeliveryDialog() {
 		Customer customer = CustomerDAO.getInstance().findById(currentTicket.getCustomerId());
 		OrderServiceFactory.getOrderService().showDeliveryInfo(currentTicket.getOrderType(), customer);
@@ -658,6 +805,8 @@ public class OrderView extends ViewPanel {
 
 		if (!dialog.isCanceled()) {
 			currentTicket.setCustomer(dialog.getSelectedCustomer());
+			btnCustomer.setText("<html><body><center>CUSTOMER<br>\"" + dialog.getSelectedCustomer().getName() + "\"</center></body></html>");
+
 		}
 	}
 
@@ -871,11 +1020,101 @@ public class OrderView extends ViewPanel {
 		return currentTicket;
 	}
 
-	public void setCurrentTicket(Ticket currentTicket) {
-		this.currentTicket = currentTicket;
-		ticketView.setTicket(currentTicket);
-		actionUpdate();
+	private void changeViewForOrderType(OrderType orderType) {
+		if (orderType.isRetailOrder()) {
+			showRetailView();
+		}
+		else {
+			showDefaultView();
+		}
+		revalidate();
+		repaint();
+	}
+
+	private void setHideButtonForRetailView() {
+		btnDone.setVisible(false);
+		btnCancel.setVisible(false);
+		btnDeliveryInfo.setVisible(false);
+		btnDiscount.setVisible(false);
+		btnGuestNo.setVisible(false);
+		btnOrderType.setVisible(false);
+		btnSeatNo.setVisible(false);
+		btnTableNumber.setVisible(false);
+		btnSend.setVisible(false);
+		btnTotal.setVisible(false);
+	}
+
+	private void setVisibleButtonForOrderView() {
+		btnDone.setVisible(true);
+		btnCancel.setVisible(true);
+		btnDiscount.setVisible(true);
+		btnGuestNo.setVisible(true);
+		btnHold.setVisible(true);
+		btnMisc.setVisible(true);
+		btnSeatNo.setVisible(true);
+		btnSend.setVisible(true);
+		btnTableNumber.setVisible(true);
+		btnTotal.setVisible(true);
+	}
+
+	private void showRetailView() {
+		removeAll();
+		if (paymentView == null) {
+			paymentView = new PaymentView(ticketProcessor);
+		}
+
+		ticketSummaryView.setVisible(true);
+
+		ticketViewContainer.add(actionButtonPanel, BorderLayout.SOUTH);
+		add(ticketViewContainer, java.awt.BorderLayout.CENTER);
+		add(paymentView, java.awt.BorderLayout.EAST);
+	}
+
+	private void showDefaultView() {
+		removeAll();
+		setVisibleButtonForOrderView();
+		ticketSummaryView.setVisible(false);
+		add(categoryView, java.awt.BorderLayout.EAST);
+		add(ticketViewContainer, java.awt.BorderLayout.WEST);
+		add(midContainer, java.awt.BorderLayout.CENTER);
+		add(actionButtonPanel, java.awt.BorderLayout.SOUTH);
+	}
+
+	public void setCurrentTicket(Ticket newTicket) {
+		if (this.currentTicket != null && newTicket != null) {
+			OrderType currentOrderType = this.currentTicket.getOrderType();
+			OrderType newOrderType = newTicket.getOrderType();
+			if (!currentOrderType.equals(newOrderType)) {
+				currentTicket = newTicket;
+				changeViewForOrderType(newOrderType);
+			}
+		}
+		else if (this.currentTicket == null && newTicket != null) {
+			OrderType newOrderType = newTicket.getOrderType();
+			changeViewForOrderType(newOrderType);
+		}
+
+		this.currentTicket = newTicket;
+		ticketView.setTicket(newTicket);
+		if (paymentView != null) {
+			paymentView.setTicket(newTicket);
+		}
+		updateView();
 		resetView();
+	}
+
+	public void updateView() {
+		btnCustomer.setText(POSConstants.CUSTOMER_SELECTION_BUTTON_TEXT);
+		if (currentTicket != null) {
+			OrderType type = currentTicket.getOrderType();
+			if (type.isRetailOrder()) {
+				ticketView.updateView();
+				updateTicketSummeryView();
+				paymentView.setTicket(currentTicket);
+
+				setHideButtonForRetailView();
+			}
+		}
 	}
 
 	public synchronized static OrderView getInstance() {
@@ -906,5 +1145,64 @@ public class OrderView extends ViewPanel {
 	@Override
 	public String getViewName() {
 		return VIEW_NAME;
+	}
+
+	@Override
+	public void paymentDone() {
+		//		ticketView.doFinishOrder();
+		//		clearTicketSummeryView();
+		//		paymentView.updateView();
+		//		ticketView.getTicketViewerTable().updateView();
+		ticketView.doFinishOrder();
+		updateView();
+	}
+
+	@Override
+	public void paymentCanceled() {
+		if (currentTicket == null) {
+			return;
+		}
+		if (currentTicket.getId() != null && currentTicket.getDueAmount() > 0.0) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), "Payment is not fully completed, ticket can not be cancelled!");
+			return;
+		}
+
+		if (currentTicket.getId() != null) {
+			TicketDAO.getInstance().delete(currentTicket);
+		}
+		currentTicket.getTicketItems().clear();
+
+		ticketView.doCancelOrder();
+		updateView();
+	}
+
+	@Override
+	public void paymentDataChanged() {
+		updateView();
+
+	}
+
+	public PaymentView getPaymentView() {
+		return paymentView;
+	}
+
+	public SettleTicketProcessor getTicketProcessor() {
+		return ticketProcessor;
+	}
+
+	@Override
+	public void itemAdded(Ticket ticket, TicketItem item) {
+		if (ticket.getOrderType().isRetailOrder()) {
+			updateView();
+			paymentView.updateView();
+		}
+	}
+
+	@Override
+	public void itemRemoved(TicketItem item) {
+		if (currentTicket.getOrderType().isRetailOrder()) {
+			updateView();
+			paymentView.updateView();
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -34,6 +35,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_DELIVERY = "delivery"; //$NON-NLS-1$
 	public static String PROP_HIDE_ITEM_WITH_EMPTY_INVENTORY = "hideItemWithEmptyInventory"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_RETAIL_ORDER = "retailOrder"; //$NON-NLS-1$
 	public static String PROP_SHOW_PRICE_ON_BUTTON = "showPriceOnButton"; //$NON-NLS-1$
 	public static String PROP_CONSOLIDATE_ITEMS_IN_RECEIPT = "consolidateItemsInReceipt"; //$NON-NLS-1$
 
@@ -90,6 +92,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean hasForHereAndToGo;
 		protected java.lang.Boolean preAuthCreditCard;
 		protected java.lang.Boolean barTab;
+		protected java.lang.Boolean retailOrder;
 		protected java.lang.Boolean showPriceOnButton;
 		protected java.lang.Boolean showStockCountOnButton;
 		protected java.lang.Boolean showUnitPriceInTicketGrid;
@@ -403,6 +406,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setBarTab (java.lang.Boolean barTab) {
 		this.barTab = barTab;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: RETAIL_ORDER
+	 */
+	public java.lang.Boolean isRetailOrder () {
+								return retailOrder == null ? Boolean.FALSE : retailOrder;
+					}
+
+	/**
+	 * Set the value related to the column: RETAIL_ORDER
+	 * @param retailOrder the RETAIL_ORDER value
+	 */
+	public void setRetailOrder (java.lang.Boolean retailOrder) {
+		this.retailOrder = retailOrder;
 	}
 
 

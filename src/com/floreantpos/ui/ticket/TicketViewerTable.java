@@ -33,12 +33,14 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.ui.views.order.actions.TicketEditListener;
 
 public class TicketViewerTable extends JTable {
 
 	private TicketViewerTableModel model;
 	private DefaultListSelectionModel selectionModel;
 	private TicketViewerTableCellRenderer cellRenderer;
+	private List<TicketEditListener> ticketEditListenerList;
 
 	public TicketViewerTable() {
 		this(null);
@@ -52,6 +54,7 @@ public class TicketViewerTable extends JTable {
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		cellRenderer = new TicketViewerTableCellRenderer();
+		ticketEditListenerList = new ArrayList<>();
 
 		//getColumnModel().setColumnMargin(0);
 		setGridColor(Color.LIGHT_GRAY);
@@ -118,12 +121,12 @@ public class TicketViewerTable extends JTable {
 		if (selectedRow < 0) {
 			selectedRow = 0;
 		}
-//		while (isModifierOrOther(selectedRow)) {
-//			--selectedRow;
-//			if (selectedRow > (rowCount - 1)) {
-//				return;
-//			}
-//		}
+		//		while (isModifierOrOther(selectedRow)) {
+		//			--selectedRow;
+		//			if (selectedRow > (rowCount - 1)) {
+		//				return;
+		//			}
+		//		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
@@ -140,12 +143,12 @@ public class TicketViewerTable extends JTable {
 		}
 
 		++selectedRow;
-//		while (isModifierOrOther(selectedRow)) {
-//			++selectedRow;
-//			if (selectedRow >= model.getItemCount() - 1) {
-//				return;
-//			}
-//		}
+		//		while (isModifierOrOther(selectedRow)) {
+		//			++selectedRow;
+		//			if (selectedRow >= model.getItemCount() - 1) {
+		//				return;
+		//			}
+		//		}
 
 		selectionModel.addSelectionInterval(selectedRow, selectedRow);
 		Rectangle cellRect = getCellRect(selectedRow, 0, false);
@@ -204,6 +207,7 @@ public class TicketViewerTable extends JTable {
 			TicketItem ticketItem = (TicketItem) iTicketItem;
 			int itemCount = ticketItem.getItemCount();
 			ticketItem.setItemCount(++itemCount);
+			fireTicketItemUpdated(getTicket(), ticketItem);
 			return true;
 		}
 		return false;
@@ -227,10 +231,12 @@ public class TicketViewerTable extends JTable {
 			int itemCount = ticketItem.getItemCount();
 			if (itemCount == 1) {
 				model.delete(selectedRow);
+				fireTicketItemUpdated(getTicket(), ticketItem);
 				return true;
 			}
 
 			ticketItem.setItemCount(--itemCount);
+			fireTicketItemUpdated(getTicket(), ticketItem);
 			return true;
 		}
 		return false;
@@ -252,12 +258,18 @@ public class TicketViewerTable extends JTable {
 		selectionModel.addSelectionInterval(actualRowCount, actualRowCount);
 		Rectangle cellRect = getCellRect(actualRowCount, 0, false);
 		scrollRectToVisible(cellRect);
+		fireTicketItemUpdated(getTicket(), ticketItem);
 	}
 
 	public Object deleteSelectedItem() {
 		int selectedRow = getSelectedRow();
+		if (selectedRow < 0) {
+			return null;
+		}
 		Object delete = model.delete(selectedRow);
-
+		if (delete instanceof TicketItem) {
+			fireTicketItemUpdated(getTicket(), (TicketItem) delete);
+		}
 		return delete;
 	}
 
@@ -343,5 +355,19 @@ public class TicketViewerTable extends JTable {
 
 	public TicketItem getTicketItem() {
 		return (TicketItem) getSelected();
+	}
+
+	public void addTicketUpdateListener(TicketEditListener l) {
+		ticketEditListenerList.add(l);
+	}
+
+	public void removeTicketUpdateListener(TicketEditListener l) {
+		ticketEditListenerList.remove(l);
+	}
+
+	public void fireTicketItemUpdated(Ticket ticket, TicketItem ticketItem) {
+		for (TicketEditListener listener : this.ticketEditListenerList) {
+			listener.itemAdded(ticket, ticketItem);
+		}
 	}
 }

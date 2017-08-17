@@ -19,7 +19,6 @@ package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -39,7 +38,7 @@ public class GiftCertDialog extends OkCancelOptionDialog {
 	private DoubleTextField tfFaceValue;
 	private QwertyKeyPad qwertyKeyPad;
 
-	public GiftCertDialog(JDialog parent) {
+	public GiftCertDialog() {
 		super();
 
 		setTitle(Messages.getString("GiftCertDialog.0")); //$NON-NLS-1$

@@ -50,12 +50,14 @@ import com.floreantpos.ui.views.order.actions.CategorySelectionListener;
 import com.floreantpos.ui.views.order.actions.GroupSelectionListener;
 import com.floreantpos.ui.views.order.actions.ItemSelectionListener;
 import com.floreantpos.ui.views.order.actions.OrderListener;
+import com.floreantpos.ui.views.order.actions.TicketEditListener;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionDialog;
 import com.floreantpos.ui.views.order.modifier.ModifierSelectionModel;
 import com.floreantpos.ui.views.order.multipart.PizzaModifierSelectionDialog;
 
 public class OrderController implements OrderListener, CategorySelectionListener, GroupSelectionListener, ItemSelectionListener {
 	private OrderView orderView;
+	private List<TicketEditListener> ticketEditListenerList;
 
 	public OrderController(OrderView orderView) {
 		this.orderView = orderView;
@@ -64,6 +66,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		orderView.getGroupView().addGroupSelectionListener(this);
 		orderView.getItemView().addItemSelectionListener(this);
 		orderView.getTicketView().addOrderListener(this);
+		ticketEditListenerList = new ArrayList<TicketEditListener>();
 	}
 
 	public void categorySelected(MenuCategory foodCategory) {
@@ -134,6 +137,7 @@ public class OrderController implements OrderListener, CategorySelectionListener
 		else {
 			orderView.getTicketView().addTicketItem(ticketItem);
 		}
+		fireTicketItemUpdated(orderView.getTicketView().getTicket(), ticketItem);
 	}
 
 	public void itemSelectionFinished(MenuGroup parent) {
@@ -293,4 +297,19 @@ public class OrderController implements OrderListener, CategorySelectionListener
 			session.close();
 		}
 	}
+	
+	public void addTicketUpdateListener(TicketEditListener l) {
+		ticketEditListenerList.add(l);
+	}
+
+	public void removeTicketUpdateListener(TicketEditListener l) {
+		ticketEditListenerList.remove(l);
+	}
+	
+	public void fireTicketItemUpdated(Ticket ticket, TicketItem ticketItem) {
+		for (TicketEditListener listener : this.ticketEditListenerList) {
+			listener.itemAdded(ticket, ticketItem);
+		}
+	}
+
 }

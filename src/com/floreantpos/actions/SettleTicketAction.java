@@ -25,6 +25,7 @@ import javax.swing.JDialog;
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
@@ -32,9 +33,15 @@ import com.floreantpos.ui.views.payment.SettleTicketDialog;
 public class SettleTicketAction extends AbstractAction {
 
 	private int ticketId;
+	private User currentUser;
 
 	public SettleTicketAction(int ticketId) {
 		this.ticketId = ticketId;
+	}
+
+	public SettleTicketAction(int ticketId, User currentUser) {
+		this.ticketId = ticketId;
+		this.currentUser = currentUser;
 	}
 
 	@Override
@@ -50,11 +57,11 @@ public class SettleTicketAction extends AbstractAction {
 			return false;
 		}
 
-		SettleTicketDialog posDialog = new SettleTicketDialog(ticket);
-		
+		SettleTicketDialog posDialog = new SettleTicketDialog(ticket, currentUser);
+
 		if (ticket.isBarTab()) {
-			posDialog.doSettleBarTabTicket(ticket);
-			return true; 
+			posDialog.getTicketProcessor().doSettleBarTabTicket(ticket);
+			return true;
 
 		}
 		else {

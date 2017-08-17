@@ -27,7 +27,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.ui.views.order.RootView;
-import com.floreantpos.ui.views.payment.SettleTicketDialog;
+import com.floreantpos.ui.views.payment.SettleTicketProcessor;
 
 public class PosRequestHandler extends Thread {
 	private Socket socket;
@@ -288,12 +288,12 @@ public class PosRequestHandler extends Thread {
 		try {
 			final double dueAmount = ticket.getDueAmount();
 			transactionService.settleTicket(ticket, transaction);
-			SettleTicketDialog.printTicket(ticket, transaction);
-			SettleTicketDialog.showTransactionCompleteMsg(dueAmount, tenderAmount, ticket, transaction);
+			SettleTicketProcessor.printTicket(ticket, transaction);
+			SettleTicketProcessor.showTransactionCompleteMsg(dueAmount, tenderAmount, ticket, transaction);
 
-			if (SettleTicketDialog.waitDialog.isVisible()) {
-				SettleTicketDialog.waitDialog.setCanceled(false);
-				SettleTicketDialog.waitDialog.dispose();
+			if (SettleTicketProcessor.waitDialog.isVisible()) {
+				SettleTicketProcessor.waitDialog.setCanceled(false);
+				SettleTicketProcessor.waitDialog.dispose();
 				RootView.getInstance().showDefaultView();
 			}
 

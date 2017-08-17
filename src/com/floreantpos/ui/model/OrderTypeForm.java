@@ -74,6 +74,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkShowPriceOnButton;
 	private JCheckBox chkShowStockCountOnButton;
 	private JCheckBox chkShowUnitPriceInTicketGrid;
+	private JCheckBox chkRetailOrder;
 
 	OrderType orderType;
 	JList<String> list;
@@ -133,6 +134,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkShowPriceOnButton = new JCheckBox("Show price on button");
 		chkShowStockCountOnButton = new JCheckBox("Show count on button");
 		chkShowUnitPriceInTicketGrid = new JCheckBox("Show unit price in ticket grid");
+		chkRetailOrder = new JCheckBox("Retail");
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
@@ -159,6 +161,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		generalPanel.add(chkShowPriceOnButton, "cell 1 18,alignx left,aligny top,wrap"); //$NON-NLS-1$
 		generalPanel.add(chkShowStockCountOnButton,"cell 1 19,alignx left,aligny top");
 		//generalPanel.add(chkShowUnitPriceInTicketGrid, "cell 1 19,alignx left,aligny top"); //$NON-NLS-1$
+		generalPanel.add(chkRetailOrder,"cell 1 20,alignx left,aligny top");
 
 		add(new JScrollPane(generalPanel));
 	}
@@ -196,6 +199,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkShowPriceOnButton.setSelected(orderType.isShowPriceOnButton());
 			chkShowStockCountOnButton.setSelected(orderType.isShowStockCountOnButton());
 			chkShowUnitPriceInTicketGrid.setSelected(orderType.isShowUnitPriceInTicketGrid());
+			chkRetailOrder.setSelected(ordersType.isRetailOrder());
 		}
 	}
 
@@ -231,7 +235,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		ordersType.setShowPriceOnButton(chkShowPriceOnButton.isSelected());
 		ordersType.setShowStockCountOnButton(chkShowStockCountOnButton.isSelected());
 		ordersType.setShowUnitPriceInTicketGrid(chkShowUnitPriceInTicketGrid.isSelected());
-		//}
+		ordersType.setRetailOrder(chkRetailOrder.isSelected());
 		ordersType.setBarTab(chkBarTab.isSelected());
 
 		return true;

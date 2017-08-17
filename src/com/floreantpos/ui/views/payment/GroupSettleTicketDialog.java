@@ -414,7 +414,7 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 					break;
 
 				case GIFT_CERTIFICATE:
-					GiftCertDialog giftCertDialog = new GiftCertDialog(this);
+					GiftCertDialog giftCertDialog = new GiftCertDialog();
 					giftCertDialog.pack();
 					giftCertDialog.open();
 
@@ -804,11 +804,6 @@ public class GroupSettleTicketDialog extends POSDialog implements CardInputListe
 
 	public double getDueAmount() {
 		return totalDueAmount;
-	}
-
-	@Override
-	public PaymentType getPaymentType() {
-		return paymentType;
 	}
 
 }

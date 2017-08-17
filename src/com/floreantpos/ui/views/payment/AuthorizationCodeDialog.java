@@ -117,13 +117,8 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 		centralPanel.add(panel, BorderLayout.CENTER);
 
 		JPanel cardPanel = new JPanel(new MigLayout("fill, ins 2", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		PaymentType paymentType = cardInputListener.getPaymentType();
-		if (paymentType == PaymentType.DEBIT_CARD || paymentType == PaymentType.DEBIT_MASTER_CARD || paymentType == PaymentType.DEBIT_VISA) {
-			cardPanel.add(debitCardPanel);
-		} 
-		else {
-			cardPanel.add(creditCardPanel);
-		}
+		cardPanel.add(debitCardPanel);
+		cardPanel.add(creditCardPanel);
 
 		centralPanel.add(cardPanel, BorderLayout.NORTH);
 
@@ -203,4 +198,5 @@ public class AuthorizationCodeDialog extends POSDialog implements CardInputProce
 	public String getAuthorizationCode() {
 		return tfAuthorizationCode.getText();
 	}
+
 }

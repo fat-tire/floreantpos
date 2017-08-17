@@ -43,10 +43,10 @@ import org.hibernate.Transaction;
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
-import com.floreantpos.model.Gratuity;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.CashDrawerDAO;
@@ -60,13 +60,12 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 public class PaymentView extends JPanel {
 	private static final String ZERO = "0"; //$NON-NLS-1$
 
 	private static final String REMOVE = "1"; //$NON-NLS-1$
-
-	protected SettleTicketDialog settleTicketView;
 
 	private PosButton btnGratuity;
 	private com.floreantpos.swing.PosButton btnCancel;
@@ -111,16 +110,18 @@ public class PaymentView extends JPanel {
 	private PosButton btnDiscount;
 
 	private boolean clearPreviousAmount = true;
+	private Ticket ticket;
+	private SettleTicketProcessor ticketProcessor;
 
-	public PaymentView(SettleTicketDialog settleTicketView) {
-		this.settleTicketView = settleTicketView;
+	public PaymentView(SettleTicketProcessor ticketProcessor) {
+		this.ticketProcessor = ticketProcessor;
 
 		initComponents();
 	}
 
 	private void initComponents() {
 
-		setLayout(new MigLayout("fill", "[grow][grow]", ""));
+		setLayout(new MigLayout("fill, ins 0", "[grow][grow]", ""));
 
 		JPanel leftPanel = new JPanel(new BorderLayout(5, 5));
 
@@ -149,7 +150,7 @@ public class PaymentView extends JPanel {
 		txtDueAmount.setEditable(false);
 		txtDueAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-		transparentPanel1.setLayout(new MigLayout("", "[][grow,fill]", "[grow][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		transparentPanel1.setLayout(new MigLayout("ins 8 0 0 0", "[][grow,fill]", "[grow][][grow]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		transparentPanel1.add(labelDueAmount, "cell 0 0,alignx right,aligny center"); //$NON-NLS-1$
 
 		transparentPanel1.add(labelTenderedAmount, "cell 0 2,alignx left,aligny center"); //$NON-NLS-1$
@@ -159,7 +160,7 @@ public class PaymentView extends JPanel {
 		leftPanel.add(transparentPanel1, BorderLayout.NORTH);
 
 		calcButtonPanel = new com.floreantpos.swing.TransparentPanel();
-		calcButtonPanel.setLayout(new MigLayout("wrap 4,fill, ins 0", "sg, fill", "sg, fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		calcButtonPanel.setLayout(new MigLayout("wrap 4,fill, ins 0 0 4 0", "sg, fill", "sg, fill")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		btnNextAmount = new com.floreantpos.swing.PosButton();
 		btnAmount1 = new com.floreantpos.swing.PosButton();
@@ -349,7 +350,7 @@ public class PaymentView extends JPanel {
 		btnClear.setIcon(IconFactory.getIcon("/ui_icons/", "clear.png")); // NOI18N //$NON-NLS-1$ //$NON-NLS-2$
 		btnClear.setText(Messages.getString("PaymentView.38")); //$NON-NLS-1$
 		btnClear.setFocusable(false);
-		calcButtonPanel.add(btnClear,"wrap");
+		calcButtonPanel.add(btnClear, "wrap");
 
 		btnExactAmount.setAction(nextButtonAction);
 		btnExactAmount.setText(Messages.getString("PaymentView.20")); //$NON-NLS-1$
@@ -365,12 +366,12 @@ public class PaymentView extends JPanel {
 		btnNextAmount.setText(Messages.getString("PaymentView.23")); //$NON-NLS-1$
 		btnNextAmount.setActionCommand("nextAmount"); //$NON-NLS-1$
 		btnNextAmount.setFocusable(false);
-		
+
 		JPanel centerPanel = new JPanel(new GridLayout(1, 0, 5, 5));
 		centerPanel.add(btnExactAmount);
 		centerPanel.add(btnNoSale);
 		centerPanel.add(btnNextAmount);
-		
+
 		calcButtonPanel.add(centerPanel, "span 4,growx"); //$NON-NLS-1$
 
 		btnGratuity = new PosButton(com.floreantpos.POSConstants.ADD_GRATUITY_TEXT);
@@ -383,14 +384,14 @@ public class PaymentView extends JPanel {
 		btnDiscount = new PosButton(com.floreantpos.POSConstants.COUPON_DISCOUNT);
 		btnDiscount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.doApplyCoupon();
+				ticketProcessor.doApplyCoupon();
 			}
 		});
 
 		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
 		btnPrint.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ReceiptPrintService.printTicket(settleTicketView.getTicket());
+				ReceiptPrintService.printTicket(ticketProcessor.getTicket());
 			}
 		});
 
@@ -404,10 +405,10 @@ public class PaymentView extends JPanel {
 
 		actionButtonPanel = new com.floreantpos.swing.TransparentPanel();
 		actionButtonPanel.setOpaque(true);
-		actionButtonPanel.setLayout(new MigLayout("hidemode 3,wrap 1, ins 0 20 0 0, fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		actionButtonPanel.setLayout(new MigLayout("hidemode 3,wrap 1, ins 8 0 4 5, fill", "sg, fill", "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		//actionButtonPanel.setPreferredSize(PosUIManager.getSize(120, 0));
 
-		int width = PosUIManager.getSize(160);
+		int width = PosUIManager.getSize(100);
 
 		btnCash = new com.floreantpos.swing.PosButton(Messages.getString("PaymentView.31")); //$NON-NLS-1$
 		actionButtonPanel.add(btnCash, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -435,7 +436,7 @@ public class PaymentView extends JPanel {
 						POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
 						return;
 					}
-					settleTicketView.doSettle(PaymentType.CASH);
+					ticketProcessor.doSettle(PaymentType.CASH, x);
 				} catch (Exception e) {
 					org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
 				}
@@ -446,14 +447,22 @@ public class PaymentView extends JPanel {
 		actionButtonPanel.add(btnCreditCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnCreditCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.doSettle(PaymentType.CREDIT_CARD);
+				try {
+					ticketProcessor.doSettle(PaymentType.CREDIT_CARD, getTenderedAmount());
+				} catch (ParseException e1) {
+					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				}
 			}
 		});
 		btnDebitCard = new PosButton("DEBIT CARD"); //$NON-NLS-1$
 		actionButtonPanel.add(btnDebitCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnDebitCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.doSettle(PaymentType.DEBIT_CARD);
+				try {
+					ticketProcessor.doSettle(PaymentType.DEBIT_CARD, getTenderedAmount());
+				} catch (ParseException e1) {
+					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				}
 			}
 		});
 
@@ -461,7 +470,11 @@ public class PaymentView extends JPanel {
 		actionButtonPanel.add(btnGift, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnGift.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.doSettle(PaymentType.GIFT_CERTIFICATE);
+				try {
+					ticketProcessor.doSettle(PaymentType.GIFT_CERTIFICATE, getTenderedAmount());
+				} catch (ParseException e1) {
+					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				}
 			}
 		});
 
@@ -469,7 +482,11 @@ public class PaymentView extends JPanel {
 		actionButtonPanel.add(btnOther, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settleTicketView.doSettle(PaymentType.CUSTOM_PAYMENT);
+				try {
+					ticketProcessor.doSettle(PaymentType.CUSTOM_PAYMENT, getTenderedAmount());
+				} catch (ParseException e1) {
+					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				}
 			}
 		});
 
@@ -489,7 +506,7 @@ public class PaymentView extends JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	protected boolean adjustCashDrawerBalance(List<Currency> currencyList) {
-		MultiCurrencyTenderDialog dialog = new MultiCurrencyTenderDialog(settleTicketView.getTicket(), currencyList);
+		MultiCurrencyTenderDialog dialog = new MultiCurrencyTenderDialog(ticketProcessor.getTicket(), currencyList);
 		dialog.pack();
 		dialog.open();
 
@@ -517,7 +534,7 @@ public class PaymentView extends JPanel {
 	}
 
 	protected void removeKalaId() {
-		Ticket ticket = settleTicketView.getTicket();
+		Ticket ticket = ticketProcessor.getTicket();
 		ticket.getProperties().remove(SettleTicketDialog.LOYALTY_ID);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
@@ -531,7 +548,7 @@ public class PaymentView extends JPanel {
 			return;
 		}
 
-		Ticket ticket = settleTicketView.getTicket();
+		Ticket ticket = ticketProcessor.getTicket();
 		ticket.addProperty(SettleTicketDialog.LOYALTY_ID, loyaltyid);
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 
@@ -539,18 +556,15 @@ public class PaymentView extends JPanel {
 	}
 
 	protected void doSetGratuity() {
-		settleTicketView.doSetGratuity();
+		ticketProcessor.doSetGratuity();
 	}
 
 	protected void doTaxExempt() {
 	}
 
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-		settleTicketView.setCanceled(true);
-		settleTicketView.dispose();
-	}//GEN-LAST:event_btnCancelActionPerformed
-
-	// End of variables declaration//GEN-END:variables
+		ticketProcessor.cancelPayment();
+	}
 
 	Action calAction = new AbstractAction() {
 		public void actionPerformed(ActionEvent e) {
@@ -648,29 +662,8 @@ public class PaymentView extends JPanel {
 		return doubleValue;
 	}
 
-	public SettleTicketDialog getSettleTicketView() {
-		return settleTicketView;
-	}
-
-	public void setSettleTicketView(SettleTicketDialog settleTicketView) {
-		this.settleTicketView = settleTicketView;
-	}
-
-	protected double getPaidAmount() {
-		return settleTicketView.getTicket().getPaidAmount();
-	}
-
 	protected double getDueAmount() {
-		return settleTicketView.getTicket().getDueAmount();
-	}
-
-	protected double getAdvanceAmount() {
-		Gratuity gratuity = settleTicketView.getTicket().getGratuity();
-		return gratuity != null ? gratuity.getAmount() : 0;
-	}
-
-	protected double getTotalGratuity() {
-		return settleTicketView.getTicket().getPaidAmount();
+		return getTicket().getDueAmount();
 	}
 
 	public void setDefaultFocus() {
@@ -682,16 +675,32 @@ public class PaymentView extends JPanel {
 			//			if (!POSUtil.checkDrawerAssignment()) {
 			//				return;
 			//			}
-			double x = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
 
-			if (x < 0) {
+			if (ticket == null || ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
+				POSMessageDialog.showError(POSUtil.getFocusedWindow(), "Ticket is empty!");
+				return;
+			}
+
+			double terderAmount = NumberUtil.parse(txtTenderedAmount.getText()).doubleValue();
+
+			if (terderAmount < 0) {
 				POSMessageDialog.showError(Messages.getString("PaymentView.32")); //$NON-NLS-1$
 				return;
 			}
-			settleTicketView.doSettle(PaymentType.CASH);
+			ticketProcessor.doSettle(PaymentType.CASH, terderAmount);
 		} catch (Exception e) {
 			org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
 		}
+	}
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+		ticketProcessor.setTicket(ticket);
+		updateView();
 	}
 
 }

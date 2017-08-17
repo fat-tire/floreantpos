@@ -232,8 +232,4 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		OrderView.getInstance().getTicketView().getTxtSearchItem().requestFocus();
 	}
 
-	@Override
-	public PaymentType getPaymentType() {
-		return selectedPaymentType;
-	}
 }

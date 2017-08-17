@@ -18,8 +18,8 @@
 package com.floreantpos;
 
 public class POSConstants {
-	public static final int BUTTON_DEFAULT_WIDTH = 80;
-	public static final int BUTTON_DEFAULT_HEIGHT = 60;
+	public static final int BUTTON_DEFAULT_WIDTH = 50;
+	public static final int BUTTON_DEFAULT_HEIGHT = 50;
 	
 	public static final String COLON = ":"; //$NON-NLS-1$
 

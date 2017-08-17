@@ -952,5 +952,12 @@ public class TicketItem extends BaseTicketItem implements ITicketItem {
 
 		return false;
 	}
+	
+	public java.util.List<com.floreantpos.model.TicketItemDiscount> getDiscounts () {
+		if(super.getDiscounts()==null) {
+			super.setDiscounts(new ArrayList<TicketItemDiscount>());
+		}
+		return super.getDiscounts();
+}
 
 }
