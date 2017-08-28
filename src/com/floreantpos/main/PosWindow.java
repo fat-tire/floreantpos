@@ -20,26 +20,36 @@ package com.floreantpos.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.Timer;
 
 import org.jdesktop.swingx.JXStatusBar;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.model.User;
 import com.floreantpos.swing.GlassPane;
+import com.floreantpos.swing.PosUIManager;
+
+import net.miginfocom.swing.MigLayout;
 
 public class PosWindow extends JFrame implements WindowListener {
 	private static final String EXTENDEDSTATE = "extendedstate"; //$NON-NLS-1$
@@ -51,11 +61,18 @@ public class PosWindow extends JFrame implements WindowListener {
 	private GlassPane glassPane;
 	private JXStatusBar statusBar;
 	private JLabel statusLabel;
+	private JLabel lblUser;
+	private JLabel lblTerminal;
+	private JLabel lblDB;
+	private JLabel lblTaxInculed;
+	private JLabel lblTime;
 	private JPanel welcomeHeaderPanel;
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss aaa");
+	private Timer clockTimer = new Timer(1000, new ClockTimerHandler());
+	private Timer autoLogoffTimer;
 
 	public PosWindow() {
 		setIconImage(Application.getApplicationIcon().getImage());
-
 		addWindowListener(this);
 
 		glassPane = new GlassPane();
@@ -64,14 +81,35 @@ public class PosWindow extends JFrame implements WindowListener {
 
 		statusBar = new JXStatusBar();
 		statusLabel = new JLabel(""); //$NON-NLS-1$
+		lblUser = new JLabel();
+		lblTaxInculed = new JLabel();
+		lblTerminal = new JLabel("Terminal: " + TerminalConfig.getTerminalId());
+		lblDB = new JLabel("DB: " + AppConfig.getDatabaseHost() + "/" + AppConfig.getDatabaseName());
+		lblTime = new JLabel("");
 		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
+		Font f = statusLabel.getFont().deriveFont(Font.BOLD, (float) PosUIManager.getFontSize(10));//$NON-NLS-1$
+		lblTerminal.setFont(f);
+		lblUser.setFont(f);
+		lblDB.setFont(f);
+		lblTaxInculed.setFont(f);
+		lblTime.setFont(f);
+		JPanel infoPanel = new JPanel(new MigLayout("fillx", "[][][][][]", ""));
+		infoPanel.setBackground(Color.WHITE);
+		infoPanel.add(lblTerminal, "grow");
+		infoPanel.add(lblUser, "grow");
+		infoPanel.add(lblDB, "grow");
+		infoPanel.add(lblTaxInculed, "grow");
+		infoPanel.add(lblTime, "right");
 
 		JPanel statusBarContainer = new JPanel(new BorderLayout());
+		statusBarContainer.setBackground(Color.WHITE);
 		statusBarContainer.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
-		ImageIcon icon = IconFactory.getIcon("/images/", "footer-logo.png");
+		ImageIcon icon = IconFactory.getIcon("/images/", "logo-icon.png");
 		statusLabel.setIcon(icon);
-		statusBarContainer.add(statusBar);
+		statusBarContainer.add(infoPanel, BorderLayout.CENTER);
+		statusBarContainer.add(statusBar, BorderLayout.WEST);
 		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
+		clockTimer.start();
 	}
 
 	public void setVisibleWelcomeHeader(boolean visible) {
@@ -92,6 +130,16 @@ public class PosWindow extends JFrame implements WindowListener {
 
 	public void setStatus(String status) {
 		statusLabel.setText(status);
+	}
+
+	public void rendererUserInfo() {
+		User currentUser = Application.getCurrentUser();
+		if (currentUser != null) {
+			lblUser.setText("USER: " + currentUser.getFullName() + " (" + currentUser.getType().getName() + ")");
+		}
+		else {
+			lblUser.setText("USER: NOT LOGGED IN"); //$NON-NLS-1$
+		}
 	}
 
 	public void setupSizeAndLocation() {
@@ -170,5 +218,51 @@ public class PosWindow extends JFrame implements WindowListener {
 	}
 
 	public void windowDeactivated(WindowEvent e) {
+	}
+
+	@Override
+	public void setVisible(boolean aFlag) {
+		super.setVisible(aFlag);
+
+		if (aFlag) {
+			startTimer();
+		}
+		else {
+			stopTimer();
+		}
+	}
+
+	private void startTimer() {
+		clockTimer.start();
+
+		if (autoLogoffTimer != null) {
+			autoLogoffTimer.start();
+		}
+	}
+
+	private void stopTimer() {
+		clockTimer.stop();
+
+		if (autoLogoffTimer != null) {
+			autoLogoffTimer.stop();
+		}
+	}
+
+	private class ClockTimerHandler implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!isShowing()) {
+				clockTimer.stop();
+				return;
+			}
+
+			showFooterTimer();
+		}
+
+		private void showFooterTimer() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(dateFormat.format(Calendar.getInstance().getTime()));
+			lblTime.setText("Time: " + sb.toString());
+		}
 	}
 }

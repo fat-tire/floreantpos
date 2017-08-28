@@ -155,6 +155,7 @@ public class Application {
 
 		try {
 			posWindow.setGlassPaneVisible(true);
+			posWindow.rendererUserInfo();
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 			DatabaseUtil.updateLegacyDatabase();
@@ -184,8 +185,8 @@ public class Application {
 			e.printStackTrace();
 			PosLog.error(getClass(), e);
 
-			int option = JOptionPane.showConfirmDialog(getPosWindow(),
-					Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+			int option = JOptionPane.showConfirmDialog(getPosWindow(), Messages.getString("Application.0"), Messages.getString(POSConstants.POS_MESSAGE_ERROR), //$NON-NLS-1$
+					JOptionPane.YES_NO_OPTION); //$NON-NLS-2$
 			if (option == JOptionPane.YES_OPTION) {
 				DatabaseConfigurationDialog.show(Application.getPosWindow());
 			}
@@ -398,8 +399,8 @@ public class Application {
 
 	public void shutdownPOS() {
 		JOptionPane optionPane = new JOptionPane(Messages.getString("Application.1"), JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION, //$NON-NLS-1$
-				Application.getApplicationIcon(), new String[] {
-				/*Messages.getString("Application.3"), */Messages.getString("Application.5"), Messages.getString("Application.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Application.getApplicationIcon(),
+				new String[] { /*Messages.getString("Application.3"), */Messages.getString("Application.5"), Messages.getString("Application.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		Object[] optionValues = optionPane.getComponents();
 		for (Object object : optionValues) {
@@ -452,6 +453,7 @@ public class Application {
 		}
 
 		rootView.showDefaultView();
+		posWindow.rendererUserInfo();
 	}
 
 	public void initCurrentUser(User user) {
@@ -481,6 +483,7 @@ public class Application {
 		currentShift = null;
 		setCurrentUser(null);
 		RootView.getInstance().showView(LoginView.getInstance());
+		posWindow.rendererUserInfo();
 	}
 
 	public void doAutoLogout() {
@@ -628,7 +631,7 @@ public class Application {
 			
 			//TerminalConfig.setScreenScaleFactor(scaleFactor);
 		
-
+	
 		String uiFont = TerminalConfig.getUiDefaultFont();
 		int stylePlain = Font.PLAIN;
 		int styleBold = Font.BOLD;
@@ -639,12 +642,12 @@ public class Application {
 		}
 		Font fontPlain = new Font(uiFont, stylePlain, PosUIManager.getDefaultFontSize());
 		Font fontBold = new Font(uiFont, styleBold, PosUIManager.getDefaultFontSize());
-
+	
 		FontUIResource font = new FontUIResource(fontPlain);
 		FontUIResource boldFont = new FontUIResource(fontBold);
-
+	
 		setUIFont(font, boldFont);
-
+	
 		UIManager.put("ArrowButton.size", font); //$NON-NLS-1$
 		UIManager.put("OptionPane.buttonFont", font); //$NON-NLS-1$ //$NON-NLS-2$
 		UIManager.put("Button.font", font); //$NON-NLS-1$
@@ -696,7 +699,7 @@ public class Application {
 				UIManager.put(key, new javax.swing.plaf.FontUIResource(font));
 
 				/*	Font fontBold = new Font(f.getFontName(), Font.BOLD, PosUIManager.getDefaultFontSize());
-
+				
 				if (key.equals("TitledBorder.font")) {
 					UIManager.put(key, new javax.swing.plaf.FontUIResource(fontBold));
 				}

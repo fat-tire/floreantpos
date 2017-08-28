@@ -25,6 +25,7 @@ package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -35,8 +36,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -63,6 +62,8 @@ import com.floreantpos.ui.views.order.ViewPanel;
 import com.floreantpos.util.ShiftException;
 import com.floreantpos.util.UserNotFoundException;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  *
  * @author  MShahriar
@@ -79,6 +80,7 @@ public class LoginView extends ViewPanel {
 	private com.floreantpos.swing.PosButton btnShutdown;
 	private com.floreantpos.swing.PosButton btnClockOUt;
 	private JLabel lblTerminalId;
+	private JLabel lblRestaurantName;
 	private JPanel centerPanel = new JPanel(new MigLayout("al center center", "sg", "100")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private static LoginView instance;
 	private JPanel mainPanel;
@@ -109,13 +111,19 @@ public class LoginView extends ViewPanel {
 
 	private JPanel createCenterPanel() {
 
-		lblTerminalId = new JLabel(Messages.getString("LoginView.0")); //$NON-NLS-1$
-		lblTerminalId.setForeground(Color.BLACK);
-		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(18))); //$NON-NLS-1$
-		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
+		//		lblTerminalId = new JLabel(Messages.getString("LoginView.0")); //$NON-NLS-1$
+		//		lblTerminalId.setForeground(Color.BLACK);
+		//		lblTerminalId.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(18))); //$NON-NLS-1$
+		//		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
+
+		lblRestaurantName = new JLabel(Application.getInstance().getRestaurant().getName());
+		lblRestaurantName.setPreferredSize(new Dimension(100, 100));
+		lblRestaurantName.setForeground(Color.BLACK);
+		lblRestaurantName.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(28)));
+		lblRestaurantName.setHorizontalAlignment(SwingConstants.CENTER);
 
 		mainPanel = new JPanel(new BorderLayout());
-		mainPanel.add(lblTerminalId, BorderLayout.NORTH);
+		mainPanel.add(lblRestaurantName, BorderLayout.NORTH);
 
 		btnSwitchBoard = new PosButton(POSConstants.ORDERS);
 		btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
@@ -299,7 +307,7 @@ public class LoginView extends ViewPanel {
 	}
 
 	public void setTerminalId(int terminalId) {
-		lblTerminalId.setText(Messages.getString("LoginView.6") + terminalId); //$NON-NLS-1$
+		//		lblTerminalId.setText(Messages.getString("LoginView.6") + terminalId); //$NON-NLS-1$
 	}
 
 	@Override
