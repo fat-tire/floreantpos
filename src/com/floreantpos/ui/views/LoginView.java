@@ -117,7 +117,7 @@ public class LoginView extends ViewPanel {
 		//		lblTerminalId.setHorizontalAlignment(SwingConstants.CENTER);
 
 		lblRestaurantName = new JLabel(Application.getInstance().getRestaurant().getName());
-		lblRestaurantName.setPreferredSize(new Dimension(100, 100));
+		lblRestaurantName.setPreferredSize(new Dimension(1000, 100));
 		lblRestaurantName.setForeground(Color.BLACK);
 		lblRestaurantName.setFont(new Font("Dialog", Font.BOLD, PosUIManager.getFontSize(28)));
 		lblRestaurantName.setHorizontalAlignment(SwingConstants.CENTER);

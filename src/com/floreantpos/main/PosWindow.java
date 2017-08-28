@@ -39,8 +39,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.Timer;
 
-import org.jdesktop.swingx.JXStatusBar;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.actions.ShutDownAction;
 import com.floreantpos.config.AppConfig;
@@ -59,7 +57,6 @@ public class PosWindow extends JFrame implements WindowListener {
 	private static final String WWIDTH = "wwidth"; //$NON-NLS-1$
 
 	private GlassPane glassPane;
-	private JXStatusBar statusBar;
 	private JLabel statusLabel;
 	private JLabel lblUser;
 	private JLabel lblTerminal;
@@ -79,22 +76,23 @@ public class PosWindow extends JFrame implements WindowListener {
 		glassPane.setOpacity(0.6f);
 		setGlassPane(glassPane);
 
-		statusBar = new JXStatusBar();
+		JPanel infoPanel = new JPanel(new MigLayout("fillx", "[][][][][]", ""));
+		infoPanel.setBackground(Color.WHITE);
+		
 		statusLabel = new JLabel(""); //$NON-NLS-1$
 		lblUser = new JLabel();
 		lblTaxInculed = new JLabel();
 		lblTerminal = new JLabel();
 		lblDB = new JLabel();
 		lblTime = new JLabel("");
-		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
 		Font f = statusLabel.getFont().deriveFont(Font.BOLD, (float) PosUIManager.getFontSize(10));//$NON-NLS-1$
 		lblTerminal.setFont(f);
 		lblUser.setFont(f);
 		lblDB.setFont(f);
 		lblTaxInculed.setFont(f);
 		lblTime.setFont(f);
-		JPanel infoPanel = new JPanel(new MigLayout("fillx", "[][][][][]", ""));
-		infoPanel.setBackground(Color.WHITE);
+		
+		infoPanel.add(statusLabel, "grow");
 		infoPanel.add(lblTerminal, "grow");
 		infoPanel.add(lblUser, "grow");
 		infoPanel.add(lblDB, "grow");
@@ -106,8 +104,8 @@ public class PosWindow extends JFrame implements WindowListener {
 		statusBarContainer.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
 		ImageIcon icon = IconFactory.getIcon("/images/", "logo-icon.png");
 		statusLabel.setIcon(icon);
+		statusLabel.setText("Floreant POS by OROCUBE LLC.");
 		statusBarContainer.add(infoPanel, BorderLayout.CENTER);
-		statusBarContainer.add(statusBar, BorderLayout.WEST);
 		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
 		clockTimer.start();
 	}
@@ -129,7 +127,6 @@ public class PosWindow extends JFrame implements WindowListener {
 	}
 
 	public void setStatus(String status) {
-		statusLabel.setText(status);
 	}
 
 	public void updateView() {
