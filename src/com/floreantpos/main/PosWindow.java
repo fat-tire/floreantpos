@@ -83,8 +83,8 @@ public class PosWindow extends JFrame implements WindowListener {
 		statusLabel = new JLabel(""); //$NON-NLS-1$
 		lblUser = new JLabel();
 		lblTaxInculed = new JLabel();
-		lblTerminal = new JLabel("Terminal: " + TerminalConfig.getTerminalId());
-		lblDB = new JLabel("DB: " + AppConfig.getDatabaseHost() + "/" + AppConfig.getDatabaseName());
+		lblTerminal = new JLabel();
+		lblDB = new JLabel();
 		lblTime = new JLabel("");
 		statusBar.add(statusLabel, JXStatusBar.Constraint.ResizeBehavior.FILL);
 		Font f = statusLabel.getFont().deriveFont(Font.BOLD, (float) PosUIManager.getFontSize(10));//$NON-NLS-1$
@@ -132,13 +132,22 @@ public class PosWindow extends JFrame implements WindowListener {
 		statusLabel.setText(status);
 	}
 
-	public void rendererUserInfo() {
+	public void updateView() {
+		lblTerminal.setText("Terminal: " + TerminalConfig.getTerminalId());
+
 		User currentUser = Application.getCurrentUser();
 		if (currentUser != null) {
-			lblUser.setText("USER: " + currentUser.getFullName() + " (" + currentUser.getType().getName() + ")");
+			lblUser.setText("User: " + currentUser.getFullName() + " (" + currentUser.getType().getName() + ")");
 		}
 		else {
-			lblUser.setText("USER: NOT LOGGED IN"); //$NON-NLS-1$
+			lblUser.setText("User: Not Logged In"); //$NON-NLS-1$
+		}
+
+		lblDB.setText("DB: " + AppConfig.getDatabaseHost() + "/" + AppConfig.getDatabaseName());
+		if(Application.getInstance().isPriceIncludesTax()) {
+			lblTaxInculed.setText("Tax included: YES");
+		}else {
+			lblTaxInculed.setText("Tax included: NO");
 		}
 	}
 

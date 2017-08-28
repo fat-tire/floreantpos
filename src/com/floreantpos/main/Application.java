@@ -155,7 +155,7 @@ public class Application {
 
 		try {
 			posWindow.setGlassPaneVisible(true);
-			posWindow.rendererUserInfo();
+			posWindow.updateView();
 
 			DatabaseUtil.checkConnection(DatabaseUtil.initialize());
 			DatabaseUtil.updateLegacyDatabase();
@@ -453,7 +453,7 @@ public class Application {
 		}
 
 		rootView.showDefaultView();
-		posWindow.rendererUserInfo();
+		posWindow.updateView();
 	}
 
 	public void initCurrentUser(User user) {
@@ -483,7 +483,7 @@ public class Application {
 		currentShift = null;
 		setCurrentUser(null);
 		RootView.getInstance().showView(LoginView.getInstance());
-		posWindow.rendererUserInfo();
+		posWindow.updateView();
 	}
 
 	public void doAutoLogout() {
