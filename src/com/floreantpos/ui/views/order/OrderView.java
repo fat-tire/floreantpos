@@ -133,7 +133,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	//	private PosButton btnAddOn = new PosButton(POSConstants.ADD_ON);
 	private PosButton btnDiscount = new PosButton(Messages.getString("TicketView.43")); //$NON-NLS-1$
 	private PosButton btnDeliveryInfo = new PosButton("DELIVERY INFO");
-	private PosButton btnTotal = new PosButton(POSConstants.SETTLE.toUpperCase());
 
 	private JTextField tfSubtotal;
 	private JTextField tfDiscount;
@@ -305,41 +304,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			}
 		});
 
-		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
-			btnTotal.setEnabled(false);
-		}
-
-		btnTotal.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (getCurrentTicket().getOrderType().isHasForHereAndToGo()) {
-						OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(getCurrentTicket());
-						dialog.open();
-
-						if (dialog.isCanceled()) {
-							return;
-						}
-						String orderType = dialog.getSelectedOrderType();
-						if (orderType != null) {
-							getCurrentTicket().updateTicketItemPriceByOrderType(orderType);
-							ticketView.updateModel();
-							ticketView.updateView();
-						}
-					}
-					ticketView.doPayNow();
-				} catch (StaleStateException x) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
-					return;
-				} catch (PosException x) {
-					POSMessageDialog.showError(x.getMessage());
-				} catch (Exception x) {
-					POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, x);
-				}
-			}
-		});
-
 		btnSend.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -480,7 +444,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		actionButtonPanel.add(btnHold);
 		actionButtonPanel.add(btnSend);
 		actionButtonPanel.add(btnCancel);
-		actionButtonPanel.add(btnTotal);
 		actionButtonPanel.add(btnDone);
 
 		btnCookingInstruction.setEnabled(false);
@@ -1041,7 +1004,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		btnSeatNo.setVisible(false);
 		btnTableNumber.setVisible(false);
 		btnSend.setVisible(false);
-		btnTotal.setVisible(false);
 	}
 
 	private void setVisibleButtonForOrderView() {
@@ -1054,7 +1016,6 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		btnSeatNo.setVisible(true);
 		btnSend.setVisible(true);
 		btnTableNumber.setVisible(true);
-		btnTotal.setVisible(true);
 	}
 
 	private void showRetailView() {

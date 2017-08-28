@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -92,7 +91,7 @@ public class TicketView extends JPanel {
 	private com.floreantpos.swing.PosButton btnScrollUp = new PosButton();
 	private com.floreantpos.swing.TransparentPanel ticketItemActionPanel;
 	private javax.swing.JScrollPane ticketScrollPane;
-	private JLabel lblTotal;
+	private PosButton btnTotal;
 	private com.floreantpos.ui.ticket.TicketViewerTable ticketViewerTable;
 	private JPanel itemSearchPanel;
 	private JTextField txtSearchItem;
@@ -275,12 +274,35 @@ public class TicketView extends JPanel {
 	}
 
 	private void createPayButton() {
-		lblTotal = new JLabel();
-		lblTotal.setFont(lblTotal.getFont().deriveFont(Font.BOLD, 16f));
-		//lblTotal.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		//lblTotal.setPreferredSize(new Dimension(0, 50));
-		lblTotal.setHorizontalAlignment(JLabel.CENTER);
-		add(lblTotal, BorderLayout.SOUTH);
+		btnTotal = new PosButton(POSConstants.TOTAL.toUpperCase());
+		btnTotal.setFont(btnTotal.getFont().deriveFont(Font.BOLD));
+
+		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
+			btnTotal.setEnabled(false);
+		}
+
+		btnTotal.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (ticket.getOrderType().isHasForHereAndToGo()) {
+					OrderTypeSelectionDialog2 dialog = new OrderTypeSelectionDialog2(ticket);
+					dialog.open();
+
+					if (dialog.isCanceled()) {
+						return;
+					}
+					String orderType = dialog.getSelectedOrderType();
+					if (orderType != null) {
+						ticket.updateTicketItemPriceByOrderType(orderType);
+						updateModel();
+						updateView();
+					}
+				}
+				doPayNow();
+			}
+		});
+
+		add(btnTotal, BorderLayout.SOUTH);
 	}
 
 	private void createTicketItemControlPanel() {
@@ -578,7 +600,7 @@ public class TicketView extends JPanel {
 
 	public void updateView() {
 		if (ticket == null) {
-			lblTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + "0.00");
+			btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + "0.00");
 			titledBorder.setTitle(ticket.getTicketType().toString() + "[New Ticket]"); //$NON-NLS-1$
 			return;
 		}
@@ -593,8 +615,7 @@ public class TicketView extends JPanel {
 			}
 		}
 
-		lblTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
-
+		btnTotal.setText(POSConstants.TOTAL.toUpperCase() + " " + CurrencyUtil.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
 		/*if (ticket.getTotalAmount() > 0) {
 			//btnTotal.setText("<html><h2>Total " + Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()) + "</h2></html>");
 			btnTotal.setText("Total " +Application.getCurrencySymbol() + NumberUtil.formatNumber(ticket.getTotalAmount()));
@@ -617,7 +638,6 @@ public class TicketView extends JPanel {
 
 		ticketViewerTable.updateView();
 	}
-
 
 	public void addOrderListener(OrderListener listenre) {
 		orderListeners.add(listenre);
