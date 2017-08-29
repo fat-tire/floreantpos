@@ -274,7 +274,7 @@ public class SplitTicketDialog extends POSDialog {
 			if (mainTicket.getId() != null)
 				tickets.add(mainTicket);
 
-			ShopTableStatusDAO.getInstance().addTicketsToShopTableStatus(ticket4.getTableNumbers(), tickets, session);
+			ShopTableStatusDAO.getInstance().addTicketsToShopTableStatus(ticket.getTableNumbers(), tickets, session);
 			tx.commit();
 
 			//save the action
