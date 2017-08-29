@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.DataUpdateInfo" table="DATA_UPDATE_INFO">
 
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="com.floreantpos.util.IntegerIdGenerator" />
 		</id>
 
 		<property column="LAST_UPDATE_TIME" name="lastUpdateTime" type="java.sql.Timestamp" />

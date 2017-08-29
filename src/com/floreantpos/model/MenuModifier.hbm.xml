@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.MenuModifier"
 		table="MENU_MODIFIER">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="com.floreantpos.util.IntegerIdGenerator" />
 		</id>
 
 		<property column="NAME" length="120" name="name" type="java.lang.String" />

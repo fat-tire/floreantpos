@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
   <class lazy="false" name="com.floreantpos.model.ActionHistory" table="ACTION_HISTORY">
     <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="identity"/>
+      <generator class="com.floreantpos.util.IntegerIdGenerator"/>
     </id>
     <property column="ACTION_TIME" name="actionTime" type="java.util.Date"/>
     <property column="ACTION_NAME" name="actionName" type="string"/>

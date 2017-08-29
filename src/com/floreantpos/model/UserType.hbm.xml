@@ -8,7 +8,7 @@
 	
 	<class lazy="false" name="com.floreantpos.model.UserType" table="USER_TYPE">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="com.floreantpos.util.IntegerIdGenerator" />
 		</id>
 		<property column="P_NAME" length="60" name="name" type="java.lang.String" />
 		<set cascade="all" inverse="false" lazy="false" name="permissions" table="USER_USER_PERMISSION">

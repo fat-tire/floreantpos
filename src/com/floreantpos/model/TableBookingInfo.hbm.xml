@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.TableBookingInfo"
 		table="TABLE_BOOKING_INFO">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="com.floreantpos.util.IntegerIdGenerator" />
 		</id>
 
 

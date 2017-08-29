@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
   <class lazy="false" name="MenuItemShift" table="MENUITEM_SHIFT">
     <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="identity"/>
+      <generator class="com.floreantpos.util.IntegerIdGenerator"/>
     </id>
     <property column="SHIFT_PRICE" name="shiftPrice" type="java.lang.Double"/>
     <many-to-one class="Shift" name="shift">

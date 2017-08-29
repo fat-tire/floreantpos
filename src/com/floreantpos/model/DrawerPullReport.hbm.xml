@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
 	<class lazy="false" name="DrawerPullReport" table="DRAWER_PULL_REPORT">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="com.floreantpos.util.IntegerIdGenerator" />
 		</id>
 		<property column="REPORT_TIME" index="drawer_report_time" name="reportTime" type="java.util.Date" />
 		<property column="REG" length="15" name="reg" type="string" />

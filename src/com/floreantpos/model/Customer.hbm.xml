@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.Customer" table="CUSTOMER">
 
 		<id column="AUTO_ID" name="autoId" type="java.lang.Integer">
-			<generator class="identity" />
+			<generator class="com.floreantpos.util.IntegerIdGenerator" />
 		</id>
 		
 		<property name="loyaltyNo" column="LOYALTY_NO" length="30" type="string" />
