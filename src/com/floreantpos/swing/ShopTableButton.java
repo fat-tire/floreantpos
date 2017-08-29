@@ -28,6 +28,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.services.TicketService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
 
@@ -78,10 +79,23 @@ public class ShopTableButton extends PosButton {
 	}
 
 	public void update() {
-		if (shopTable != null && shopTable.isServing()) {
-			//setEnabled(false);
+		if (shopTable == null)
+			return;
+		boolean serving = shopTable.isServing();
+		String userName = shopTable.getUserName();
+
+		String ticketIdAsString = shopTable.getTicketIdAsString();
+		if (StringUtils.isNotEmpty(ticketIdAsString)) {
+			ticketIdAsString = "<br>Chk#" + ticketIdAsString;
+			setForeground(Color.white);
+		}
+		else {
+			serving = false;
+			ticketIdAsString = "";
+		}
+		if (serving) {
 			setBackground(Color.red);
-			setForeground(Color.BLACK);
+			setForeground(Color.white);
 		}
 		else if (shopTable != null && shopTable.isBooked()) {
 			setEnabled(false);
@@ -94,20 +108,31 @@ public class ShopTableButton extends PosButton {
 			setBackground(Color.white);
 			setForeground(Color.black);
 		}
-	}
-
-	public void setUser(User user) {
-		if (user != null) {
-			this.user = user;
+		if (StringUtils.isNotEmpty(userName)) {
+			userName = "<br>" + userName;
+		}
+		else {
+			userName = "";
+		}
+		setText("<html><center><b>" + shopTable.toString() + "<small>" + userName + ticketIdAsString + "</small></center></b></html>"); //$NON-NLS-1$
+		if (shopTable.getUserId() != null && shopTable.getUserId().intValue() != Application.getCurrentUser().getAutoId().intValue()) {
+			setBackground(new Color(139, 0, 139));
 		}
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public User getUser() {
+		if (user == null && shopTable.getUserId() != null) {
+			user = UserDAO.getInstance().get(shopTable.getUserId());
+		}
 		return user;
 	}
 
 	public boolean hasUserAccess() {
-
+		User user = getUser();
 		if (user == null) {
 			return false;
 		}
@@ -142,6 +167,9 @@ public class ShopTableButton extends PosButton {
 	}
 
 	public Ticket getTicket() {
+		if (ticket == null || ticket.getId() != shopTable.getTicketId()) {
+			ticket = TicketService.getTicket(shopTable.getTicketId());
+		}
 		return ticket;
 	}
 }

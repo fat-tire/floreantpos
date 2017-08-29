@@ -60,6 +60,17 @@ public enum PaymentType {
 		this.imageFile = imageFile;
 	};
 
+	public static PaymentType findByValue(String value) {
+		if (value != null) {
+			for (PaymentType paymentType : values()) {
+				if (paymentType.displayString.equals(value)) {
+					return paymentType;
+				}
+			}
+		}
+		return PaymentType.CASH;
+	}
+
 	public boolean isSupported() {
 		switch (this) {
 			case CASH:

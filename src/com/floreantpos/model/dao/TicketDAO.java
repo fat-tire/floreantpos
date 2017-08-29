@@ -112,6 +112,7 @@ public class TicketDAO extends BaseTicketDAO {
 		ticket.setActiveDate(Calendar.getInstance().getTime());
 
 		adjustStockAmount(ticket, session);
+		updateShopTableStatus(ticket, session);
 		session.saveOrUpdate(ticket);
 
 		ticket.clearDeletedItems();
@@ -119,6 +120,16 @@ public class TicketDAO extends BaseTicketDAO {
 		DataUpdateInfo lastUpdateInfo = DataUpdateInfoDAO.getLastUpdateInfo();
 		lastUpdateInfo.setLastUpdateTime(new Date());
 		session.update(lastUpdateInfo);
+	}
+
+	private void updateShopTableStatus(Ticket ticket, Session session) {
+		List<Integer> tableNumbers = ticket.getTableNumbers();
+		if (tableNumbers == null || tableNumbers.isEmpty()) {
+			return;
+		}
+		if (ticket.isClosed()) {
+			ShopTableStatusDAO.getInstance().removeTicketFromShopTableStatus(ticket, session);
+		}
 	}
 
 	public void voidTicket(Ticket ticket) throws Exception {

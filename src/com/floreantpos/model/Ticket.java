@@ -104,6 +104,10 @@ public class Ticket extends BaseTicket {
 
 	public static final String DRIVER_OUT_TIME = "OUT_AT"; //$NON-NLS-1$
 
+	public static final String SPLIT = "split";
+	public static final String SPLIT_NUMBER = "split_number";
+	public static final String ORIGINAL_SPLIT_TICKET_ID = "original_split_ticket_id";
+
 	private String sortOrder;
 
 	//	public String getTableNumbers() {

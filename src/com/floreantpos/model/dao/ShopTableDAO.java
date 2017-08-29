@@ -19,6 +19,7 @@ package com.floreantpos.model.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.LogFactory;
@@ -31,8 +32,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.ShopTableStatus;
 import com.floreantpos.model.ShopTableType;
+import com.floreantpos.model.TableStatus;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.User;
 
 public class ShopTableDAO extends BaseShopTableDAO {
 
@@ -120,8 +124,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public void occupyTables(Ticket ticket) {
-		List<ShopTable> tables = getTables(ticket);
-
+		List<Integer> tables = ticket.getTableNumbers();
 		if (tables == null)
 			return;
 
@@ -131,12 +134,7 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-
-			for (ShopTable shopTable : tables) {
-				shopTable.setServing(true);
-				saveOrUpdate(shopTable, session);
-			}
-
+			occupyTables(ticket, session);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
@@ -144,6 +142,24 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			throw new RuntimeException(e);
 		} finally {
 			closeSession(session);
+		}
+	}
+
+	public void occupyTables(Ticket ticket, Session session) {
+		List<Integer> tableNumbers = ticket.getTableNumbers();
+		List<Integer> ticketNumbers = new ArrayList<>();
+		ticketNumbers.add(ticket.getId());
+		User owner = ticket.getOwner();
+
+		for (Integer tableId : tableNumbers) {
+			ShopTableStatus shopTableStatus = (ShopTableStatus) ShopTableStatusDAO.getInstance().get(tableId, session);
+			if (shopTableStatus == null) {
+				shopTableStatus = new ShopTableStatus();
+				shopTableStatus.setId(tableId);
+			}
+			shopTableStatus.setTableTicket(ticket.getId(), owner.getAutoId(), owner.getFirstName());
+			shopTableStatus.setTableStatus(TableStatus.Seat);
+			ShopTableStatusDAO.getInstance().saveOrUpdate(shopTableStatus, session);
 		}
 	}
 
@@ -204,25 +220,12 @@ public class ShopTableDAO extends BaseShopTableDAO {
 	}
 
 	public void releaseTables(Ticket ticket) {
-		List<ShopTable> tables = getTables(ticket);
-
-		if (tables == null)
-			return;
-
 		Session session = null;
 		Transaction tx = null;
-
 		try {
 			session = createNewSession();
 			tx = session.beginTransaction();
-
-			for (ShopTable shopTable : tables) {
-				shopTable.setServing(false);
-				shopTable.setBooked(false);
-				shopTable.setFree(true);
-				saveOrUpdate(shopTable, session);
-			}
-
+			ShopTableStatusDAO.getInstance().removeTicketFromShopTableStatus(ticket, session);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
@@ -245,7 +248,6 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			releaseTables(ticket);
 			ticket.setTableNumbers(null);
 			TicketDAO.getInstance().saveOrUpdate(ticket);
-
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
@@ -318,5 +320,57 @@ public class ShopTableDAO extends BaseShopTableDAO {
 			closeSession(session);
 		}
 
+	}
+
+	public void updateTableStatus(List tableNumbers, Integer status, Ticket ticket, boolean saveTicket) {
+		if (tableNumbers == null || tableNumbers.isEmpty())
+			return;
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			updateTableStatus(tableNumbers, status, ticket, session);
+			if (saveTicket)
+				session.saveOrUpdate(ticket);
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+
+	public void updateTableStatus(List<Integer> tableNumbers, Integer status, Ticket ticket, Session session) {
+		Integer ticketId = null;
+		List<Integer> tickets = new ArrayList<>();
+		Integer userId = null;
+		String userName = null;
+
+		if (ticket != null) {
+			ticketId = ticket.getId();
+			userId = ticket.getOwner().getAutoId();
+			userName = ticket.getOwner().getFirstName();
+			tickets.add(ticket.getId());
+		}
+		for (Iterator iterator = tableNumbers.iterator(); iterator.hasNext();) {
+			Integer integer = (Integer) iterator.next();
+			ShopTableStatus tableStatus = ShopTableStatusDAO.getInstance().get(integer);
+			if (tableStatus != null) {
+				if (ticket != null)
+					tableStatus.setTableTicket(ticketId, userId, userName);
+				else
+					tableStatus.setTicketId(null);
+
+				session.saveOrUpdate(tableStatus);
+			}
+		}
+	}
+
+	public boolean hasTable() {
+		Number result = (Number) getSession().createCriteria(getReferenceClass()).setProjection(Projections.rowCount()).uniqueResult();
+		return result.intValue() != 0;
 	}
 }

@@ -25,4 +25,5 @@ public interface CardProcessor {
 	public void chargeAmount(PosTransaction transaction) throws Exception;
 	public void voidTransaction(PosTransaction transaction) throws Exception;
 	public String getCardInformationForReceipt(PosTransaction transaction);
+	public void cancelTransaction();
 }

@@ -54,6 +54,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
+import com.floreantpos.actions.GroupSettleTicketAction;
 import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.actions.RefundAction;
 import com.floreantpos.actions.SettleTicketAction;
@@ -601,38 +602,9 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 	}
 
 	private void doGroupSettle() {
-		if (!POSUtil.checkDrawerAssignment()) {
+		GroupSettleTicketAction action = new GroupSettleTicketAction();
+		if (!action.execute())
 			return;
-		}
-
-		TicketSelectionDialog ticketSelectionDialog = new TicketSelectionDialog();
-		ticketSelectionDialog.open();
-
-		if (ticketSelectionDialog.isCanceled()) {
-			return;
-		}
-
-		List<Ticket> selectedTickets = ticketSelectionDialog.getSelectedTickets();
-		if (selectedTickets == null) {
-			return;
-		}
-
-		List<Ticket> tickets = new ArrayList<Ticket>();
-
-		for (int i = 0; i < selectedTickets.size(); i++) {
-			Ticket ticket = selectedTickets.get(i);
-
-			Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-			if (fullTicket.getOrderType().isBarTab())
-				continue;
-			tickets.add(fullTicket);
-		}
-
-		GroupSettleTicketDialog posDialog = new GroupSettleTicketDialog(tickets);
-		posDialog.setSize(Application.getPosWindow().getSize());
-		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		posDialog.openUndecoratedFullScreen();
-
 		//tickteListViewObj.updateTicketList();
 		updateTicketList();
 	}

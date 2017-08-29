@@ -27,7 +27,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +54,10 @@ import com.floreantpos.extension.OrderServiceFactory;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.ShopTableStatus;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.ShopTableDAO;
+import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.PosButton;
@@ -68,6 +69,7 @@ import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
+import com.floreantpos.ui.views.payment.SplitedTicketSelectionDialog;
 import com.floreantpos.util.TicketAlreadyExistsException;
 import com.jidesoft.swing.JideScrollPane;
 
@@ -236,69 +238,46 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			buttonsPanel.add(tableButton);
 			tableButtonMap.put(shopTable, tableButton);
 		}
-
-		rendererTablesTicket();
-	}
-
-	private void rendererTablesTicket() {
-		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTickets();
-		for (Ticket ticket : openTickets) {
-			for (ShopTableButton shopTableButton : tableButtonMap.values()) {
-				if (shopTableButton.getShopTable().getId() == null)
-					continue;
-				if (ticket.getTableNumbers().contains(shopTableButton.getId())) {
-					shopTableButton.setText("<html><center>" + shopTableButton.getText() + "<br><h4>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							+ ticket.getId() + "</h4></center></html>"); //$NON-NLS-1$
-					if (!ticket.getOwner().getUserId().toString().equals(Application.getCurrentUser().getUserId().toString())) {
-						shopTableButton.setBackground(new Color(139, 0, 139));
-					}
-					if (addedTableListModel.contains(shopTableButton)) {
-						shopTableButton.setBackground(Color.GREEN);
-					}
-					shopTableButton.setTicket(ticket);
-					shopTableButton.setUser(ticket.getOwner());
-				}
-			}
-		}
 		barTab.updateView(orderType);
 		buttonsPanel.getContentPane().revalidate();
 		buttonsPanel.getContentPane().repaint();
 	}
 
-	private boolean addTable(ActionEvent e) {
+	private void addTable(ActionEvent e) {
 
 		ShopTableButton button = (ShopTableButton) e.getSource();
 		int tableNumber = button.getId();
 
 		ShopTable shopTable = ShopTableDAO.getInstance().getByNumber(tableNumber);
-
 		if (shopTable == null) {
 			POSMessageDialog.showError(this, Messages.getString("TableSelectionDialog.2") + e + Messages.getString("TableSelectionDialog.3")); //$NON-NLS-1$ //$NON-NLS-2$
-			return false;
+			return;
 		}
+
+		ShopTableStatus shopTableStatus = shopTable.getShopTableStatus();
 
 		if (btnGroup.isSelected()) {
 			if (addedTableListModel.contains(button)) {
-				return true;
+				return;
 			}
 			if (button.getShopTable().isServing()) {
-				return true;
+				return;
 			}
 
 			button.getShopTable().setServing(true);
 			button.setBackground(Color.green);
 			button.setForeground(Color.black);
 			addedTableListModel.addElement(button);
-			return false;
+			return;
 		}
 
 		if (btnUnGroup.isSelected()) {
 			if (removeTableListModel.contains(button)) {
-				return true;
+				return;
 			}
 			Ticket ticket = button.getTicket();
 			if (ticket == null) {
-				return false;
+				return;
 			}
 
 			int ticketId = ticket.getId();
@@ -307,31 +286,35 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			while (elements.hasMoreElements()) {
 				ShopTableButton shopTableButton = (ShopTableButton) elements.nextElement();
 				if (shopTableButton.getTicket().getId() != ticketId) {
-					return false;
+					return;
 				}
 			}
 
 			if (removeTableListModel.size() >= ticket.getTableNumbers().size() - 1) {
-				return false;
+				return;
 			}
 
 			button.getShopTable().setServing(true);
 			button.setBackground(Color.white);
 			button.setForeground(Color.black);
 			this.removeTableListModel.addElement(button);
-			return false;
+			return;
 		}
-
+		if (shopTableStatus.hasMultipleTickets() && !btnUnGroup.isSelected()) {
+			if (isCreateNewTicket()) {
+				showSplitTickets(shopTableStatus, shopTable);
+			}
+			return;
+		}
 		if (shopTable.isServing() && !btnGroup.isSelected()) {
 			if (!button.hasUserAccess()) {
-				return false;
+				return;
 			}
 			if (isCreateNewTicket()) {
 				editTicket(button.getTicket());
 				closeDialog(false);
 			}
-
-			return false;
+			return;
 		}
 
 		if (!btnGroup.isSelected() && !btnGroup.isSelected()) {
@@ -345,7 +328,39 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			}
 			closeDialog(false);
 		}
-		return true;
+	}
+
+	private void showSplitTickets(ShopTableStatus shopTaleStatus, ShopTable table) {
+		List<Ticket> splitTickets = new ArrayList<>();
+		for (Integer ticketId : shopTaleStatus.getListOfTicketNumbers()) {
+			Ticket ticket = TicketDAO.getInstance().get(ticketId);
+			if (ticket == null)
+				continue;
+			splitTickets.add(ticket);
+		}
+		String action = POSConstants.EDIT;
+		SplitedTicketSelectionDialog posDialog = new SplitedTicketSelectionDialog(splitTickets);
+		List<ShopTable> selectedTables = getSelectedTables();
+		if (selectedTables.isEmpty()) {
+			selectedTables.add(table);
+		}
+		posDialog.setSelectedTables(selectedTables);
+		posDialog.setOrderType(getOrderType());
+		posDialog.setSelectedAction(action);
+		posDialog.setSize(800, 600);
+		posDialog.open();
+		if (!posDialog.isCanceled()) {
+			for (ShopTable shopTable : selectedTables) {
+				ShopTableButton tableButton = tableButtonMap.get(shopTable);
+				ShopTableStatus shopTableStatus = tableButton.getShopTable().getStatus();
+				ShopTableStatusDAO.getInstance().refresh(shopTableStatus);
+				tableButton.update();
+			}
+		}
+		if (action.equals(POSConstants.EDIT) || posDialog.createNewTicket())
+			closeDialog(false);
+
+		clearSelection();
 	}
 
 	private void closeDialog(boolean canceled) {
@@ -469,21 +484,6 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			if (addedTableListModel.contains(button)) {
 				addedTableListModel.removeElement(button);
 			}
-			ShopTable shopTable = button.getShopTable();
-			Ticket ticket = button.getTicket();
-			if (ticket != null) {
-				for (Iterator iterator = ticket.getTableNumbers().iterator(); iterator.hasNext();) {
-					Integer id = (Integer) iterator.next();
-					if (button.getId() == id) {
-						iterator.remove();
-					}
-
-				}
-
-				shopTable.setServing(false);
-				ShopTableDAO.getInstance().saveOrUpdate(shopTable);
-				TicketDAO.getInstance().saveOrUpdate(ticket);
-			}
 		}
 		redererTables();
 		if (!isCreateNewTicket()) {
@@ -514,28 +514,25 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	}
 
 	private void checkTables() {
+		boolean hasTable = ShopTableDAO.getInstance().hasTable();
+		if (hasTable)
+			return;
 
-		List<ShopTable> allTables = ShopTableDAO.getInstance().findAll();
+		int userInput = 0;
+		int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
+				Messages.getString("TableSelectionView.0"), Messages.getString("TableSelectionView.1")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		if ((allTables == null || allTables.isEmpty())) {
+		if (result == JOptionPane.YES_OPTION) {
 
-			int userInput = 0;
+			userInput = NumberSelectionDialog2.takeIntInput(Messages.getString("TableSelectionView.2")); //$NON-NLS-1$
 
-			int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
-					Messages.getString("TableSelectionView.0"), Messages.getString("TableSelectionView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (userInput == 0) {
+				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TableSelectionView.3")); //$NON-NLS-1$
+				return;
+			}
 
-			if (result == JOptionPane.YES_OPTION) {
-
-				userInput = NumberSelectionDialog2.takeIntInput(Messages.getString("TableSelectionView.2")); //$NON-NLS-1$
-
-				if (userInput == 0) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TableSelectionView.3")); //$NON-NLS-1$
-					return;
-				}
-
-				if (userInput != -1) {
-					ShopTableDAO.getInstance().createNewTables(userInput);
-				}
+			if (userInput != -1) {
+				ShopTableDAO.getInstance().createNewTables(userInput);
 			}
 		}
 	}

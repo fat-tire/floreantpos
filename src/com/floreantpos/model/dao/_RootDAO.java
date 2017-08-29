@@ -81,6 +81,7 @@ import com.floreantpos.model.Shift;
 import com.floreantpos.model.ShopFloor;
 import com.floreantpos.model.ShopFloorTemplate;
 import com.floreantpos.model.ShopTable;
+import com.floreantpos.model.ShopTableStatus;
 import com.floreantpos.model.ShopTableType;
 import com.floreantpos.model.TableBookingInfo;
 import com.floreantpos.model.Tax;
@@ -166,6 +167,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration.addClass(ShopFloor.class);
 		configuration.addClass(ShopFloorTemplate.class);
 		configuration.addClass(ShopTable.class);
+		configuration.addClass(ShopTableStatus.class);
 		configuration.addClass(ShopTableType.class);
 		configuration.addClass(PrinterGroup.class);
 		configuration.addClass(DrawerAssignedHistory.class);

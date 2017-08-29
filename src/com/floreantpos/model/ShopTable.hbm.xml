@@ -12,12 +12,6 @@
 		<property column="X" name="x" type="java.lang.Integer" />
 		<property column="Y" name="y" type="java.lang.Integer" />
 
-		<property column="FREE" name="free" type="java.lang.Boolean" />
-		<property column="SERVING" name="serving" type="java.lang.Boolean" />
-		<property column="BOOKED" name="booked" type="java.lang.Boolean" />
-		<property column="DIRTY" name="dirty" type="java.lang.Boolean" />
-		<property column="DISABLE" name="disable" type="java.lang.Boolean" />
-
 		<!-- Associations -->
 
 		<bag cascade="none" inverse="false" lazy="false" name="types" table="TABLE_TYPE_RELATION">
@@ -26,5 +20,6 @@
 		</bag>
 
 		<many-to-one class="ShopFloor" name="floor" column="FLOOR_ID" />
+		<one-to-one name="shopTableStatus" class="com.floreantpos.model.ShopTableStatus" foreign-key="ID"></one-to-one>
 	</class>
 </hibernate-mapping>

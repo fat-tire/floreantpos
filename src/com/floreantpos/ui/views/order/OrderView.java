@@ -44,7 +44,6 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Session;
 import org.hibernate.StaleStateException;
 
 import com.floreantpos.IconFactory;
@@ -73,6 +72,7 @@ import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.CustomerDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
+import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
@@ -572,17 +572,11 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	}
 
 	public void updateTableNumber() {
-		Session session = null;
-		org.hibernate.Transaction transaction = null;
-
 		try {
-
-			Ticket thisTicket = currentTicket;
-
-			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(thisTicket.getOrderType());
+			TableSelectorDialog dialog = TableSelectorFactory.createTableSelectorDialog(currentTicket.getOrderType());
 			dialog.setCreateNewTicket(false);
-			if (thisTicket != null) {
-				dialog.setTicket(thisTicket);
+			if (currentTicket != null) {
+				dialog.setTicket(currentTicket);
 			}
 			dialog.openUndecoratedFullScreen();
 
@@ -590,49 +584,17 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				return;
 			}
 			List<ShopTable> tables = dialog.getSelectedTables();
-
-			if (tables == null) {
-				return;
-			}
-
-			session = TicketDAO.getInstance().createNewSession();
-			transaction = session.beginTransaction();
-
-			clearShopTable(session, thisTicket);
-			session.saveOrUpdate(thisTicket);
-
+			List<Integer> addedTables = new ArrayList<>();
 			for (ShopTable shopTable : tables) {
-				shopTable.setServing(true);
-				session.merge(shopTable);
-
-				thisTicket.addTable(shopTable.getTableNumber());
+				addedTables.add(shopTable.getId());
 			}
-
-			session.merge(thisTicket);
-			transaction.commit();
-
+			ShopTableStatusDAO.getInstance().removeTicketFromShopTableStatus(currentTicket, null);
+			currentTicket.setTableNumbers(addedTables);
+			ShopTableDAO.getInstance().occupyTables(currentTicket);
 			actionUpdate();
-
 		} catch (Exception e) {
 			PosLog.error(getClass(), e);
-			transaction.rollback();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
 		}
-	}
-
-	private void clearShopTable(Session session, Ticket thisTicket) {
-		ShopTableDAO shopTableDao = ShopTableDAO.getInstance();
-		List<ShopTable> tables2 = shopTableDao.getTables(thisTicket);
-
-		if (tables2 == null)
-			return;
-
-		shopTableDao.releaseAndDeleteTicketTables(thisTicket);
-
-		tables2.clear();
 	}
 
 	protected void btnCustomerNumberActionPerformed() {// GEN-FIRST:event_btnCustomerNumberActionPerformed
@@ -859,19 +821,8 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		if (currentTicket != null) {
 			OrderType type = currentTicket.getOrderType();
 
-			if (type.isPrepaid()) {
-				btnDone.setVisible(false);
-			}
-			else {
-				btnDone.setVisible(true);
-			}
-
-			if (!type.isShouldPrintToKitchen()) {
-				btnSend.setEnabled(false);
-			}
-			else {
-				btnSend.setEnabled(true);
-			}
+			btnDone.setVisible(!type.isPrepaid());
+			btnSend.setEnabled(type.isShouldPrintToKitchen());
 
 			if (!type.isAllowSeatBasedOrder()) {
 				btnSeatNo.setVisible(false);
@@ -910,12 +861,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 				btnGuestNo.setText("GUEST" + ": " + String.valueOf(currentTicket.getNumberOfGuests()));
 			}
 			OrderServiceExtension orderService = (OrderServiceExtension) ExtensionManager.getPlugin(OrderServiceExtension.class);
-			if (orderService != null) {
-				if (type.isDelivery() && type.isRequiredCustomerData()) {
-					btnDeliveryInfo.setVisible(true);
-				}
-			}
-
+			btnDeliveryInfo.setVisible(orderService != null && type.isDelivery() && type.isRequiredCustomerData());
 		}
 	}
 
@@ -1092,6 +1038,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	public void setVisible(boolean aFlag) {
 		if (aFlag) {
 			try {
+				actionUpdate();
 				categoryView.initialize();
 			} catch (Throwable t) {
 				POSMessageDialog.showError(Application.getPosWindow(), com.floreantpos.POSConstants.ERROR_MESSAGE, t);

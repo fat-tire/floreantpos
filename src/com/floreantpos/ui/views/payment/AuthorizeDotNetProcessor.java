@@ -323,4 +323,8 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 	public String getCardInformationForReceipt(PosTransaction transaction) {
 		return null;
 	}
+
+	@Override
+	public void cancelTransaction() {
+	}
 }

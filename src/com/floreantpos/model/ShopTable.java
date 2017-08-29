@@ -17,20 +17,23 @@
  */
 package com.floreantpos.model;
 
+import java.util.List;
+
 import com.floreantpos.model.base.BaseShopTable;
+import com.floreantpos.model.dao.ShopTableStatusDAO;
 
 public class ShopTable extends BaseShopTable {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public ShopTable () {
+	public ShopTable() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public ShopTable (java.lang.Integer id) {
+	public ShopTable(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -69,5 +72,106 @@ public class ShopTable extends BaseShopTable {
 
 	public void setTemporary(boolean isTemporary) {
 		this.isTemporary = isTemporary;
+	}
+
+	public Integer getTicketId() {
+		ShopTableStatus status = getStatus();
+		if (status == null)
+			return null;
+		List<Integer> ticketNumbers = status.getListOfTicketNumbers();
+		if (ticketNumbers != null && ticketNumbers.size() > 0)
+			return ticketNumbers.get(0);
+		return null;
+	}
+
+	public String getTicketIdAsString() {
+		ShopTableStatus status = getStatus();
+		if (status == null)
+			return null;
+		return status.getTicketIdAsString();
+	}
+
+	public Integer getUserId() {
+		ShopTableStatus status = getStatus();
+		if (status == null)
+			return null;
+		return status.getUserId();
+	}
+
+	public String getUserName() {
+		ShopTableStatus status = getStatus();
+		if (status == null)
+			return null;
+		return status.getUserName();
+	}
+
+	public ShopTableStatus getStatus() {
+		ShopTableStatus shopTableStatus = super.getShopTableStatus();
+		if (shopTableStatus != null)
+			return shopTableStatus;
+		return saveAndGetNewStatus();
+	}
+
+	public ShopTableStatus saveAndGetNewStatus() {
+		ShopTableStatus shopTableStatus = new ShopTableStatus();
+		Integer tableId = getId();
+		shopTableStatus.setId(tableId);
+		shopTableStatus.setTableStatus(TableStatus.Available);
+		if (tableId != null)
+			ShopTableStatusDAO.getInstance().save(shopTableStatus);
+		setShopTableStatus(shopTableStatus);
+		return shopTableStatus;
+	}
+
+	public java.lang.Boolean isFree() {
+		return getTableStatus() == TableStatus.Available;
+	}
+
+	private TableStatus getTableStatus() {
+		ShopTableStatus shopTableStatus = super.getShopTableStatus();
+		return shopTableStatus == null ? TableStatus.Available : shopTableStatus.getTableStatus();
+	}
+
+	private void setTableStatus(TableStatus tableStatus) {
+		ShopTableStatus shopTableStatus = super.getShopTableStatus();
+		if (shopTableStatus != null) {
+			shopTableStatus.setTableStatus(tableStatus);
+		}
+	}
+
+	public void setFree(java.lang.Boolean free) {
+		setTableStatus(free ? TableStatus.Available : TableStatus.Seat);
+	}
+
+	public java.lang.Boolean isServing() {
+		return getTableStatus() == TableStatus.Seat;
+	}
+
+	public void setServing(java.lang.Boolean serving) {
+		setTableStatus(serving ? TableStatus.Seat : TableStatus.Available);
+	}
+
+	public java.lang.Boolean isBooked() {
+		return getTableStatus() == TableStatus.Booked;
+	}
+
+	public void setBooked(java.lang.Boolean booked) {
+		setTableStatus(booked ? TableStatus.Booked : TableStatus.Available);
+	}
+
+	public java.lang.Boolean isDirty() {
+		return getTableStatus() == TableStatus.Dirty;
+	}
+
+	public void setDirty(java.lang.Boolean dirty) {
+		setTableStatus(dirty ? TableStatus.Dirty : TableStatus.Available);
+	}
+
+	public java.lang.Boolean isDisable() {
+		return getTableStatus() == TableStatus.Disable;
+	}
+
+	public void setDisable(java.lang.Boolean disable) {
+		setTableStatus(disable ? TableStatus.Disable : TableStatus.Available);
 	}
 }

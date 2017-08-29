@@ -57,6 +57,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
 import com.floreantpos.model.dao.MenuItemDAO;
+import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
@@ -415,6 +416,9 @@ public class TicketView extends JPanel {
 	}
 
 	private void closeView(boolean orderCanceled) {
+		if (orderCanceled && ticket.getId() == null && ticket.getOrderType().isShowTableSelection()) {
+			doReleaseTables();
+		}
 		ticketViewerTable.setRowHeight(PosUIManager.getSize(60));
 		if (TerminalConfig.isCashierMode()) {
 			RootView.getInstance().showView(CashierSwitchBoardView.VIEW_NAME);
@@ -422,6 +426,13 @@ public class TicketView extends JPanel {
 		else {
 			RootView.getInstance().showDefaultView();
 		}
+	}
+
+	private void doReleaseTables() {
+		List<Integer> tableNumbers = ticket.getTableNumbers();
+		if (tableNumbers == null || tableNumbers.isEmpty())
+			return;
+		ShopTableStatusDAO.getInstance().removeTicketFromShopTableStatus(ticket, null);
 	}
 
 	public void doCancelOrder() {// GEN-FIRST:event_doCancelOrder

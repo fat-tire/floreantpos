@@ -16,17 +16,13 @@ import java.io.Serializable;
 public abstract class BaseShopTable  implements Comparable, Serializable {
 
 	public static String REF = "ShopTable"; //$NON-NLS-1$
-	public static String PROP_SERVING = "serving"; //$NON-NLS-1$
 	public static String PROP_FLOOR = "floor"; //$NON-NLS-1$
 	public static String PROP_DESCRIPTION = "description"; //$NON-NLS-1$
 	public static String PROP_CAPACITY = "capacity"; //$NON-NLS-1$
+	public static String PROP_SHOP_TABLE_STATUS = "shopTableStatus"; //$NON-NLS-1$
 	public static String PROP_X = "x"; //$NON-NLS-1$
-	public static String PROP_BOOKED = "booked"; //$NON-NLS-1$
 	public static String PROP_Y = "y"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_FREE = "free"; //$NON-NLS-1$
-	public static String PROP_DIRTY = "dirty"; //$NON-NLS-1$
-	public static String PROP_DISABLE = "disable"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
 
@@ -60,11 +56,9 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		protected java.lang.Integer capacity;
 		protected java.lang.Integer x;
 		protected java.lang.Integer y;
-		protected java.lang.Boolean free;
-		protected java.lang.Boolean serving;
-		protected java.lang.Boolean booked;
-		protected java.lang.Boolean dirty;
-		protected java.lang.Boolean disable;
+
+	// one to one
+	private com.floreantpos.model.ShopTableStatus shopTableStatus;
 
 	// many to one
 	private com.floreantpos.model.ShopFloor floor;
@@ -199,86 +193,18 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 
 
 	/**
-	 * Return the value associated with the column: FREE
+	 * Return the value associated with the column: shopTableStatus
 	 */
-	public java.lang.Boolean isFree () {
-								return free == null ? Boolean.FALSE : free;
-					}
+	public com.floreantpos.model.ShopTableStatus getShopTableStatus () {
+					return shopTableStatus;
+			}
 
 	/**
-	 * Set the value related to the column: FREE
-	 * @param free the FREE value
+	 * Set the value related to the column: shopTableStatus
+	 * @param shopTableStatus the shopTableStatus value
 	 */
-	public void setFree (java.lang.Boolean free) {
-		this.free = free;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: SERVING
-	 */
-	public java.lang.Boolean isServing () {
-								return serving == null ? Boolean.FALSE : serving;
-					}
-
-	/**
-	 * Set the value related to the column: SERVING
-	 * @param serving the SERVING value
-	 */
-	public void setServing (java.lang.Boolean serving) {
-		this.serving = serving;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: BOOKED
-	 */
-	public java.lang.Boolean isBooked () {
-								return booked == null ? Boolean.FALSE : booked;
-					}
-
-	/**
-	 * Set the value related to the column: BOOKED
-	 * @param booked the BOOKED value
-	 */
-	public void setBooked (java.lang.Boolean booked) {
-		this.booked = booked;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DIRTY
-	 */
-	public java.lang.Boolean isDirty () {
-								return dirty == null ? Boolean.FALSE : dirty;
-					}
-
-	/**
-	 * Set the value related to the column: DIRTY
-	 * @param dirty the DIRTY value
-	 */
-	public void setDirty (java.lang.Boolean dirty) {
-		this.dirty = dirty;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: DISABLE
-	 */
-	public java.lang.Boolean isDisable () {
-								return disable == null ? Boolean.FALSE : disable;
-					}
-
-	/**
-	 * Set the value related to the column: DISABLE
-	 * @param disable the DISABLE value
-	 */
-	public void setDisable (java.lang.Boolean disable) {
-		this.disable = disable;
+	public void setShopTableStatus (com.floreantpos.model.ShopTableStatus shopTableStatus) {
+		this.shopTableStatus = shopTableStatus;
 	}
 
 
@@ -329,7 +255,7 @@ public abstract class BaseShopTable  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.ShopTable)) return false;
 		else {
 			com.floreantpos.model.ShopTable shopTable = (com.floreantpos.model.ShopTable) obj;
-			if (null == this.getId() || null == shopTable.getId()) return false;
+			if (null == this.getId() || null == shopTable.getId()) return this == obj;
 			else return (this.getId().equals(shopTable.getId()));
 		}
 	}

@@ -261,4 +261,9 @@ public class OrderInfoDialog extends POSDialog {
 	public boolean isReorder() {
 		return reorder;
 	}
+
+	public void showOnlyPrintButton() {
+		btnReOrder.setVisible(false);
+		btnTransferUser.setVisible(false);
+	}
 }

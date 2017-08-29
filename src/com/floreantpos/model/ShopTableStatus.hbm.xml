@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.ShopTableStatus" table="SHOP_TABLE_STATUS">
+        <id column="ID" name="id" type="java.lang.Integer">
+           <generator class="assigned" />
+        </id>
+        <version name="version" column="VERSION_NO" type="long" />
+		<property column="TABLE_STATUS"  name="tableStatusNum" type="java.lang.Integer" />
+		
+		<bag name="ticketNumbers" table="TABLE_TICKET_NUM" lazy="false" cascade="all">
+			<key column="SHOP_TABLE_STATUS_ID" />
+			<composite-element class="com.floreantpos.model.ShopTableTicket">
+				<property name="ticketId" column="TICKET_ID" type="java.lang.Integer" />
+				<property column="USER_ID" name="userId" type="java.lang.Integer" />
+				<property column="USER_NAME" length="30" name="userName" type="java.lang.String" />				
+			</composite-element>
+		</bag>
+	</class>
+</hibernate-mapping>

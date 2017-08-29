@@ -18,31 +18,28 @@
 package com.floreantpos.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 
-import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.views.payment.SettleTicketDialog;
+import com.floreantpos.ui.views.order.TicketSelectionDialog;
+import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
 import com.floreantpos.util.POSUtil;
 
-public class SettleTicketAction extends AbstractAction {
+public class GroupSettleTicketAction extends AbstractAction {
 
-	private int ticketId;
-	private User currentUser;
+	private List<Ticket> tickets;
 
-	public SettleTicketAction(int ticketId) {
-		this.ticketId = ticketId;
+	public GroupSettleTicketAction() {
 	}
 
-	public SettleTicketAction(int ticketId, User currentUser) {
-		this.ticketId = ticketId;
-		this.currentUser = currentUser;
+	public GroupSettleTicketAction(List<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 
 	@Override
@@ -51,26 +48,39 @@ public class SettleTicketAction extends AbstractAction {
 	}
 
 	public boolean execute() {
-		Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
-
-		if (ticket.isPaid()) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketAction.0")); //$NON-NLS-1$
+		if (!POSUtil.checkDrawerAssignment()) {
 			return false;
 		}
 
-		SettleTicketDialog posDialog = new SettleTicketDialog(ticket, currentUser);
+		if (tickets == null || tickets.isEmpty()) {
+			TicketSelectionDialog ticketSelectionDialog = new TicketSelectionDialog();
+			ticketSelectionDialog.open();
 
-		if (ticket.isBarTab()) {
-			posDialog.getTicketProcessor().doSettleBarTabTicket(ticket);
-			return true;
+			if (ticketSelectionDialog.isCanceled()) {
+				return false;
+			}
 
+			List<Ticket> selectedTickets = ticketSelectionDialog.getSelectedTickets();
+			if (selectedTickets == null) {
+				return false;
+			}
+
+			tickets = new ArrayList<Ticket>();
+
+			for (int i = 0; i < selectedTickets.size(); i++) {
+				Ticket ticket = selectedTickets.get(i);
+
+				Ticket fullTicket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
+				if (fullTicket.getOrderType().isBarTab())
+					continue;
+				tickets.add(fullTicket);
+			}
 		}
-		else {
-			posDialog.setSize(Application.getPosWindow().getSize());
-			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			posDialog.openUndecoratedFullScreen();
-			return !posDialog.isCanceled();
-		}
+		GroupSettleTicketDialog posDialog = new GroupSettleTicketDialog(tickets);
+		posDialog.setSize(Application.getPosWindow().getSize());
+		posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		posDialog.openUndecoratedFullScreen();
+		return true;
 	}
 
 }

@@ -20,6 +20,7 @@ package com.floreantpos.model;
 import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.model.base.BasePosTransaction;
@@ -30,28 +31,22 @@ public class PosTransaction extends BasePosTransaction {
 	private static final long serialVersionUID = 1L;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
-	public PosTransaction () {
+	public PosTransaction() {
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public PosTransaction (java.lang.Integer id) {
+	public PosTransaction(java.lang.Integer id) {
 		super(id);
 	}
 
 	/**
 	 * Constructor for required fields
 	 */
-	public PosTransaction (
-		java.lang.Integer id,
-		java.lang.String transactionType,
-		java.lang.String paymentType) {
+	public PosTransaction(java.lang.Integer id, java.lang.String transactionType, java.lang.String paymentType) {
 
-		super (
-			id,
-			transactionType,
-			paymentType);
+		super(id, transactionType, paymentType);
 	}
 
 	/*[CONSTRUCTOR MARKER END]*/
@@ -69,7 +64,7 @@ public class PosTransaction extends BasePosTransaction {
 	public final static String REFUND = "REFUND"; //$NON-NLS-1$
 	public final static String PAY_OUT = "PAY_OUT"; //$NON-NLS-1$
 	public final static String VOID_TRANS = "VOID_TRANS"; //$NON-NLS-1$
-	
+
 	@Override
 	protected void initialize() {
 		setGlobalId(GlobalIdGenerator.generateGlobalId());
@@ -147,7 +142,7 @@ public class PosTransaction extends BasePosTransaction {
 	}
 
 	public Double calculateAuthorizeAmount() {
-		
+
 		double advanceTipsPercentage = CardConfig.getAdvanceTipsPercentage();
 		return getTenderAmount() + getTenderAmount() * (advanceTipsPercentage / 100);
 	}
@@ -183,12 +178,21 @@ public class PosTransaction extends BasePosTransaction {
 	public void setCardExpMonth(String expMonth) {
 		this.cardExpMonth = expMonth;
 	}
-	
+
 	public String getTicketId() {
 		Ticket ticket = getTicket();
 		if (ticket == null) {
 			return "";
 		}
 		return String.valueOf(ticket.getId());
+	}
+
+	public void setId(Object generateGlobalId) {
+		if (generateGlobalId instanceof String) {
+			super.setId(NumberUtils.toInt(String.valueOf(generateGlobalId)));
+		}
+		else {
+			super.setId(Integer.valueOf(String.valueOf(generateGlobalId)));
+		}
 	}
 }

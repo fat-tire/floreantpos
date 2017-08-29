@@ -31,6 +31,7 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.PosTransaction;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
@@ -120,53 +121,52 @@ public class TransactionListView extends JPanel {
 	private class TransactionListTableModel extends ListTableModel<PosTransaction> {
 		public TransactionListTableModel() {
 			super(
-                                //Breadfruit Edit
-					new String[] {
-							Messages.getString("TransactionListView.0"), 
-                                            //Messages.getString("TransactionListView.1"), 
-                                            //Messages.getString("TransactionListView.8"), 
-                                             Messages.getString("TransactionListView.8"), 
-                                             Messages.getString("TransactionListView.2"), 
-                                             Messages.getString("TransactionListView.4"), 
-                                             "TIP OVERAGE", 
-                                             Messages.getString("TransactionListView.5"), 
-                                             Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			//Breadfruit Edit
+					new String[] { Messages.getString("TransactionListView.0"),
+							Messages.getString("TransactionListView.1"),
+							//Messages.getString("TransactionListView.8"), 
+							Messages.getString("TransactionListView.8"), Messages.getString("TransactionListView.2"), "CARD NO.", "AUTH CODE",
+							Messages.getString("TransactionListView.4"), "TIP OVERAGE", Messages.getString("TransactionListView.5"),
+							Messages.getString("TransactionListView.6") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			PosTransaction transaction = rows.get(rowIndex);
 
+			Ticket ticket = transaction.getTicket();
 			switch (columnIndex) {
 				case 0:
 					return transaction.getCardTransactionId();
 
-				//case 1:
-					//return transaction.getTicket().getId();
 				case 1:
+					return transaction.getTicket().getId();
+				case 2:
 					return transaction.getTransactionTime();
 
-				case 2:
-					return transaction.getTicket().getOwner().getFirstName();
-
-				//case 4:
-					//return transaction.getCardType();
-
 				case 3:
-					return transaction.getTipsAmount();
+					return ticket.getOwner().getFirstName();
+
 				case 4:
-					return transaction.getTipsExceedAmount();
+					return "****" + transaction.getCardNumber();
 
 				case 5:
-					return transaction.getAmount() - transaction.getTipsAmount();
+					return transaction.getCardAuthCode();
 
 				case 6:
+					return transaction.getTipsAmount();
+				case 7:
+					return transaction.getTipsExceedAmount();
+
+				case 8:
+					return transaction.getAmount() - transaction.getTipsAmount();
+
+				case 9:
 					return transaction.getAmount();
 
 			}
 
 			return null;
 		}
-
 	}
 
 	public PosTransaction getFirstSelectedTransaction() {
