@@ -17,7 +17,10 @@
  */
 package com.floreantpos.model.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
+
+import org.hibernate.Query;
 
 import com.floreantpos.model.Restaurant;
 
@@ -29,6 +32,13 @@ public class RestaurantDAO extends BaseRestaurantDAO {
 	 * Default constructor.  Can be used in place of getInstance()
 	 */
 	public RestaurantDAO () {}
+	
+	public Timestamp geTimestamp() {
+		Query query = getSession().createQuery("select current_timestamp() from Restaurant");
+		query.setFirstResult(0);
+		query.setMaxResults(1);
+		return (Timestamp) query.list().get(0);
+	}
 
 	public static Restaurant getRestaurant() {
 		Restaurant restaurant = getInstance().get(Integer.valueOf(1));
