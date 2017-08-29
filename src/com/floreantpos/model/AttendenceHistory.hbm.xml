@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
   <class lazy="false" name="com.floreantpos.model.AttendenceHistory" table="ATTENDENCE_HISTORY">
     <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="com.floreantpos.util.IntegerIdGenerator"/>
+      <generator class="identity"/>
     </id>
     <property column="CLOCK_IN_TIME" name="clockInTime" type="java.util.Date"/>
     <property column="CLOCK_OUT_TIME" name="clockOutTime" type="java.util.Date"/>

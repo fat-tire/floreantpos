@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.MenuCategory"
 		table="MENU_CATEGORY">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="com.floreantpos.util.IntegerIdGenerator" />
+			<generator class="identity" />
 		</id>
 
 		<property column="NAME" length="120" name="name" not-null="true"

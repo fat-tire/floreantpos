@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.KitchenTicketItem" table="KITCHEN_TICKET_ITEM">
 
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="com.floreantpos.util.IntegerIdGenerator" />
+			<generator class="identity" />
 		</id>
 
 		<property column="COOKABLE" name="cookable" type="java.lang.Boolean" />

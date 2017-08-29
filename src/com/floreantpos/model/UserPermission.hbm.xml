@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
   <class lazy="false" name="com.floreantpos.model.UserPermission" table="USER_PERMISSION">
     <!--id name="id" column="ID" type="java.lang.Integer">
-			<generator class="com.floreantpos.util.IntegerIdGenerator"></generator>
+			<generator class="identity"></generator>
 		</id-->
     <id column="NAME" length="40" name="name" type="string">
       <generator class="assigned"/>

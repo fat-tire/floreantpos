@@ -38,6 +38,7 @@ import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
+import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.TaxGroup;
@@ -45,6 +46,7 @@ import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.MenuItemModifierGroupDAO;
+import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.datamigrate.Elements;
@@ -144,28 +146,28 @@ public class DataImportAction extends AbstractAction {
 				}
 			}
 
-//			List<MenuModifier> menuModifiers = elements.getMenuModifiers();
-//			if (menuModifiers != null) {
-//				for (MenuModifier menuModifier : menuModifiers) {
-//
-//					objectMap.put(menuModifier.getUniqueId(), menuModifier);
-//					menuModifier.setId(null);
-//
-//					MenuModifierGroup menuModifierGroup = menuModifier.getModifierGroup();
-//					if (menuModifierGroup != null) {
-//						menuModifierGroup = (MenuModifierGroup) objectMap.get(menuModifierGroup.getUniqueId());
-//						menuModifier.setModifierGroup(menuModifierGroup);
-//					}
-//
-//					Tax tax = menuModifier.getTax();
-//					if (tax != null) {
-//						tax = (Tax) objectMap.get(tax.getUniqueId());
-//						menuModifier.setTax(tax);
-//					}
-//
-//					MenuModifierDAO.getInstance().saveOrUpdate(menuModifier);
-//				}
-//			}
+			List<MenuModifier> menuModifiers = elements.getMenuModifiers();
+			if (menuModifiers != null) {
+				for (MenuModifier menuModifier : menuModifiers) {
+
+					objectMap.put(menuModifier.getUniqueId(), menuModifier);
+					menuModifier.setId(null);
+
+					MenuModifierGroup menuModifierGroup = menuModifier.getModifierGroup();
+					if (menuModifierGroup != null) {
+						menuModifierGroup = (MenuModifierGroup) objectMap.get(menuModifierGroup.getUniqueId());
+						menuModifier.setModifierGroup(menuModifierGroup);
+					}
+
+					Tax tax = menuModifier.getTax();
+					if (tax != null) {
+						tax = (Tax) objectMap.get(tax.getUniqueId());
+						menuModifier.setTax(tax);
+					}
+
+					MenuModifierDAO.getInstance().saveOrUpdate(menuModifier);
+				}
+			}
 
 			List<MenuItemModifierGroup> menuItemModifierGroups = elements.getMenuItemModifierGroups();
 			if (menuItemModifierGroups != null) {

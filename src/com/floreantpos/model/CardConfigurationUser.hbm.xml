@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
   <class lazy="false" name="com.floreantpos.model.User" table="USERS">
     <id column="AUTO_ID" name="autoId" type="java.lang.Integer">
-      <generator class="com.floreantpos.util.IntegerIdGenerator"/>
+      <generator class="identity"/>
     </id>
     
     <property column="CARD_READER" name="userId" type="java.lang.Integer" unique="true"/>

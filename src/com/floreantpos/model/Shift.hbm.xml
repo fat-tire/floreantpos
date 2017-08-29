@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
   <class lazy="false" name="Shift" table="SHIFT">
     <id column="ID" name="id" type="java.lang.Integer">
-      <generator class="com.floreantpos.util.IntegerIdGenerator"/>
+      <generator class="identity"/>
     </id>
     <property column="NAME" length="60" name="name" not-null="true" type="string" unique="true"/>
     <property column="START_TIME" name="startTime" type="java.util.Date"/>

@@ -4,7 +4,7 @@
 
 	<class lazy="false" name="com.floreantpos.model.ShopFloor" table="SHOP_FLOOR">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="com.floreantpos.util.IntegerIdGenerator" />
+			<generator class="identity" />
 		</id>
 		<property column="NAME" length="60" name="name" type="java.lang.String" />
 		<property column="OCCUPIED" name="occupied" type="java.lang.Boolean" />

@@ -3,7 +3,7 @@
 <hibernate-mapping package="com.floreantpos.model">
 	<class lazy="false" name="com.floreantpos.model.DeliveryCharge" table="DELIVERY_CHARGE">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="com.floreantpos.util.IntegerIdGenerator" />
+			<generator class="identity" />
 		</id>
 		<property column="NAME" name="name" length="220" type="java.lang.String" />
 		<property column="ZIP_CODE" name="zipCode" length="20" type="java.lang.String" />

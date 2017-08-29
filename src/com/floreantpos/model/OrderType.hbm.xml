@@ -4,7 +4,7 @@
 	<class lazy="false" name="com.floreantpos.model.OrderType"
 		table="ORDER_TYPE">
 		<id column="ID" name="id" type="java.lang.Integer">
-			<generator class="com.floreantpos.util.IntegerIdGenerator" />
+			<generator class="identity" />
 		</id>
 
 		<property column="NAME" length="120" name="name" unique="true" not-null="true" type="java.lang.String" />
