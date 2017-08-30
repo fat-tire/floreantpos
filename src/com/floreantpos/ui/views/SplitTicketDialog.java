@@ -61,6 +61,7 @@ import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.TicketForSplitView;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 /**
  *
@@ -247,6 +248,10 @@ public class SplitTicketDialog extends POSDialog {
 	}//GEN-LAST:event_btnCancelActionPerformed
 
 	private synchronized void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
+		if (mainTicketView.getTicket().getTicketItems().isEmpty()) {
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), Messages.getString("SplitTicketDialog.1")); //$NON-NLS-1$
+			return;
+		}
 		Session session = null;
 		Transaction tx = null;
 
@@ -405,7 +410,7 @@ public class SplitTicketDialog extends POSDialog {
 			updateModel(originalTicket);
 			updateModel(splitTicket);
 		}
-		splitTicket.addProperty(Ticket.SPLIT, "true");
+		splitTicket.addProperty(Ticket.SPLIT, "true"); //$NON-NLS-1$
 		splitTicket.addProperty(Ticket.SPLIT_NUMBER, String.valueOf(view.getViewNumber()));
 		splitTicket.addProperty(Ticket.ORIGINAL_SPLIT_TICKET_ID, String.valueOf(originalTicket.getId()));
 		TicketDAO.getInstance().saveOrUpdate(splitTicket, session);
