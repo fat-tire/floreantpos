@@ -40,6 +40,7 @@ import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.OrderTypeDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
+import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.util.DiscountUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
@@ -69,16 +70,17 @@ public class Ticket extends BaseTicket {
 	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code"; //$NON-NLS-1$
 
 	private OrderType orderType;
+	private String diffWithCrntTime;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket () {
+	public Ticket() {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket (java.lang.Integer id) {
+	public Ticket(java.lang.Integer id) {
 		super(id);
 	}
 
@@ -860,5 +862,13 @@ public class Ticket extends BaseTicket {
 				}
 			}
 		}
+	}
+
+	public String getDiffWithCrntTime() {
+		return DateUtil.getElapsedTime(getCreateDate(), new Date());
+	}
+
+	public void setDiffWithCrntTime(String diffWithCrntTime) {
+		this.diffWithCrntTime = diffWithCrntTime;
 	}
 }

@@ -21,6 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
 public class DateUtil {
 	public static Date startOfDay(Date date) {
 		Calendar cal = Calendar.getInstance();
@@ -103,6 +106,47 @@ public class DateUtil {
 	public static boolean isSameDay(Calendar cal1, Calendar cal2) {
 		return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2
 				.get(Calendar.DAY_OF_YEAR));
+	}
+
+	public static String getElapsedTime(Date oldTime, Date newTime) {
+		DateTime startDate = new DateTime(oldTime);
+		DateTime endDate = new DateTime(newTime);
+		Interval interval = new Interval(startDate, endDate);
+		long days = interval.toDuration().getStandardDays();
+		long hours = interval.toDuration().getStandardHours();
+		long minutes = interval.toDuration().getStandardMinutes();
+		long seconds = interval.toDuration().getStandardSeconds();
+
+		hours = hours % 24;
+		minutes = minutes % 60;
+		seconds = seconds % 60;
+
+		String strDays = days + " days, ";
+		String strHours = hours + " hours, ";
+		String strMins = minutes + " mins";
+		String strSec = seconds + " secs";
+		String strAgo = " ago";
+
+		String fullTime = strDays + strHours + strMins + strAgo;
+		String timeWithoutDay = strHours + strMins + strAgo;
+		String timeWithoutHour = strMins + strAgo;
+		String timeWithoutMin = strSec + strAgo;
+
+		if (days != 0) {
+			return fullTime;
+		}
+		else if (hours != 0) {
+			return timeWithoutDay;
+		}
+		else if (minutes != 0) {
+			return timeWithoutHour;
+		}
+		else if (seconds != 0) {
+			return timeWithoutMin;
+		}
+		else {
+			return "not printed yet";
+		}
 	}
 
 }

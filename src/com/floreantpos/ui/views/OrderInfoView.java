@@ -18,6 +18,7 @@
 package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,10 @@ import net.miginfocom.swing.MigLayout;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import com.floreantpos.main.Application;
+import com.floreantpos.model.GuestCheckPrint;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.GuestCheckPrintDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.report.TicketPrintProperties;
 import com.floreantpos.swing.PosScrollPane;
@@ -77,10 +81,30 @@ public class OrderInfoView extends JPanel {
 			ReceiptPrintService.printTicket(ticket);
 		}
 	}
-	
+
+	private void doCreateGuestCheck(Ticket ticket) {
+		GuestCheckPrint guestCheckPrint = new GuestCheckPrint();
+		guestCheckPrint.setTicketId(ticket.getId());
+		guestCheckPrint.setPrintTime(new Date());
+		guestCheckPrint.setTicketTotal(ticket.getTotalAmount());
+		guestCheckPrint.setUser(Application.getCurrentUser());
+
+		String strTableNumbers = "";
+		List<Integer> tableNumbers = ticket.getTableNumbers();
+		if (tableNumbers != null) {
+			for (Integer integer : tableNumbers) {
+				strTableNumbers += integer + " ";
+			}
+		}
+		guestCheckPrint.setTableNo(strTableNumbers);
+
+		GuestCheckPrintDAO.getInstance().saveOrUpdate(guestCheckPrint);
+	}
+
 	public void printCopy(String copyType) throws Exception {
 		for (Iterator iter = tickets.iterator(); iter.hasNext();) {
 			Ticket ticket = (Ticket) iter.next();
+			doCreateGuestCheck(ticket);
 			ReceiptPrintService.printTicket(ticket, copyType);
 		}
 	}

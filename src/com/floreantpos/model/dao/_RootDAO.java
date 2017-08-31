@@ -44,6 +44,7 @@ import com.floreantpos.model.DrawerPullReport;
 import com.floreantpos.model.EmployeeInOutHistory;
 import com.floreantpos.model.GlobalConfig;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.GuestCheckPrint;
 import com.floreantpos.model.InventoryGroup;
 import com.floreantpos.model.InventoryItem;
 import com.floreantpos.model.InventoryLocation;
@@ -191,6 +192,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		configuration.addClass(Multiplier.class);
 		configuration.addClass(ModifierMultiplierPrice.class);
 		configuration.addClass(TaxGroup.class);
+		configuration.addClass(GuestCheckPrint.class);
 
 		configureInventoryClasses(configuration);
 

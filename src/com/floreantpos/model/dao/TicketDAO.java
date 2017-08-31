@@ -1211,6 +1211,7 @@ public class TicketDAO extends BaseTicketDAO {
 					Ticket ticket = new Ticket();
 					ticket.setId(Integer.valueOf("" + row[0]));
 					ticket.setDueAmount(Double.valueOf("" + row[1]));
+					ticket.setCreateDate((Date) row[2]);
 					return ticket;
 				}
 

@@ -17,6 +17,7 @@
  */
 package com.floreantpos.model;
 
+import java.util.Date;
 import java.util.List;
 
 import com.floreantpos.model.base.BaseShopTable;
@@ -40,6 +41,7 @@ public class ShopTable extends BaseShopTable {
 	/*[CONSTRUCTOR MARKER END]*/
 
 	private boolean isTemporary;
+	private Date ticketCreateTime;
 
 	public ShopTable(Integer x, Integer y) {
 		super();
@@ -173,5 +175,13 @@ public class ShopTable extends BaseShopTable {
 
 	public void setDisable(java.lang.Boolean disable) {
 		setTableStatus(disable ? TableStatus.Disable : TableStatus.Available);
+	}
+
+	public Date getTicketCreateTime() {
+		return ticketCreateTime;
+	}
+
+	public void setTicketCreateTime(Date ticketCreateTime) {
+		this.ticketCreateTime = ticketCreateTime;
 	}
 }

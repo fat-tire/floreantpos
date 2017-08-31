@@ -18,6 +18,7 @@
 package com.floreantpos.swing;
 
 import java.awt.Color;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -28,6 +29,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.model.util.DateUtil;
 import com.floreantpos.services.TicketService;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.PasswordEntryDialog;
@@ -85,9 +87,14 @@ public class ShopTableButton extends PosButton {
 		String userName = shopTable.getUserName();
 
 		String ticketIdAsString = shopTable.getTicketIdAsString();
-		if (StringUtils.isNotEmpty(ticketIdAsString)) {
+		Date ticketCreateTime = shopTable.getTicketCreateTime();
+
+		if (StringUtils.isNotEmpty(ticketIdAsString) && ticketCreateTime == null) {
 			ticketIdAsString = "<br>Chk#" + ticketIdAsString;
 			setForeground(Color.white);
+		}
+		else if (ticketCreateTime != null) {
+			ticketIdAsString = "<br>" + DateUtil.getElapsedTime(ticketCreateTime, new Date());
 		}
 		else {
 			serving = false;
