@@ -171,13 +171,14 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 			}
 			item.setBalance(NumberUtil.roundToThreeDigit(item.getBalance() + tenderAmount - cashBackAmount));
 		}
+		ticket.addProperty("MULTICURRENCY_CASH", "true");
 
 		setCanceled(false);
 		dispose();
 	}
 
 	private boolean isValidAmount() {
-		double remainingBalance = dueAmount - (totalTenderedAmount - totalCashBackAmount);
+		double remainingBalance = NumberUtil.roundToThreeDigit(dueAmount - (totalTenderedAmount - totalCashBackAmount));
 		if (totalTenderedAmount <= 0 || remainingBalance < 0) {
 			return false;
 		}
@@ -196,11 +197,20 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 
 	private boolean isTolerable() {
 		double tolerance = CurrencyUtil.getMainCurrency().getTolerance();
-		double diff = dueAmount - (totalTenderedAmount - totalCashBackAmount);
+		double diff = NumberUtil.roundToThreeDigit(dueAmount - (totalTenderedAmount - totalCashBackAmount));
 		if (diff <= tolerance) {
 			if (diff > 0) {
 				doAddToleranceToTicketDiscount(diff);
 			}
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isTolerableAmount() {
+		double tolerance = CurrencyUtil.getMainCurrency().getTolerance();
+		double diff = NumberUtil.roundToThreeDigit(dueAmount - (totalTenderedAmount - totalCashBackAmount));
+		if (diff <= tolerance) {
 			return true;
 		}
 		return false;
@@ -260,10 +270,13 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 			this.currency = currency;
 			this.remainingBalance = currency.getExchangeRate() * dueAmountInMainCurrency;
 
-			lblRemainingBalance = getJLabel(NumberUtil.format3DigitNumber(remainingBalance), Font.PLAIN, 16, JLabel.RIGHT);
+			lblRemainingBalance = getJLabel(NumberUtil.formatNumber(remainingBalance, currency.getDecimalPlaces()), Font.PLAIN, 16, JLabel.RIGHT);
 			currencyName = getJLabel(currency.getName(), Font.PLAIN, 16, JLabel.LEADING);
 			tfTenderdAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
 			tfCashBackAmount = getDoubleTextField("", Font.PLAIN, 16, JTextField.RIGHT);
+
+			tfTenderdAmount.setDecimalPlaces(currency.getDecimalPlaces());
+			tfCashBackAmount.setDecimalPlaces(currency.getDecimalPlaces());
 
 			tfTenderdAmount.addFocusListener(this);
 			tfCashBackAmount.addFocusListener(this);
@@ -291,7 +304,8 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 
 		void setRemainingBalance(double remainingBalance) {
 			this.remainingBalance = remainingBalance;
-			lblRemainingBalance.setText(NumberUtil.format3DigitNumber(remainingBalance));
+			lblRemainingBalance.setText(NumberUtil.formatNumber(remainingBalance, currency.getDecimalPlaces()));
+			tfTenderdAmount.setBackground(isTolerableAmount() ? Color.green : Color.white);
 		}
 
 		double getRemainingBalance() {
@@ -302,10 +316,10 @@ public class MultiCurrencyTenderDialog extends OkCancelOptionDialog {
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			if (source == btnExact) {
-				tfTenderdAmount.setText(String.valueOf(NumberUtil.roundToThreeDigit(remainingBalance)));
+				tfTenderdAmount.setText(String.valueOf(NumberUtil.formatNumber(remainingBalance, currency.getDecimalPlaces())));
 			}
 			else {
-				tfTenderdAmount.setText(String.valueOf(NumberUtil.roundToThreeDigit(Math.ceil(remainingBalance))));
+				tfTenderdAmount.setText(String.valueOf(NumberUtil.formatNumber(Math.ceil(remainingBalance), currency.getDecimalPlaces())));
 			}
 		}
 

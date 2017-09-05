@@ -43,7 +43,7 @@ public class NumberUtil {
 		bd = bd.setScale(2, RoundingMode.HALF_UP);
 		return bd.doubleValue();
 	}
-	
+
 	public static double roundToThreeDigit(double value) {
 		BigDecimal bd = new BigDecimal(value);
 		bd = bd.setScale(3, RoundingMode.HALF_UP);
@@ -75,7 +75,7 @@ public class NumberUtil {
 
 		return value;
 	}
-	
+
 	public static Number parse(String number) throws ParseException {
 		if (StringUtils.isEmpty(number)) {
 			return 0;
@@ -83,6 +83,7 @@ public class NumberUtil {
 
 		return numberFormat.parse(number);
 	}
+
 	public static String trimDecilamIfNotNeeded(Double number) {
 		if (number == null) {
 			return decimalFormat.format(0);
@@ -95,5 +96,16 @@ public class NumberUtil {
 		}
 
 		return value;
+	}
+
+	public static String formatNumber(double value, int decimalPlaces) {
+		if (decimalPlaces > 5) {
+			decimalPlaces = 5;
+		}
+		NumberFormat format = DecimalFormat.getInstance();
+		format.setMinimumFractionDigits(decimalPlaces);
+		format.setMaximumFractionDigits(decimalPlaces);
+		format.setRoundingMode(RoundingMode.HALF_UP);
+		return format.format(value);
 	}
 }

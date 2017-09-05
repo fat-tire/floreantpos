@@ -79,6 +79,8 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 		ticket.setOrderType(ticketType);
 		ticket.setNumberOfGuests(numberOfGuests);
 		ticket.setCustomer(customer);
+		if (customer != null)
+			ticket.setDeliveryAddress(customer.getAddress());
 		ticket.setTerminal(application.getTerminal());
 		ticket.setOwner(Application.getCurrentUser());
 		ticket.setShift(application.getCurrentShift());
@@ -159,7 +161,7 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 	public String getId() {
 		return "DefaultOrderServiceExtension"; //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public String getSecurityCode() {
 		return "-400343452";
@@ -212,6 +214,6 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 
 	@Override
 	public void showDeliveryInfo(OrderType orderType, Customer customer) {
-		
+
 	}
 }

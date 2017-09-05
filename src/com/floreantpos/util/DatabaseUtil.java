@@ -359,6 +359,7 @@ public class DatabaseUtil {
 
 			Currency currency = new Currency();
 			currency.setName("USD");
+			currency.setCode("USD");
 			currency.setSymbol("$");
 			currency.setExchangeRate(1.0);
 			currency.setMain(true);
@@ -366,26 +367,31 @@ public class DatabaseUtil {
 
 			currency = new Currency();
 			currency.setName("EUR");
+			currency.setCode("EUR");
 			currency.setSymbol("E");
 			currency.setExchangeRate(0.8);
 			CurrencyDAO.getInstance().save(currency);
 
 			currency = new Currency();
 			currency.setName("BRL");
+			currency.setCode("BRL");
 			currency.setSymbol("B");
 			currency.setExchangeRate(3.47);
 			CurrencyDAO.getInstance().save(currency);
 
 			currency = new Currency();
 			currency.setName("ARS");
+			currency.setCode("ARS");
 			currency.setSymbol("P");
 			currency.setExchangeRate(13.89);
 			CurrencyDAO.getInstance().save(currency);
 
 			currency = new Currency();
 			currency.setName("PYG");
+			currency.setCode("PYG");
 			currency.setSymbol("P");
 			currency.setExchangeRate(5639.78);
+			currency.setDecimalPlaces(0);
 			CurrencyDAO.getInstance().save(currency);
 
 			MenuItemSize menuItemSize = new MenuItemSize();

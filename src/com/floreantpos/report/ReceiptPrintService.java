@@ -488,16 +488,17 @@ public class ReceiptPrintService {
 					}
 					map.put("cardInformation", cardInformationForReceipt); //$NON-NLS-1$
 				}
-				if (TerminalConfig.isEnabledMultiCurrency()) {
+			}
+			if (TerminalConfig.isEnabledMultiCurrency()) {
+				if (Boolean.valueOf(ticket.getProperty("MULTICURRENCY_CASH"))) {//$NON-NLS-1$
 					StringBuilder multiCurrencyBreakdownCashBack = buildMultiCurrency(ticket, printProperties);
-					if (multiCurrencyBreakdownCashBack != null) {
+					if (multiCurrencyBreakdownCashBack != null)
 						map.put("additionalProperties", multiCurrencyBreakdownCashBack.toString()); //$NON-NLS-1$
-					}
-					else {
-						StringBuilder multiCurrencyTotalAmount = buildMultiCurrencyTotalAmount(ticket, printProperties);
-						if (multiCurrencyTotalAmount != null)
-							map.put("additionalProperties", multiCurrencyTotalAmount.toString()); //$NON-NLS-1$
-					}
+				}
+				else {
+					StringBuilder multiCurrencyTotalAmount = buildMultiCurrencyTotalAmount(ticket, printProperties);
+					if (multiCurrencyTotalAmount != null)
+						map.put("additionalProperties", multiCurrencyTotalAmount.toString()); //$NON-NLS-1$
 				}
 			}
 		}

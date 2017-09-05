@@ -40,9 +40,11 @@ import com.floreantpos.model.Currency;
 import com.floreantpos.model.dao.CurrencyDAO;
 import com.floreantpos.swing.DoubleTextField;
 import com.floreantpos.swing.FixedLengthTextField;
+import com.floreantpos.swing.IntegerTextField;
 import com.floreantpos.swing.MessageDialog;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.POSUtil;
 
 /**
@@ -57,6 +59,8 @@ public class CurrencyForm extends BeanEditor {
 	private DoubleTextField tfExchangeRate;
 	private DoubleTextField tfTolerance;
 	private JCheckBox chkMain;
+	private IntegerTextField tfDecimalPlaces = new IntegerTextField(5);
+	private JLabel lblTolerance;
 
 	public CurrencyForm() {
 		this(new Currency());
@@ -69,7 +73,7 @@ public class CurrencyForm extends BeanEditor {
 	}
 
 	private void initComponents() {
-		JPanel contentPanel = new JPanel(new MigLayout("fill"));
+		JPanel contentPanel = new JPanel(new MigLayout("hidemode 3,fill"));
 
 		JLabel lblCode = new JLabel("Code:");
 		tfCode = new FixedLengthTextField();
@@ -80,7 +84,7 @@ public class CurrencyForm extends BeanEditor {
 		JLabel lblExchangeRate = new JLabel("Exchange Rate:");
 		tfExchangeRate = new DoubleTextField();
 
-		JLabel lblTolerance = new JLabel("Tolerance:");
+		lblTolerance = new JLabel("Tolerance:");
 		tfTolerance = new DoubleTextField();
 
 		JLabel lblSymbol = new JLabel("Symbol");
@@ -95,7 +99,9 @@ public class CurrencyForm extends BeanEditor {
 		contentPanel.add(lblSymbol, "cell 0 2");
 		contentPanel.add(tfSymbol, "grow,cell 1 2");
 		contentPanel.add(lblExchangeRate, "cell 0 3");
-		contentPanel.add(tfExchangeRate, "grow,cell 1 3");
+		contentPanel.add(tfExchangeRate, "grow,cell 1 3,grow,split 3");
+		contentPanel.add(new JLabel("Decimal:"));
+		contentPanel.add(tfDecimalPlaces);
 		contentPanel.add(lblTolerance, "cell 0 4");
 		contentPanel.add(tfTolerance, "grow,cell 1 4");
 		contentPanel.add(chkMain, "cell 1 5");
@@ -113,6 +119,7 @@ public class CurrencyForm extends BeanEditor {
 			Currency currency = (Currency) getBean();
 			CurrencyDAO dao = new CurrencyDAO();
 			dao.saveOrUpdate(currency);
+			CurrencyUtil.populateCurrency();
 		} catch (Exception e) {
 			MessageDialog.showError(e);
 			return false;
@@ -133,6 +140,7 @@ public class CurrencyForm extends BeanEditor {
 		tfExchangeRate.setText("" + currency.getExchangeRate()); //$NON-NLS-1$
 		tfTolerance.setText("" + currency.getTolerance()); //$NON-NLS-1$
 		chkMain.setSelected(currency.isMain());
+		tfDecimalPlaces.setText(String.valueOf(currency.getDecimalPlaces()));
 	}
 
 	@Override
@@ -142,24 +150,30 @@ public class CurrencyForm extends BeanEditor {
 		String code = tfCode.getText();
 		String name = tfName.getText();
 		if (POSUtil.isBlankOrNull(code)) {
-			MessageDialog.showError("Code is required");
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), "Code is required");
 			return false;
 		}
-		
+
 		double exchangeRate = tfExchangeRate.getDouble();
-		if(chkMain.isSelected()) {
-			if(exchangeRate != 1.0) {
+		if (chkMain.isSelected()) {
+			if (exchangeRate != 1.0) {
 				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Exchange rate must be 1.0 for main currency");
 				return false;
 			}
 		}
-		
+		double tolerance = tfTolerance.getDoubleOrZero();
+		if (tolerance > 0 && !chkMain.isSelected()) {
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Please check main to set tolerance amount.");
+			tfTolerance.setText("0");
+			return false;
+		}
 		currency.setCode(code);
 		currency.setName(name);
 		currency.setSymbol(tfSymbol.getText());
 		currency.setMain(chkMain.isSelected());
+		currency.setTolerance(tolerance);
 		currency.setExchangeRate(exchangeRate);
-		currency.setTolerance(tfTolerance.getDouble());
+		currency.setDecimalPlaces(tfDecimalPlaces.getInteger());
 
 		if (chkMain.isSelected()) {
 			CurrencyDAO dao = new CurrencyDAO();

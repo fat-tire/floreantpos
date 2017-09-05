@@ -28,6 +28,10 @@ public class DoubleTextField extends FocusedTextField {
 		setDocument(new DoubleDocument());
 	}
 
+	public void setDecimalPlaces(Integer decimalPlaces) {
+		setDocument(new DoubleDocument(decimalPlaces));
+	}
+
 	public double getDouble() {
 		try {
 			return Double.parseDouble(getText());
@@ -35,7 +39,7 @@ public class DoubleTextField extends FocusedTextField {
 			return Double.NaN;
 		}
 	}
-	
+
 	public double getDoubleOrZero() {
 		try {
 			return Double.parseDouble(getText());

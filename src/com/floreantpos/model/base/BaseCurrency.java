@@ -1,5 +1,6 @@
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -14,16 +15,17 @@ import java.io.Serializable;
 
 public abstract class BaseCurrency  implements Comparable, Serializable {
 
-	public static String REF = "Currency";
-	public static String PROP_SALES_PRICE = "salesPrice";
-	public static String PROP_BUY_PRICE = "buyPrice";
-	public static String PROP_NAME = "name";
-	public static String PROP_MAIN = "main";
-	public static String PROP_TOLERANCE = "tolerance";
-	public static String PROP_EXCHANGE_RATE = "exchangeRate";
-	public static String PROP_SYMBOL = "symbol";
-	public static String PROP_ID = "id";
-	public static String PROP_CODE = "code";
+	public static String REF = "Currency"; //$NON-NLS-1$
+	public static String PROP_DECIMAL_PLACES = "decimalPlaces"; //$NON-NLS-1$
+	public static String PROP_SALES_PRICE = "salesPrice"; //$NON-NLS-1$
+	public static String PROP_EXCHANGE_RATE = "exchangeRate"; //$NON-NLS-1$
+	public static String PROP_SYMBOL = "symbol"; //$NON-NLS-1$
+	public static String PROP_TOLERANCE = "tolerance"; //$NON-NLS-1$
+	public static String PROP_ID = "id"; //$NON-NLS-1$
+	public static String PROP_CODE = "code"; //$NON-NLS-1$
+	public static String PROP_MAIN = "main"; //$NON-NLS-1$
+	public static String PROP_BUY_PRICE = "buyPrice"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
 
 	// constructors
@@ -53,6 +55,7 @@ public abstract class BaseCurrency  implements Comparable, Serializable {
 		protected java.lang.String name;
 		protected java.lang.String symbol;
 		protected java.lang.Double exchangeRate;
+		protected java.lang.Integer decimalPlaces;
 		protected java.lang.Double tolerance;
 		protected java.lang.Double buyPrice;
 		protected java.lang.Double salesPrice;
@@ -137,8 +140,8 @@ public abstract class BaseCurrency  implements Comparable, Serializable {
 	 * Return the value associated with the column: EXCHANGE_RATE
 	 */
 	public java.lang.Double getExchangeRate () {
-									return exchangeRate == null ? Double.valueOf(1) : exchangeRate;
-						}
+														return exchangeRate == null ? Double.valueOf(1) : exchangeRate;
+										}
 
 	/**
 	 * Set the value related to the column: EXCHANGE_RATE
@@ -154,6 +157,30 @@ public abstract class BaseCurrency  implements Comparable, Serializable {
 	 */
 	public static String getExchangeRateDefaultValue () {
 		return "1";
+	}
+
+
+	/**
+	 * Return the value associated with the column: DECIMAL_PLACES
+	 */
+	public java.lang.Integer getDecimalPlaces () {
+									return decimalPlaces == null ? 2 : decimalPlaces;
+						}
+
+	/**
+	 * Set the value related to the column: DECIMAL_PLACES
+	 * @param decimalPlaces the DECIMAL_PLACES value
+	 */
+	public void setDecimalPlaces (java.lang.Integer decimalPlaces) {
+		this.decimalPlaces = decimalPlaces;
+	}
+
+
+	/**
+	 * Custom property
+	 */
+	public static String getDecimalPlacesDefaultValue () {
+		return "2";
 	}
 
 
@@ -232,7 +259,7 @@ public abstract class BaseCurrency  implements Comparable, Serializable {
 		if (!(obj instanceof com.floreantpos.model.Currency)) return false;
 		else {
 			com.floreantpos.model.Currency currency = (com.floreantpos.model.Currency) obj;
-			if (null == this.getId() || null == currency.getId()) return false;
+			if (null == this.getId() || null == currency.getId()) return this == obj;
 			else return (this.getId().equals(currency.getId()));
 		}
 	}

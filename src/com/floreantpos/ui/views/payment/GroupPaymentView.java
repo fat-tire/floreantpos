@@ -34,9 +34,6 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -45,7 +42,7 @@ import com.floreantpos.model.CashDrawer;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.dao.CashDrawerDAO;
+import com.floreantpos.model.dao.TerminalDAO;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
@@ -54,6 +51,7 @@ import com.floreantpos.ui.dialog.MultiCurrencyTenderDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 public class GroupPaymentView extends JPanel {
 	private static final String ZERO = "0"; //$NON-NLS-1$
@@ -459,19 +457,11 @@ public class GroupPaymentView extends JPanel {
 		txtTenderedAmount.setText(NumberUtil.format3DigitNumber(dialog.getTenderedAmount()));
 		CashDrawer cashDrawer = dialog.getCashDrawer();
 
-		Session session = null;
-		Transaction tx = null;
 		try {
-			session = CashDrawerDAO.getInstance().createNewSession();
-			tx = session.beginTransaction();
-
-			session.saveOrUpdate(cashDrawer);
-			tx.commit();
+			TerminalDAO.getInstance().performBatchSave(cashDrawer);
 		} catch (Exception ex) {
-			tx.rollback();
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), ex.getMessage());
 			return false;
-		} finally {
-			session.close();
 		}
 		return true;
 	}

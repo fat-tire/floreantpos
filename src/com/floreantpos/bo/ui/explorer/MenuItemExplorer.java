@@ -84,7 +84,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.16"), "stockAmount"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(POSConstants.VISIBLE.toUpperCase(), "visible"); //$NON-NLS-1$
 		tableModel.addColumn(POSConstants.FOOD_GROUP.toUpperCase(), "parent"); //$NON-NLS-1$
-		tableModel.addColumn(POSConstants.TAX.toUpperCase(), "tax"); //$NON-NLS-1$
+		tableModel.addColumn(POSConstants.TAX.toUpperCase() + " " + POSConstants.GROUP.toUpperCase(), "taxGroup"); //$NON-NLS-1$
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.21"), "sortOrder"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.23"), "buttonColor"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableModel.addColumn(Messages.getString("MenuItemExplorer.25"), "textColor"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -93,7 +93,7 @@ public class MenuItemExplorer extends TransparentPanel {
 		List<MenuItem> findAll = MenuItemDAO.getInstance().getMenuItems();
 		tableModel.addRows(findAll);
 		table = new JXTable(tableModel);
-//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(Object.class, new CustomCellRenderer());
 		table.setRowHeight(60);
 

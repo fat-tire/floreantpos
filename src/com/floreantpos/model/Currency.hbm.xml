@@ -12,6 +12,9 @@
 		<property column="EXCHANGE_RATE" name="exchangeRate" type="java.lang.Double">
 			<meta attribute="defaultValue">1</meta>
 		</property>
+		<property column="DECIMAL_PLACES" name="decimalPlaces" type="java.lang.Integer">
+			<meta attribute="defaultValue">2</meta>
+		</property>
 		<property column="TOLERANCE" name="tolerance" type="java.lang.Double" />
 		<property column="BUY_PRICE" name="buyPrice" type="java.lang.Double" />
 		<property column="SALES_PRICE" name="salesPrice" type="java.lang.Double" />

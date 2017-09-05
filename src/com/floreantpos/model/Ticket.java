@@ -779,7 +779,8 @@ public class Ticket extends BaseTicket {
 
 		for (Iterator iterator = ticketItems.iterator(); iterator.hasNext();) {
 			TicketItem newItem = (TicketItem) iterator.next();
-
+			if (newItem.isPrintedToKitchen())
+				continue;
 			List<TicketItem> itemListInMap = itemMap.get(newItem.getItemId().toString());
 
 			if (itemListInMap == null) {

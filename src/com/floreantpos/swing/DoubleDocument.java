@@ -31,22 +31,36 @@ public class DoubleDocument extends PlainDocument {
 	/**
 	 * @param field
 	 */
+	private Integer decimalPlaces;
+
 	public DoubleDocument() {
+	}
+
+	public DoubleDocument(int decimalPlaces) {
+		this.decimalPlaces = decimalPlaces;
 	}
 
 	@Override
 	public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 		String value = getText(0, getLength());
-		
 		value = value + str;
-		
+		if (decimalPlaces != null) {
+			if (value.contains(".")) {
+				int currentLength = value.substring(value.indexOf("."), value.length()).length() - 1;
+
+				if (currentLength > this.decimalPlaces) {
+					Toolkit.getDefaultToolkit().beep();
+					return;
+				}
+			}
+		}
 		try {
 			Double.parseDouble(value);
-		}catch(Exception x) {
+		} catch (Exception x) {
 			Toolkit.getDefaultToolkit().beep();
 			return;
 		}
-		
+
 		super.insertString(offs, str, a);
 	}
 }
