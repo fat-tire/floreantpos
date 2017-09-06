@@ -495,7 +495,7 @@ public class ReceiptPrintService {
 					if (multiCurrencyBreakdownCashBack != null)
 						map.put("additionalProperties", multiCurrencyBreakdownCashBack.toString()); //$NON-NLS-1$
 				}
-				else {
+				else if (!ticket.isPaid()) {
 					StringBuilder multiCurrencyTotalAmount = buildMultiCurrencyTotalAmount(ticket, printProperties);
 					if (multiCurrencyTotalAmount != null)
 						map.put("additionalProperties", multiCurrencyTotalAmount.toString()); //$NON-NLS-1$
