@@ -51,7 +51,7 @@ public class ShopTableStatus extends BaseShopTableStatus {
 
 	public boolean hasMultipleTickets() {
 		List<ShopTableTicket> ticketNumbers = getTicketNumbers();
-		if (ticketNumbers != null && ticketNumbers.size() > 1)
+		if (ticketNumbers != null && ticketNumbers.size() > 0)
 			return true;
 		return false;
 	}
