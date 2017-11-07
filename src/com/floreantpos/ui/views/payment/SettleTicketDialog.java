@@ -65,6 +65,10 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 	private JTextField tfTotal;
 	private JTextField tfGratuity;
 	private SettleTicketProcessor ticketProcessor = null;
+	
+	public SettleTicketDialog(Ticket ticket) {
+		this(ticket, Application.getCurrentUser());
+	}
 
 	public SettleTicketDialog(Ticket ticket, User currentUser) {
 		super();
