@@ -46,6 +46,8 @@ import com.floreantpos.model.dao.MenuItemModifierGroupDAO;
 import com.floreantpos.model.dao.MenuModifierDAO;
 import com.floreantpos.model.dao.MenuModifierGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
+import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.datamigrate.Elements;
 
@@ -70,8 +72,7 @@ public class DataExportAction extends AbstractAction {
 
 			File file = fileChooser.getSelectedFile();
 			if (file.exists()) {
-				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(),
-						Messages.getString("DataExportAction.1") + file.getName() + "?", Messages.getString("DataExportAction.3"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				option = JOptionPane.showConfirmDialog(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataExportAction.1") + file.getName() + "?", Messages.getString("DataExportAction.3"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						JOptionPane.YES_NO_OPTION);
 				if (option != JOptionPane.YES_OPTION) {
 					return;
@@ -112,12 +113,11 @@ public class DataExportAction extends AbstractAction {
 			elements.setMenuModifierGroups(MenuModifierGroupDAO.getInstance().findAll(session));
 			elements.setMenuItems(MenuItemDAO.getInstance().findAll(session));
 			elements.setMenuItemModifierGroups(MenuItemModifierGroupDAO.getInstance().findAll(session));
-
-			//	        elements.setUsers(UserDAO.getInstance().findAll(session));
+			elements.setUsers(UserDAO.getInstance().findAll(session));
+			elements.setUserTypes(UserTypeDAO.getInstance().findAll(session));
 			//	        
 			//	        elements.setMenuItemShifts(MenuItemShiftDAO.getInstance().findAll(session));
 			//	        elements.setRestaurants(RestaurantDAO.getInstance().findAll(session));
-			//	        elements.setUserTypes(UserTypeDAO.getInstance().findAll(session));
 			//	        elements.setUserPermissions(UserPermissionDAO.getInstance().findAll(session));
 			//	        elements.setShifts(ShiftDAO.getInstance().findAll(session));
 

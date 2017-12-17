@@ -28,6 +28,8 @@ import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
 import com.floreantpos.model.MenuModifierGroup;
 import com.floreantpos.model.Tax;
+import com.floreantpos.model.User;
+import com.floreantpos.model.UserType;
 
 @XmlRootElement(name = "elements")
 public class Elements {
@@ -41,12 +43,10 @@ public class Elements {
 	List<MenuItemModifierGroup> menuItemModifierGroups;
 	List<MenuModifierGroup> menuModifierGroups;
 	List<MenuItem> menuItems;
-
-	//List<User> users;
-
+	List<User> users;
+	List<UserType> userTypes;
 	//	List<MenuItemShift> menuItemShifts;
 	//	List<Restaurant> restaurants;
-	//	List<UserType> userTypes;
 	//	List<UserPermission> userPermissions;
 	//	List<Shift> shifts;
 
@@ -71,7 +71,7 @@ public class Elements {
 
 		for (MenuGroup menuGroup : menuGroups) {
 			MenuCategory parent = menuGroup.getParent();
-			if(parent != null) {
+			if (parent != null) {
 				parent.setMenuGroups(null);
 			}
 		}
@@ -89,7 +89,7 @@ public class Elements {
 
 		for (MenuModifier menuModifier : menuModifiers) {
 			MenuModifierGroup modifierGroup = menuModifier.getModifierGroup();
-			if(modifierGroup != null) {
+			if (modifierGroup != null) {
 				modifierGroup.setModifiers(null);
 			}
 		}
@@ -111,14 +111,14 @@ public class Elements {
 		this.menuItems = menuItems;
 	}
 
-	//	public List<User> getUsers() {
-	//		return users;
-	//	}
-	//
-	//	public void setUsers(List<User> users) {
-	//		this.users = users;
-	//	}
-	//
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
 	public List<Tax> getTaxes() {
 		return taxes;
 	}
@@ -151,13 +151,13 @@ public class Elements {
 	//		this.restaurants = restaurants;
 	//	}
 	//
-	//	public List<UserType> getUserTypes() {
-	//		return userTypes;
-	//	}
-	//
-	//	public void setUserTypes(List<UserType> userTypes) {
-	//		this.userTypes = userTypes;
-	//	}
+	public List<UserType> getUserTypes() {
+		return userTypes;
+	}
+
+	public void setUserTypes(List<UserType> userTypes) {
+		this.userTypes = userTypes;
+	}
 	//
 	//	public List<UserPermission> getUserPermissions() {
 	//		return userPermissions;
