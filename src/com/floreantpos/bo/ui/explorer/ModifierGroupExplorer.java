@@ -30,7 +30,7 @@ import org.jdesktop.swingx.JXTable;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
@@ -40,7 +40,7 @@ import com.floreantpos.ui.model.MenuModifierGroupForm;
 import com.floreantpos.util.POSUtil;
 
 public class ModifierGroupExplorer extends TransparentPanel {
-	private List<MenuModifierGroup> mGroupList;
+	private List<ModifierGroup> mGroupList;
 
 	private JXTable table;
 	private ModifierGroupExplorerTableModel tableModel;
@@ -72,7 +72,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 					index = table.convertRowIndexToModel(index);
 
-					MenuModifierGroup category = mGroupList.get(index);
+					ModifierGroup category = mGroupList.get(index);
 
 					MenuModifierGroupForm editor = new MenuModifierGroupForm(category);
 					BeanEditorDialog dialog = new BeanEditorDialog(POSUtil.getBackOfficeWindow(), editor);
@@ -98,7 +98,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 					dialog.open();
 					if (dialog.isCanceled())
 						return;
-					MenuModifierGroup modifierGroup = (MenuModifierGroup) editor.getBean();
+					ModifierGroup modifierGroup = (ModifierGroup) editor.getBean();
 					tableModel.addModifierGroup(modifierGroup);
 				} catch (Throwable x) {
 					BOMessageDialog.showError(com.floreantpos.POSConstants.ERROR_MESSAGE, x);
@@ -120,7 +120,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 
 					if (ConfirmDeleteDialog.showMessage(ModifierGroupExplorer.this, com.floreantpos.POSConstants.CONFIRM_DELETE,
 							com.floreantpos.POSConstants.DELETE) != ConfirmDeleteDialog.NO) {
-						MenuModifierGroup category = mGroupList.get(index);
+						ModifierGroup category = mGroupList.get(index);
 						ModifierGroupDAO modifierCategoryDAO = new ModifierGroupDAO();
 						modifierCategoryDAO.delete(category);
 						tableModel.deleteModifierGroup(category, index);
@@ -167,7 +167,7 @@ public class ModifierGroupExplorer extends TransparentPanel {
 			if (mGroupList == null)
 				return ""; //$NON-NLS-1$
 
-			MenuModifierGroup mgroup = mGroupList.get(rowIndex);
+			ModifierGroup mgroup = mGroupList.get(rowIndex);
 
 			switch (columnIndex) {
 				case 0:
@@ -183,14 +183,14 @@ public class ModifierGroupExplorer extends TransparentPanel {
 			return null;
 		}
 
-		public void addModifierGroup(MenuModifierGroup category) {
+		public void addModifierGroup(ModifierGroup category) {
 			int size = mGroupList.size();
 			mGroupList.add(category);
 			fireTableRowsInserted(size, size);
 
 		}
 
-		public void deleteModifierGroup(MenuModifierGroup category, int index) {
+		public void deleteModifierGroup(ModifierGroup category, int index) {
 			mGroupList.remove(category);
 			fireTableRowsDeleted(index, index);
 		}

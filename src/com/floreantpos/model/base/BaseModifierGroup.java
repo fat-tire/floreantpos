@@ -1,22 +1,6 @@
-/**
- * ************************************************************************
- * * The contents of this file are subject to the MRPL 1.2
- * * (the  "License"),  being   the  Mozilla   Public  License
- * * Version 1.1  with a permitted attribution clause; you may not  use this
- * * file except in compliance with the License. You  may  obtain  a copy of
- * * the License at http://www.floreantpos.org/license.html
- * * Software distributed under the License  is  distributed  on  an "AS IS"
- * * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * * License for the specific  language  governing  rights  and  limitations
- * * under the License.
- * * The Original Code is FLOREANT POS.
- * * The Initial Developer of the Original Code is OROCUBE LLC
- * * All portions are Copyright (C) 2015 OROCUBE LLC
- * * All Rights Reserved.
- * ************************************************************************
- */
 package com.floreantpos.model.base;
 
+import java.lang.Comparable;
 import java.io.Serializable;
 
 
@@ -29,26 +13,26 @@ import java.io.Serializable;
  *  table="MENU_MODIFIER_GROUP"
  */
 
-public abstract class BaseMenuModifierGroup  implements Comparable, Serializable {
+public abstract class BaseModifierGroup  implements Comparable, Serializable {
 
-	public static String REF = "MenuModifierGroup"; //$NON-NLS-1$
-	public static String PROP_NAME = "name"; //$NON-NLS-1$
-	public static String PROP_EXCLUSIVE = "exclusive"; //$NON-NLS-1$
+	public static String REF = "ModifierGroup"; //$NON-NLS-1$
 	public static String PROP_REQUIRED = "required"; //$NON-NLS-1$
+	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_EXCLUSIVE = "exclusive"; //$NON-NLS-1$
 	public static String PROP_ENABLE = "enable"; //$NON-NLS-1$
 	public static String PROP_ID = "id"; //$NON-NLS-1$
-	public static String PROP_TRANSLATED_NAME = "translatedName"; //$NON-NLS-1$
+	public static String PROP_NAME = "name"; //$NON-NLS-1$
 
 
 	// constructors
-	public BaseMenuModifierGroup () {
+	public BaseModifierGroup () {
 		initialize();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public BaseMenuModifierGroup (java.lang.Integer id) {
+	public BaseModifierGroup (java.lang.Integer id) {
 		this.setId(id);
 		initialize();
 	}
@@ -207,11 +191,11 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 
 	public boolean equals (Object obj) {
 		if (null == obj) return false;
-		if (!(obj instanceof com.floreantpos.model.MenuModifierGroup)) return false;
+		if (!(obj instanceof com.floreantpos.model.ModifierGroup)) return false;
 		else {
-			com.floreantpos.model.MenuModifierGroup menuModifierGroup = (com.floreantpos.model.MenuModifierGroup) obj;
-			if (null == this.getId() || null == menuModifierGroup.getId()) return false;
-			else return (this.getId().equals(menuModifierGroup.getId()));
+			com.floreantpos.model.ModifierGroup modifierGroup = (com.floreantpos.model.ModifierGroup) obj;
+			if (null == this.getId() || null == modifierGroup.getId()) return false;
+			else return (this.getId().equals(modifierGroup.getId()));
 		}
 	}
 
@@ -219,7 +203,7 @@ public abstract class BaseMenuModifierGroup  implements Comparable, Serializable
 		if (Integer.MIN_VALUE == this.hashCode) {
 			if (null == this.getId()) return super.hashCode();
 			else {
-				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode(); //$NON-NLS-1$
+				String hashStr = this.getClass().getName() + ":" + this.getId().hashCode();
 				this.hashCode = hashStr.hashCode();
 			}
 		}

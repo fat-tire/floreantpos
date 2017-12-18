@@ -52,12 +52,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.Messages;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.ModifierMultiplierPrice;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.Tax;
@@ -76,6 +74,8 @@ import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
@@ -116,8 +116,8 @@ public class MenuModifierForm extends BeanEditor {
 		initComponents();
 
 		ModifierGroupDAO modifierGroupDAO = new ModifierGroupDAO();
-		List<MenuModifierGroup> groups = modifierGroupDAO.findAll();
-		cbModifierGroup.setModel(new DefaultComboBoxModel(new Vector<MenuModifierGroup>(groups)));
+		List<ModifierGroup> groups = modifierGroupDAO.findAll();
+		cbModifierGroup.setModel(new DefaultComboBoxModel(new Vector<ModifierGroup>(groups)));
 		priceTable.setModel(priceTableModel = new PriceByOrderType(modifier.getProperties()));
 
 		TaxDAO taxDAO = new TaxDAO();
@@ -288,8 +288,7 @@ public class MenuModifierForm extends BeanEditor {
 				setDefaultValue();
 			}
 		});
-		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null },
-				{ null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		priceTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][] { { null, null, null, null }, { null, null, null, null }, { null, null, null, null }, { null, null, null, null } }, new String[] { "Title 1", "Title 2", "Title 3", "Title 4" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		jScrollPane3.setViewportView(priceTable);
 
@@ -444,7 +443,7 @@ public class MenuModifierForm extends BeanEditor {
 		modifier.setName(name);
 		modifier.setExtraPrice(tfExtraPrice.getDouble());
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
-		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
+		modifier.setModifierGroup((ModifierGroup) cbModifierGroup.getSelectedItem());
 		modifier.setShouldPrintToKitchen(Boolean.valueOf(chkPrintToKitchen.isSelected()));
 
 		modifier.setTranslatedName(tfTranslatedName.getText());
@@ -614,8 +613,7 @@ public class MenuModifierForm extends BeanEditor {
 			POSMessageDialog.showMessage(this.getParentFrame(), Messages.getString("MenuModifierForm.7")); //$NON-NLS-1$
 			return;
 		}
-		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(),
-				Messages.getString("MenuModifierForm.21"), Messages.getString("MenuModifierForm.22")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(), Messages.getString("MenuModifierForm.21"), Messages.getString("MenuModifierForm.22")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -625,8 +623,7 @@ public class MenuModifierForm extends BeanEditor {
 
 	private void deleteAll() {
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(),
-				Messages.getString("MenuModifierForm.23"), Messages.getString("MenuModifierForm.24")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(this.getParentFrame(), Messages.getString("MenuModifierForm.23"), Messages.getString("MenuModifierForm.24")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
@@ -645,8 +642,7 @@ public class MenuModifierForm extends BeanEditor {
 		}
 
 		priceTableModel.propertiesKey.get(selectedRow);
-		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(), modifier,
-				String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
+		ModifierPriceByOrderTypeDialog dialog = new ModifierPriceByOrderTypeDialog(this.getParentFrame(), modifier, String.valueOf(priceTableModel.propertiesKey.get(selectedRow)));
 		dialog.setSize(350, 220);
 		dialog.open();
 		if (!dialog.isCanceled()) {

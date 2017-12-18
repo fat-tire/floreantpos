@@ -47,7 +47,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.swing.POSToggleButton;
 import com.floreantpos.swing.ScrollableFlowPanel;
 import com.jidesoft.swing.SimpleScrollPane;
@@ -111,7 +111,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 
 		for (Iterator<MenuItemModifierGroup> iter = modifierGroups.iterator(); iter.hasNext();) {
 			MenuItemModifierGroup menuItemModifierGroup = iter.next();
-			MenuModifierGroup menuModifierGroup = menuItemModifierGroup.getModifierGroup();
+			ModifierGroup menuModifierGroup = menuItemModifierGroup.getModifierGroup();
 			Set<MenuModifier> modifiers = menuModifierGroup.getModifiers();
 			if (modifiers == null || modifiers.size() == 0) {
 				continue;
@@ -126,7 +126,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	}
 
 	protected AbstractButton createItemButton(Object item) {
-		MenuModifierGroup menuModifierGroup = (MenuModifierGroup) item;
+		ModifierGroup menuModifierGroup = (ModifierGroup) item;
 
 		ModifierGroupButton button = new ModifierGroupButton(menuModifierGroup);
 		button.setPreferredSize(new Dimension(100, 80));
@@ -143,13 +143,13 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		listenerList.remove(listener);
 	}
 
-	private void fireModifierGroupSelected(MenuModifierGroup foodModifierGroup) {
+	private void fireModifierGroupSelected(ModifierGroup foodModifierGroup) {
 		for (ModifierGroupSelectionListener listener : listenerList) {
 			listener.modifierGroupSelected(foodModifierGroup);
 		}
 	}
 
-	public void setSelectedModifierGroup(MenuModifierGroup modifierGroup) {
+	public void setSelectedModifierGroup(ModifierGroup modifierGroup) {
 		Component[] components = contentPanel.getContentPane().getComponents();
 		if (components != null && components.length > 0) {
 			for (Component component : components) {
@@ -203,9 +203,9 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 	}
 
 	private class ModifierGroupButton extends POSToggleButton implements ActionListener {
-		MenuModifierGroup menuModifierGroup;
+		ModifierGroup menuModifierGroup;
 
-		ModifierGroupButton(MenuModifierGroup menuModifierGroup) {
+		ModifierGroupButton(ModifierGroup menuModifierGroup) {
 			this.menuModifierGroup = menuModifierGroup;
 			updateButtonText();
 			addActionListener(this);

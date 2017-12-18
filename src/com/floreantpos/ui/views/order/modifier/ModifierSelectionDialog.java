@@ -37,7 +37,7 @@ import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.TicketItem;
@@ -162,7 +162,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	@Override
-	public void modifierGroupSelected(MenuModifierGroup menuModifierGroup) {
+	public void modifierGroupSelected(ModifierGroup menuModifierGroup) {
 		modifierView.setModifierGroup(menuModifierGroup);
 	}
 
@@ -216,7 +216,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	@Override
-	public void clearModifiers(MenuModifierGroup modifierGroup) {
+	public void clearModifiers(ModifierGroup modifierGroup) {
 		TicketItem ticketItem = modifierSelectionModel.getTicketItem();
 		List<TicketItemModifier> ticketItemModifiers = ticketItem.getTicketItemModifiers();
 		if (ticketItemModifiers != null) {
@@ -242,7 +242,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	@Override
-	public void modifierGroupSelectionDone(MenuModifierGroup modifierGroup) {
+	public void modifierGroupSelectionDone(ModifierGroup modifierGroup) {
 		MenuItemModifierGroup menuItemModifierGroup = modifierGroup.getMenuItemModifierGroup();
 		if (!isRequiredModifiersAdded(modifierSelectionModel.getTicketItem(), menuItemModifierGroup)) {
 			showModifierSelectionMessage(menuItemModifierGroup);

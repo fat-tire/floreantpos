@@ -48,9 +48,9 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.bo.ui.CustomCellRenderer;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
-import com.floreantpos.model.dao.MenuModifierGroupDAO;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.dao.ModifierDAO;
+import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
@@ -211,17 +211,17 @@ public class ModifierExplorer extends TransparentPanel {
 	}
 
 	private JPanel buildSearchForm() {
-		List<MenuModifierGroup> grpName;
+		List<ModifierGroup> grpName;
 		JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("", "[][]30[][]30[]", "[]20[]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		JLabel nameLabel = new JLabel(Messages.getString("ModifierExplorer.3")); //$NON-NLS-1$
 		JLabel groupLabel = new JLabel(Messages.getString("ModifierExplorer.4")); //$NON-NLS-1$
 		final JTextField nameField = new JTextField(15);
-		grpName = MenuModifierGroupDAO.getInstance().findAll();
+		grpName = ModifierGroupDAO.getInstance().findAll();
 		final JComboBox cbGroup = new JComboBox();
 		cbGroup.addItem(Messages.getString("ModifierExplorer.5")); //$NON-NLS-1$
-		for (MenuModifierGroup s : grpName) {
+		for (ModifierGroup s : grpName) {
 			cbGroup.addItem(s);
 		}
 
@@ -244,8 +244,8 @@ public class ModifierExplorer extends TransparentPanel {
 				List<MenuModifier> modifierList;
 				String txName = nameField.getText();
 				Object selectedItem = cbGroup.getSelectedItem();
-				if (selectedItem instanceof MenuModifierGroup) {
-					modifierList = ModifierDAO.getInstance().findModifier(txName, (MenuModifierGroup) selectedItem);
+				if (selectedItem instanceof ModifierGroup) {
+					modifierList = ModifierDAO.getInstance().findModifier(txName, (ModifierGroup) selectedItem);
 				}
 				else {
 					modifierList = ModifierDAO.getInstance().findModifier(txName, null);

@@ -31,6 +31,8 @@ import com.floreantpos.model.dao.UserDAO;
 @XmlRootElement(name = "user")
 public class User extends BaseUser {
 	private static final long serialVersionUID = 1L;
+	private int id;
+	private boolean root;
 
 	/*[CONSTRUCTOR MARKER BEGIN]*/
 	public User() {
@@ -177,4 +179,21 @@ public class User extends BaseUser {
 	public boolean isAdministrator() {
 		return hasPermission(UserPermission.PERFORM_ADMINISTRATIVE_TASK);
 	}
+
+	public int getId() {
+		return super.getUserId();
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public boolean isRoot() {
+		return true;
+	}
+
+	public void setRoot(boolean root) {
+		this.root = root;
+	}
+
 }

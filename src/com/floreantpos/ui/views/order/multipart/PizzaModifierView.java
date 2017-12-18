@@ -46,7 +46,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.dao.MultiplierDAO;
@@ -80,7 +80,7 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 
 	private JPanel contentPanel;
 	private PizzaModifierSelectionDialog pizzaModifierSelectionDialog;
-	private MenuModifierGroup menuModifierGroup;
+	private ModifierGroup menuModifierGroup;
 	private ScrollableFlowPanel groupPanel;
 
 	public PizzaModifierView(TicketItem ticketItem, MenuItem menuItem, PizzaModifierSelectionDialog pizzaModifierSelectionDialog) {
@@ -291,7 +291,7 @@ public class PizzaModifierView extends JPanel implements ModifierGroupSelectionL
 	}
 
 	@Override
-	public void modifierGroupSelected(MenuModifierGroup menuModifierGroup) {
+	public void modifierGroupSelected(ModifierGroup menuModifierGroup) {
 		this.menuModifierGroup = menuModifierGroup;
 		contentPanel.repaint();
 		contentPanel.revalidate();

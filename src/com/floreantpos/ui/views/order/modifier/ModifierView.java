@@ -40,12 +40,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.TicketItemModifier;
@@ -57,6 +55,8 @@ import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.SelectionView;
 import com.floreantpos.util.CurrencyUtil;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  * 
  * @author MShahriar
@@ -65,7 +65,7 @@ public class ModifierView extends SelectionView {
 	private Vector<ModifierSelectionListener> listenerList = new Vector<ModifierSelectionListener>();
 
 	private ModifierSelectionModel modifierSelectionModel;
-	private MenuModifierGroup modifierGroup;
+	private ModifierGroup modifierGroup;
 
 	private PosButton btnClear = new PosButton(POSConstants.CLEAR);
 	private PosButton btnDone = new PosButton(POSConstants.GROUP.toUpperCase() + " " + "DONE");
@@ -126,7 +126,7 @@ public class ModifierView extends SelectionView {
 		});
 	}
 
-	public void setModifierGroup(MenuModifierGroup modifierGroup) {
+	public void setModifierGroup(ModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
 		buttonMap.clear();
 
@@ -213,15 +213,11 @@ public class ModifierView extends SelectionView {
 			TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
 			if (ticketItemModifier != null) {
 				count++;
-				modifierButton
-						.setText("<html><center>"
-								+ modifier.getDisplayName()
-								+ " <strong><span style='color:white;background-color:green;margin:0;"
-								+ "'>&nbsp; " + ticketItemModifier.getItemCount() + "&nbsp; </span></strong><h4>" + (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + " <strong><span style='color:white;background-color:green;margin:0;" + "'>&nbsp; " + ticketItemModifier.getItemCount() + "&nbsp; </span></strong><h4>" //$NON-NLS-3$//$NON-NLS-4$
+						+ (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>");
 			}
 			else {
-				modifierButton
-						.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>" + (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>" + (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 

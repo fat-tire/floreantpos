@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -31,6 +32,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -38,17 +40,19 @@ import com.floreantpos.Messages;
 import com.floreantpos.PosLog;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
+import com.floreantpos.model.User;
 import com.floreantpos.model.dao.GenericDAO;
 import com.floreantpos.model.dao.MenuCategoryDAO;
 import com.floreantpos.model.dao.MenuGroupDAO;
 import com.floreantpos.model.dao.MenuItemDAO;
 import com.floreantpos.model.dao.MenuItemModifierGroupDAO;
 import com.floreantpos.model.dao.MenuModifierDAO;
-import com.floreantpos.model.dao.MenuModifierGroupDAO;
+import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.model.dao.TaxDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.AESencrp;
 import com.floreantpos.util.datamigrate.Elements;
 
 public class DataExportAction extends AbstractAction {
@@ -59,7 +63,6 @@ public class DataExportAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Session session = null;
-		Transaction transaction = null;
 		FileWriter fileWriter = null;
 		GenericDAO dao = new GenericDAO();
 
@@ -89,7 +92,6 @@ public class DataExportAction extends AbstractAction {
 			StringWriter writer = new StringWriter();
 
 			session = dao.createNewSession();
-			transaction = session.beginTransaction();
 
 			Elements elements = new Elements();
 
@@ -110,10 +112,21 @@ public class DataExportAction extends AbstractAction {
 			elements.setMenuCategories(MenuCategoryDAO.getInstance().findAll(session));
 			elements.setMenuGroups(MenuGroupDAO.getInstance().findAll(session));
 			elements.setMenuModifiers(MenuModifierDAO.getInstance().findAll(session));
-			elements.setMenuModifierGroups(MenuModifierGroupDAO.getInstance().findAll(session));
+			elements.setModifierGroups(ModifierGroupDAO.getInstance().findAll(session));
 			elements.setMenuItems(MenuItemDAO.getInstance().findAll(session));
 			elements.setMenuItemModifierGroups(MenuItemModifierGroupDAO.getInstance().findAll(session));
-			elements.setUsers(UserDAO.getInstance().findAll(session));
+			List<User> users = UserDAO.getInstance().findAll(session);
+//			List<User> userList= new ArrayList<User>();
+			for (User user : users) {
+				try {
+					String password = user.getPassword();
+					if (StringUtils.isNotEmpty(password))
+						user.setPassword(AESencrp.encrypt(password));
+				} catch (Exception ex) {
+					continue;
+				}
+			}
+			elements.setUsers(users);
 			elements.setUserTypes(UserTypeDAO.getInstance().findAll(session));
 			//	        
 			//	        elements.setMenuItemShifts(MenuItemShiftDAO.getInstance().findAll(session));
@@ -123,8 +136,6 @@ public class DataExportAction extends AbstractAction {
 
 			m.marshal(elements, writer);
 
-			transaction.commit();
-
 			fileWriter = new FileWriter(file);
 			fileWriter.write(writer.toString());
 			fileWriter.close();
@@ -132,7 +143,6 @@ public class DataExportAction extends AbstractAction {
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), Messages.getString("DataExportAction.4")); //$NON-NLS-1$
 
 		} catch (Exception e1) {
-			transaction.rollback();
 			PosLog.error(getClass(), e1);
 			POSMessageDialog.showMessage(com.floreantpos.util.POSUtil.getFocusedWindow(), e1.getMessage());
 		} finally {

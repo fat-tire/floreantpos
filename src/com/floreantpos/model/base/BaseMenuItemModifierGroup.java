@@ -67,7 +67,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 		protected java.lang.Integer sortOrder;
 
 	// many to one
-	private com.floreantpos.model.MenuModifierGroup modifierGroup;
+	private com.floreantpos.model.ModifierGroup modifierGroup;
 
 
 
@@ -147,7 +147,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	/**
 	 * Return the value associated with the column: MODIFIER_GROUP
 	 */
-	public com.floreantpos.model.MenuModifierGroup getModifierGroup () {
+	public com.floreantpos.model.ModifierGroup getModifierGroup () {
 					return modifierGroup;
 			}
 
@@ -155,7 +155,7 @@ public abstract class BaseMenuItemModifierGroup  implements Comparable, Serializ
 	 * Set the value related to the column: MODIFIER_GROUP
 	 * @param modifierGroup the MODIFIER_GROUP value
 	 */
-	public void setModifierGroup (com.floreantpos.model.MenuModifierGroup modifierGroup) {
+	public void setModifierGroup (com.floreantpos.model.ModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
 	}
 

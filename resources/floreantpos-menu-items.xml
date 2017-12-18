@@ -1761,69 +1761,69 @@
         </tax>
         <visible>true</visible>
     </menuItems>
-    <menuModifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>APPLE SLICE</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>BACON &amp; SAUSAGE</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>BISCUITS</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>BUTTER</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>CHEESE</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>EGGS</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>MEAT</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>POTATO</name>
         <required>false</required>
-    </menuModifierGroups>
-    <menuModifierGroups>
+    </modifierGroups>
+    <modifierGroups>
         <enable>false</enable>
         <exclusive>false</exclusive>
         
         <name>WHEAT</name>
         <required>false</required>
-    </menuModifierGroups>
+    </modifierGroups>
     <menuModifiers>
         <enable>false</enable>
         <extraPrice>0.5</extraPrice>

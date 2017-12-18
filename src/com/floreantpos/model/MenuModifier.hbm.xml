@@ -28,7 +28,7 @@
 		</property>
 		<property name="pizzaModifier" column="PIZZA_MODIFIER" type="java.lang.Boolean" />
 		<!-- Associations -->
-		<many-to-one class="MenuModifierGroup" lazy="false"
+		<many-to-one class="ModifierGroup" lazy="false"
 			name="modifierGroup">
 			<column name="GROUP_ID" />
 		</many-to-one>

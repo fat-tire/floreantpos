@@ -17,8 +17,8 @@
  */
 package com.floreantpos.ui.views.order.modifier;
 
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 
 public interface ModifierGroupSelectionListener {
-	void modifierGroupSelected(MenuModifierGroup menuModifierGroup);
+	void modifierGroupSelected(ModifierGroup menuModifierGroup);
 }

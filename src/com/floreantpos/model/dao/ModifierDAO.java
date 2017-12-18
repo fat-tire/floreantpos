@@ -26,7 +26,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 
 public class ModifierDAO extends BaseModifierDAO {
 
@@ -36,7 +36,7 @@ public class ModifierDAO extends BaseModifierDAO {
 	public ModifierDAO() {
 	}
 
-	public List<MenuModifier> findModifier(String name, MenuModifierGroup menuModifierGroup) {
+	public List<MenuModifier> findModifier(String name, ModifierGroup menuModifierGroup) {
 		Session session = null;
 		Criteria criteria = null;
 
@@ -59,7 +59,7 @@ public class ModifierDAO extends BaseModifierDAO {
 		}
 	}
 
-	public List<MenuModifier> findPizzaModifier(String name, MenuModifierGroup menuModifierGroup) {
+	public List<MenuModifier> findPizzaModifier(String name, ModifierGroup menuModifierGroup) {
 		Session session = null;
 		Criteria criteria = null;
 

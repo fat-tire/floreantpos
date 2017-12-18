@@ -27,8 +27,8 @@ import java.util.List;
 
 import com.floreantpos.PosRuntimeException;
 import com.floreantpos.model.MenuItemModifierGroup;
-import com.floreantpos.model.MenuModifierGroup;
-import com.floreantpos.model.dao.MenuModifierGroupDAO;
+import com.floreantpos.model.ModifierGroup;
+import com.floreantpos.model.dao.ModifierGroupDAO;
 import com.floreantpos.swing.ListComboBoxModel;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -48,8 +48,8 @@ public class MenuItemModifierGroupForm extends BeanEditor {
 		initComponents();
 
 		try {
-			MenuModifierGroupDAO dao = new MenuModifierGroupDAO();
-			List<MenuModifierGroup> groups = dao.findAll();
+			ModifierGroupDAO dao = new ModifierGroupDAO();
+			List<ModifierGroup> groups = dao.findAll();
 			cbModifierGroups.setModel(new ListComboBoxModel(groups));
 		} catch (Exception e) {
 			throw new PosRuntimeException(com.floreantpos.POSConstants.ERROR_MESSAGE);
@@ -153,7 +153,7 @@ public class MenuItemModifierGroupForm extends BeanEditor {
 		} catch (Exception e) {
 		}
 
-		MenuModifierGroup group = (MenuModifierGroup) cbModifierGroups.getSelectedItem();
+		ModifierGroup group = (ModifierGroup) cbModifierGroups.getSelectedItem();
 		if (group == null) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.MODIFIER_GROUP_REQUIRED);
 			return false;

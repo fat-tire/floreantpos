@@ -53,7 +53,7 @@ import org.jdesktop.swingx.JXTable;
 import com.floreantpos.Messages;
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.PizzaModifierPrice;
 import com.floreantpos.model.Tax;
@@ -113,8 +113,8 @@ public class PizzaModifierForm extends BeanEditor {
 		initComponents();
 
 		ModifierGroupDAO modifierGroupDAO = new ModifierGroupDAO();
-		List<MenuModifierGroup> groups = modifierGroupDAO.findAll();
-		cbModifierGroup.setModel(new DefaultComboBoxModel(new Vector<MenuModifierGroup>(groups)));
+		List<ModifierGroup> groups = modifierGroupDAO.findAll();
+		cbModifierGroup.setModel(new DefaultComboBoxModel(new Vector<ModifierGroup>(groups)));
 
 		TaxDAO taxDAO = new TaxDAO();
 		List<Tax> taxes = taxDAO.findAll();
@@ -404,7 +404,7 @@ public class PizzaModifierForm extends BeanEditor {
 		modifier.setPrice(tfNormalPrice.getDouble());
 		modifier.setExtraPrice(tfExtraPrice.getDouble());
 		modifier.setTax((Tax) cbTaxes.getSelectedItem());
-		modifier.setModifierGroup((MenuModifierGroup) cbModifierGroup.getSelectedItem());
+		modifier.setModifierGroup((ModifierGroup) cbModifierGroup.getSelectedItem());
 		modifier.setShouldPrintToKitchen(Boolean.valueOf(chkPrintToKitchen.isSelected()));
 		modifier.setShouldSectionWisePrice(Boolean.valueOf(chkSectionWisePrice.isSelected()));
 

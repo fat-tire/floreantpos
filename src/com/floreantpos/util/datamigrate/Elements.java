@@ -26,7 +26,7 @@ import com.floreantpos.model.MenuGroup;
 import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.Tax;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserType;
@@ -41,10 +41,11 @@ public class Elements {
 	List<MenuGroup> menuGroups;
 	List<MenuModifier> menuModifiers;
 	List<MenuItemModifierGroup> menuItemModifierGroups;
-	List<MenuModifierGroup> menuModifierGroups;
+	List<ModifierGroup> modifierGroups;
 	List<MenuItem> menuItems;
 	List<User> users;
 	List<UserType> userTypes;
+
 	//	List<MenuItemShift> menuItemShifts;
 	//	List<Restaurant> restaurants;
 	//	List<UserPermission> userPermissions;
@@ -88,19 +89,11 @@ public class Elements {
 			return;
 
 		for (MenuModifier menuModifier : menuModifiers) {
-			MenuModifierGroup modifierGroup = menuModifier.getModifierGroup();
+			ModifierGroup modifierGroup = menuModifier.getModifierGroup();
 			if (modifierGroup != null) {
 				modifierGroup.setModifiers(null);
 			}
 		}
-	}
-
-	public List<MenuModifierGroup> getMenuModifierGroups() {
-		return menuModifierGroups;
-	}
-
-	public void setMenuModifierGroups(List<MenuModifierGroup> menuModifierGroups) {
-		this.menuModifierGroups = menuModifierGroups;
 	}
 
 	public List<MenuItem> getMenuItems() {
@@ -174,5 +167,13 @@ public class Elements {
 	//	public void setShifts(List<Shift> shifts) {
 	//		this.shifts = shifts;
 	//	}
+
+	public List<ModifierGroup> getModifierGroups() {
+		return modifierGroups;
+	}
+
+	public void setModifierGroups(List<ModifierGroup> modifierGroups) {
+		this.modifierGroups = modifierGroups;
+	}
 
 }

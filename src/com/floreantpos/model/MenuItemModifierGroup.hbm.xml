@@ -13,7 +13,7 @@
     
     <!-- Associations -->
     <!-- bi-directional one-to-many association to ModifierItem -->
-    <many-to-one class="MenuModifierGroup" column="MODIFIER_GROUP" name="modifierGroup"/>
+    <many-to-one class="ModifierGroup" column="MODIFIER_GROUP" name="modifierGroup"/>
     <!-- <many-to-one class="MenuItem" column="MENU_ITEM" name="parentMenuItem"/> -->
   </class>
 </hibernate-mapping>

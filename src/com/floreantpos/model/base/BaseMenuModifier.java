@@ -68,7 +68,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	protected java.lang.Boolean pizzaModifier;
 
 	// many to one
-	private com.floreantpos.model.MenuModifierGroup modifierGroup;
+	private com.floreantpos.model.ModifierGroup modifierGroup;
 	private com.floreantpos.model.Tax tax;
 
 	// collections
@@ -285,7 +285,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	/**
 	 * Return the value associated with the column: GROUP_ID
 	 */
-	public com.floreantpos.model.MenuModifierGroup getModifierGroup() {
+	public com.floreantpos.model.ModifierGroup getModifierGroup() {
 		return modifierGroup;
 	}
 
@@ -293,7 +293,7 @@ public abstract class BaseMenuModifier implements Comparable, Serializable {
 	 * Set the value related to the column: GROUP_ID
 	 * @param modifierGroup the GROUP_ID value
 	 */
-	public void setModifierGroup(com.floreantpos.model.MenuModifierGroup modifierGroup) {
+	public void setModifierGroup(com.floreantpos.model.ModifierGroup modifierGroup) {
 		this.modifierGroup = modifierGroup;
 	}
 

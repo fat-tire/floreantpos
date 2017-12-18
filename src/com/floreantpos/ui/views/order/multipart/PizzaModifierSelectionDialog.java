@@ -71,7 +71,7 @@ import com.floreantpos.model.MenuItem;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuItemSize;
 import com.floreantpos.model.MenuModifier;
-import com.floreantpos.model.MenuModifierGroup;
+import com.floreantpos.model.ModifierGroup;
 import com.floreantpos.model.Multiplier;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PizzaCrust;
@@ -678,11 +678,11 @@ public class PizzaModifierSelectionDialog extends POSDialog implements ModifierS
 	}
 
 	@Override
-	public void clearModifiers(MenuModifierGroup modifierGroup) {
+	public void clearModifiers(ModifierGroup modifierGroup) {
 	}
 
 	@Override
-	public void modifierGroupSelectionDone(MenuModifierGroup modifierGroup) {
+	public void modifierGroupSelectionDone(ModifierGroup modifierGroup) {
 		MenuItemModifierGroup menuItemModifierGroup = modifierGroup.getMenuItemModifierGroup();
 		if (!isRequiredModifiersAdded(ticketItem, menuItemModifierGroup)) {
 			showModifierSelectionMessage(menuItemModifierGroup);
