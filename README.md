@@ -1,6 +1,9 @@
 # FloreantPOS
 
-<img src="http://floreant.org/wp-content/uploads/2014/12/pos_terminal-1030x1010-1030x1010.png" width="400px"/>
+**Update 2-16-18**:  Even though this repo was set up a few years ago, I've noticed that people are still forking it.  So I figured I'd do an update to the repo.  The official SVN repository has file system errors in revision [1215](https://sourceforge.net/p/floreantpos/code/1215), [1216](https://sourceforge.net/p/floreantpos/code/1216), and [1217](https://sourceforge.net/p/floreantpos/code/1216),
+ so the revisions were included in 1218.  Also note that in the original repository there are several branches.  This is the "TRUNK".
+
+<img src="http://floreant.org/flopress/wp-content/uploads/2015/01/fp_01-1024x673.jpg" width="400px"/>
 
 A free, open-source point-of-sale application for restaurants (and potentially more)
 
@@ -28,3 +31,5 @@ Finally-- with respect to branches:
 
 * `master` -- this is the original code from the sourceforge svn repository.  It may not be fully up-to-date as it must be manually synced with upstream's svn repository.
 * `fattire-master` -- This contains my additions, such as the LICENSE file as well as this README.md and anything else I may feel like adding.  See the commit log for details.
+* `2018-fattire-master` -- an update to the previous as of 2/16/18.
+
