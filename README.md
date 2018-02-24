@@ -12,7 +12,7 @@ java-based multi-terminal "point of sale" system intended for restaurants.  It u
 [mysql/mariadb](https://mariadb.org/), or [postgresql](https://postgresql.org) back end database.  Your choice.
 
 FloreantPOS has also been (experimentally) known to run as a web app in a browser when paired with [webswing](http://webswing.org/#!/home).  I posted a somewhat
-old set of instructions for trying Floreant as a web app [here](https://fat-tire.github.io/floreantpos.html).
+old set of instructions for trying Floreant as a web app [here](https://fat-tire.github.io/floreantpos.html) and I have posted the source code for an Android app to access this web app.  It's called <a href="https://www.github.com/fat-tire/hippos">HipPOS</a>.
 
 Much of FloreantPOS's development code is currently hosted at [sourceforge.net](http://sourceforge.net/projects/floreantpos/) using [subversion](https://subversion.apache.org/), but I am hoping that the lead developers come to their senses and switch to git soon.  But until they do, this github repository
 is just a mirror and may not contain the very latest updates.
@@ -32,4 +32,3 @@ Finally-- with respect to branches:
 * `master` -- this is the original code from the sourceforge svn repository.  It may not be fully up-to-date as it must be manually synced with upstream's svn repository.
 * `fattire-master` -- This contains my additions, such as the LICENSE file as well as this README.md and anything else I may feel like adding.  See the commit log for details.
 * `2018-fattire-master` -- an update to the previous as of 2/16/18.
-
