@@ -26,4 +26,6 @@ public abstract class PaymentGatewayPlugin extends AbstractFloreantPlugin {
 	public abstract ConfigurationView getConfigurationPane() throws Exception;
 
 	public abstract CardProcessor getProcessor();
+
+	public abstract String getSecurityCode();
 }

@@ -30,10 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.Messages;
-import com.floreantpos.PosLog;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
 import com.floreantpos.config.CardConfig;
@@ -50,7 +47,8 @@ import com.floreantpos.ui.TransactionListView;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.util.NumberUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 public class AuthorizableTicketBrowser extends POSDialog {
 	private TransactionListView authClosedListView = new TransactionListView();
@@ -240,9 +238,9 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		try {
 			cardProcessor.voidTransaction(transaction);
 		} catch (Exception e) {
-			PosLog.error(getClass(), e);
+			POSMessageDialog.showError(this, e.getMessage(), e);
 		}
-
+		POSMessageDialog.showMessage(this, "Voided!");
 		updateTransactiontList();
 	}
 
