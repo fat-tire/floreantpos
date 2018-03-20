@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosException;
 import com.floreantpos.actions.ActionCommand;
 import com.floreantpos.actions.CloseDialogAction;
 import com.floreantpos.config.CardConfig;
@@ -92,6 +93,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 
 		JPanel authClosedTab = new JPanel(new BorderLayout());
 		JPanel buttonPanel2 = new JPanel(new MigLayout("al center", "sg, fill", ""));
+		buttonPanel2.add(new PosButton(ActionCommand.TIP_ADJUST, actionHandler), "grow");
 		buttonPanel2.add(new PosButton(ActionCommand.VOID_TRANS, actionHandler), "grow");
 		buttonPanel2.add(new PosButton(new CloseDialogAction(this)));
 		authClosedTab.add(authClosedListView);
@@ -117,8 +119,8 @@ public class AuthorizableTicketBrowser extends POSDialog {
 	}
 
 	private boolean confirmAuthorize(String message) {
-		int option = JOptionPane.showConfirmDialog(AuthorizableTicketBrowser.this, message,
-				Messages.getString("TicketAuthorizationDialog.1"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+		int option = JOptionPane.showConfirmDialog(AuthorizableTicketBrowser.this, message, Messages.getString("TicketAuthorizationDialog.1"), //$NON-NLS-1$
+				JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 			return true;
 		}
@@ -179,8 +181,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		}
 
 		final double oldTipsAmount = transaction.getTipsAmount();
-		double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this,
-				Messages.getString("TicketAuthorizationDialog.8"), oldTipsAmount); //$NON-NLS-1$
+		double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.8"), oldTipsAmount); //$NON-NLS-1$
 
 		if (Double.isNaN(newTipsAmount))
 			return;
@@ -189,12 +190,12 @@ public class AuthorizableTicketBrowser extends POSDialog {
 
 		//double acceptableTipsAmount = NumberUtil.roundToTwoDigit(transaction.getTenderAmount() * (advanceTipsPercentage / 100));
 
-//		if (newTipsAmount > acceptableTipsAmount) {
-//			//POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
-//			double tipsExceedAmount = newTipsAmount - acceptableTipsAmount;
-//			newTipsAmount = acceptableTipsAmount;
-//			transaction.setTipsExceedAmount(tipsExceedAmount);
-//		}
+		//		if (newTipsAmount > acceptableTipsAmount) {
+		//			//POSMessageDialog.showMessage(Messages.getString("AuthorizableTicketBrowser.0") + " :" + CurrencyUtil.getCurrencySymbol() + acceptableTipsAmount); //$NON-NLS-1$ //$NON-NLS-2$
+		//			double tipsExceedAmount = newTipsAmount - acceptableTipsAmount;
+		//			newTipsAmount = acceptableTipsAmount;
+		//			transaction.setTipsExceedAmount(tipsExceedAmount);
+		//		}
 		transaction.setTipsAmount(newTipsAmount);
 		transaction.setAmount(transaction.getAmount() - oldTipsAmount + newTipsAmount);
 
@@ -218,7 +219,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		TicketDAO.getInstance().saveOrUpdate(ticket);
 		updateTransactiontList();
 	}
-	
+
 	private void doVoidTransaction() {
 		PosTransaction transaction = authWaitingListView.getSelectedTransaction();
 		if (tabbedPane.getSelectedIndex() == 1) {
@@ -264,9 +265,13 @@ public class AuthorizableTicketBrowser extends POSDialog {
 					case AUTHORIZE_ALL:
 						doAuthorizeAll();
 						break;
-						
+
 					case VOID_TRANS:
 						doVoidTransaction();
+						break;
+
+					case TIP_ADJUST:
+						doTicketTipAdjust();
 						break;
 
 					default:
@@ -275,6 +280,31 @@ public class AuthorizableTicketBrowser extends POSDialog {
 			} catch (Exception e2) {
 				POSMessageDialog.showError(AuthorizableTicketBrowser.this, e2.getMessage(), e2);
 			}
+		}
+
+		private void doTicketTipAdjust() throws Exception {
+			PosTransaction transaction = authClosedListView.getFirstSelectedTransaction();
+			if (transaction == null) {
+				return;
+			}
+
+			final double oldTipsAmount = transaction.getTipsAmount();
+			double newTipsAmount = NumberSelectionDialog2.show(AuthorizableTicketBrowser.this, Messages.getString("TicketAuthorizationDialog.8"), //$NON-NLS-1$
+					oldTipsAmount);
+
+			if (Double.isNaN(newTipsAmount))
+				return;
+
+			transaction.setTipsAmount(newTipsAmount);
+
+			CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+			if (cardProcessor.supportTipsAdjustMent()) {
+				cardProcessor.adjustTips(transaction);
+			}
+			else {
+				throw new PosException("Payment Gateway can not process Tip Adjustment!!!");
+			}
+			updateTransactiontList();
 		}
 	}
 }

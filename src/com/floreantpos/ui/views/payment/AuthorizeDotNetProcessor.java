@@ -327,4 +327,15 @@ public class AuthorizeDotNetProcessor implements CardProcessor {
 	@Override
 	public void cancelTransaction() {
 	}
+
+	@Override
+	public boolean supportTipsAdjustMent() {
+		return false;
+	}
+
+
+	@Override
+	public void adjustTips(PosTransaction transaction) throws Exception {
+		
+	}
 }

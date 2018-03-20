@@ -22,6 +22,7 @@ public enum ActionCommand {
 	AUTHORIZE_ALL,
 	EDIT_TIPS,
 	VOID_TRANS,
+	TIP_ADJUST,
 	CLOSE,
 	OK;
 	

@@ -80,7 +80,7 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			criteria.add(Restrictions.eq(PosTransaction.PROP_CAPTURED, Boolean.TRUE));
 			criteria.add(Restrictions.or(Restrictions.isNull(PosTransaction.PROP_VOIDED), Restrictions.eq(PosTransaction.PROP_VOIDED, Boolean.FALSE)));
 			criteria.add(Restrictions.isNotNull(PosTransaction.PROP_TICKET));
-			//criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
+			criteria.add(Restrictions.eq(PosTransaction.PROP_DRAWER_RESETTED, Boolean.FALSE));
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.DAY_OF_MONTH, -1);
 			Date startOfDay = DateUtil.startOfDay(calendar.getTime());

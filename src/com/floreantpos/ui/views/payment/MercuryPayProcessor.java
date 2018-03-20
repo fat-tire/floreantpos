@@ -74,7 +74,6 @@ public class MercuryPayProcessor implements CardProcessor {
 
 		String[] strings = cardTrack.split("\\|"); //$NON-NLS-1$
 		
-		//String merchantId = "118725340908147";
 		String laneId = "01"; //$NON-NLS-1$
 		String tranCode = "PreAuth"; //$NON-NLS-1$
 		String invoiceNo = String.valueOf(ticket.getId());
@@ -109,7 +108,6 @@ public class MercuryPayProcessor implements CardProcessor {
 		String xml = StreamUtils.toString(MercuryPayProcessor.class.getResourceAsStream("/com/mercurypay/ws/sdk/mercuryPreAuthCapture.xml")); //$NON-NLS-1$
 		Ticket ticket = transaction.getTicket();
 
-		//String merchantId = "118725340908147";
 		String laneId = "01"; //$NON-NLS-1$
 		String invoiceNo = String.valueOf(ticket.getId());
 		String amount = String.valueOf(transaction.getAmount());
@@ -125,7 +123,6 @@ public class MercuryPayProcessor implements CardProcessor {
 		xml = xml.replace("$authCode", transaction.getCardAuthCode()); //$NON-NLS-1$
 		xml = xml.replace("$AcqRefData", transaction.getProperty("AcqRefData")); //$NON-NLS-1$ //$NON-NLS-2$
 		
-//		PosLog.debug(getClass(),xml);
 		
 		MercuryWebRequest mpswr = new MercuryWebRequest("https://w1.mercurydev.net/ws/ws.asmx"); //$NON-NLS-1$
 		mpswr.addParameter("tran", xml); //Set WebServices 'tran' parameter to the XML transaction request //$NON-NLS-1$
@@ -146,13 +143,11 @@ public class MercuryPayProcessor implements CardProcessor {
 
 	@Override
 	public void chargeAmount(PosTransaction transaction) throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void voidTransaction(PosTransaction transaction) throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -164,4 +159,14 @@ public class MercuryPayProcessor implements CardProcessor {
 	@Override
 	public void cancelTransaction() {
 	}
+
+	@Override
+	public boolean supportTipsAdjustMent() {
+		return false;
+	}
+
+	@Override
+	public void adjustTips(PosTransaction transaction) throws Exception {
+	}
+
 }

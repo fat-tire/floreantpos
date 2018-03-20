@@ -26,4 +26,7 @@ public interface CardProcessor {
 	public void voidTransaction(PosTransaction transaction) throws Exception;
 	public String getCardInformationForReceipt(PosTransaction transaction);
 	public void cancelTransaction();
+	
+	public boolean supportTipsAdjustMent();
+	public void adjustTips(PosTransaction transaction) throws Exception;
 }
