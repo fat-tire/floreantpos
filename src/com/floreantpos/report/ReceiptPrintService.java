@@ -50,6 +50,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
+import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.Currency;
@@ -170,6 +171,11 @@ public class ReceiptPrintService {
 	}*/
 
 	public static void printTicket(Ticket ticket) {
+		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+		if(paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+			paymentGateway.printTicket(ticket);
+			return;
+		}
 		try {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);

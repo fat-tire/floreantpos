@@ -27,6 +27,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.DefaultMerchantGatewayConfigurationView;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.views.payment.AuthorizeDotNetProcessor;
 import com.floreantpos.ui.views.payment.CardProcessor;
 
@@ -119,5 +120,14 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	@Override
 	public Component getParent() {
 		return null;
+	}
+
+	@Override
+	public boolean printUsingThisTerminal() {
+		return false;
+	}
+
+	@Override
+	public void printTicket(Ticket ticket) {
 	}
 }

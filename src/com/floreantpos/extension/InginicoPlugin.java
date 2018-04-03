@@ -10,6 +10,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.InginicoConfigurationView;
+import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.views.payment.CardProcessor;
 
 @PluginImplementation
@@ -91,5 +92,14 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 	@Override
 	public Component getParent() {
 		return null;
+	}
+
+	@Override
+	public boolean printUsingThisTerminal() {
+		return false;
+	}
+
+	@Override
+	public void printTicket(Ticket ticket) {
 	}
 }
