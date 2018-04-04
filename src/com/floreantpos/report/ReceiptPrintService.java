@@ -221,6 +221,12 @@ public class ReceiptPrintService {
 	}
 
 	public static void printTicket(Ticket ticket, String copyType) {
+		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+		if(paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+			paymentGateway.printTicket(ticket);
+			return;
+		}
+		
 		try {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
