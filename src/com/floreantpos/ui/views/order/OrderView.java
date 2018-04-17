@@ -51,6 +51,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.customer.CustomerSelectorDialog;
 import com.floreantpos.customer.CustomerSelectorFactory;
 import com.floreantpos.extension.ExtensionManager;
@@ -91,6 +92,7 @@ import com.floreantpos.ui.views.payment.PaymentListener;
 import com.floreantpos.ui.views.payment.PaymentView;
 import com.floreantpos.ui.views.payment.SettleTicketProcessor;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
@@ -1046,6 +1048,9 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		}
 		else {
 			categoryView.cleanup();
+			if (TerminalConfig.isActiveCustomerDisplay()) {
+				DrawerUtil.setCustomerDisplayMessage(TerminalConfig.getCustomerDisplayPort(), "Thank You");
+			}
 		}
 		super.setVisible(aFlag);
 	}

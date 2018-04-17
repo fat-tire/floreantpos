@@ -27,6 +27,7 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.customer.CustomerSelector;
 import com.floreantpos.extension.OrderServiceExtension;
 import com.floreantpos.main.Application;
@@ -37,6 +38,7 @@ import com.floreantpos.model.Ticket;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.IView;
+import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PosGuiUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
@@ -63,6 +65,10 @@ public class DefaultOrderServiceExtension extends OrderServiceExtension {
 
 		if (ticketType.isShowGuestSelection()) {
 			numberOfGuests = PosGuiUtil.captureGuestNumber();
+		}
+		
+		if (TerminalConfig.isActiveCustomerDisplay()) {
+			DrawerUtil.setCustomerDisplayMessage(TerminalConfig.getCustomerDisplayPort(), "Welcome");
 		}
 
 		if (ticketType.isRequiredCustomerData() && customer == null) {
