@@ -3,18 +3,24 @@ package com.floreantpos.dejavoo.proxy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.List;
 
-import javax.ws.rs.core.Response;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jdom2.Document;
+import org.xml.sax.InputSource;
 
+import com.floreantpos.POSConstants;
+import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
@@ -27,9 +33,14 @@ import com.sun.net.httpserver.HttpServer;
 
 public class DejavooProxyServer implements HttpHandler {
 	com.sun.net.httpserver.HttpServer server;
+	private String authKey;
+	private String registerId;
 
 	public DejavooProxyServer() {
 		_RootDAO.initialize();
+
+		authKey = AppConfig.getString("Dejavoo.AUTH_KEY");
+		registerId = AppConfig.getString("Dejavoo.REGISTER_ID");
 	}
 
 	public void start() throws Exception {
@@ -80,17 +91,18 @@ public class DejavooProxyServer implements HttpHandler {
 
 				int serverId = 1;
 				User user = UserDAO.getInstance().get(serverId);
-				List<Ticket> ticketList = TicketDAO.getInstance().findTicketsForUser(PaymentStatusFilter.OPEN, null, user);
+				List<Ticket> ticketList = TicketDAO.getInstance().findTicketsForUser(PaymentStatusFilter.OPEN, POSConstants.ALL, user);
 
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append("<request>");
-				stringBuilder.append("<RegisterId>9375755</RegisterId>");
-				stringBuilder.append("<AuthKey>pbwB89ay72</AuthKey>");
+				stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
+				stringBuilder.append("<AuthKey>" + authKey + "</AuthKey>");
 				stringBuilder.append(String.format("<InvoiceList title=\"%s\" count=\"%s\">", "invoices", ticketList.size()));
 				for (Ticket ticket : ticketList) {
 					//<Invoice id="1" name="John Abrams" amount="10000" type="open" />
 					//ticket.getId(), ticket.getCustomer() != null ? ticket.getCustomer().getName() : ""
-					stringBuilder.append(String.format("<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>", ticket.getId(),ticket.getCustomer().getName(),ticket.getTotalAmount(),ticket.isClosed()?"":"open"));
+					stringBuilder.append(String.format("<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>", ticket.getId(),
+							ticket.getOwner().getFirstName(), ticket.getTotalAmount(), ticket.isClosed() ? "" : "open"));
 				}
 				stringBuilder.append("</InvoiceList>");
 				stringBuilder.append("</request>");
@@ -101,23 +113,38 @@ public class DejavooProxyServer implements HttpHandler {
 				urlConnection.connect();
 				InputStream stream = urlConnection.getInputStream();
 				String string2 = IOUtils.toString(stream);
-				while(StringUtils.isNotEmpty(string2)) {
+				while (StringUtils.isNotEmpty(string2)) {
 					System.out.println(string2);
+					XPathFactory xPathFactory = XPathFactory.newInstance();
+					XPath newXPath = xPathFactory.newXPath();
+					try {
+						String id = newXPath.evaluate("/xmp/response/ID", new InputSource(new StringReader(string2)));
+						if ("-1".equals(id)) {
+							stream.close();
+							return;
+						}
+						
+						//TicketDAO.getInstance().get(id);
+						
+					} catch (XPathExpressionException e) {
+						e.printStackTrace();
+					}
 					string2 = IOUtils.toString(stream);
 				}
 				stream.close();
-				
-				url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=%3Crequest%3E%0D%0A%3CRegisterId%3E9375755%3C%2FRegisterId%3E%0D%0A%3CAuthKey%3EpbwB89ay72%3C%2FAuthKey%3E%0D%0A%3CInvoiceData%20id%3D%221%22%20name%3D%22Shadat%22%3E%0D%0A%3CAmountDue%3E9700%3C%2FAmountDue%3E%0D%0A%20%20%3CTotalAmount%3E10000%3C%2FTotalAmount%3E%0D%0A%20%20%3CGoods%20count%3D%225%22%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22miso%20soup%22%20amount%3D%223000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22coffee%22%20amount%3D%223600%22%20quantity%3D%222%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22cheeseburger%22%20amount%3D%221000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22hamburger%22%20amount%3D%229000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22pancake%22%20amount%3D%2215000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%3C%2FGoods%3E%0D%0A%3C%2FInvoiceData%3E%0D%0A%3C%2Frequest%3E");
+
+				url = new URL(
+						"http://spinpos.net:80/spin/cgi.html?TerminalTransaction=%3Crequest%3E%0D%0A%3CRegisterId%3E9375755%3C%2FRegisterId%3E%0D%0A%3CAuthKey%3EpbwB89ay72%3C%2FAuthKey%3E%0D%0A%3CInvoiceData%20id%3D%221%22%20name%3D%22Shadat%22%3E%0D%0A%3CAmountDue%3E9700%3C%2FAmountDue%3E%0D%0A%20%20%3CTotalAmount%3E10000%3C%2FTotalAmount%3E%0D%0A%20%20%3CGoods%20count%3D%225%22%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22miso%20soup%22%20amount%3D%223000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22coffee%22%20amount%3D%223600%22%20quantity%3D%222%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22cheeseburger%22%20amount%3D%221000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22hamburger%22%20amount%3D%229000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22pancake%22%20amount%3D%2215000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%3C%2FGoods%3E%0D%0A%3C%2FInvoiceData%3E%0D%0A%3C%2Frequest%3E");
 				urlConnection = url.openConnection();
 				urlConnection.connect();
 				stream = urlConnection.getInputStream();
 				string2 = IOUtils.toString(stream);
-				while(StringUtils.isNotEmpty(string2)) {
+				while (StringUtils.isNotEmpty(string2)) {
 					System.out.println(string2);
 					string2 = IOUtils.toString(stream);
 				}
 				stream.close();
-				
+
 				System.out.println("Execution complete!");
 			} catch (IOException e) {
 				e.printStackTrace();
