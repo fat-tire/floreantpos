@@ -23,6 +23,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -80,6 +81,13 @@ public class DejavooProxyServer implements HttpHandler {
 				String string = IOUtils.toString(inputStream);
 				System.out.println("request body: " + string);
 				inputStream.close();
+				
+				if (string.startsWith("InvoiceData")) {
+					String xpathValue = getXpathValue("/InvoiceData/@status", string);
+					if ("cancel".equalsIgnoreCase(xpathValue)) {
+						return;
+					}
+				}
 
 				byte[] bs = string.getBytes("UTF-8");
 				exchange.sendResponseHeaders(200, bs.length);
@@ -124,33 +132,58 @@ public class DejavooProxyServer implements HttpHandler {
 							return;
 						}
 						
-						//TicketDAO.getInstance().get(id);
-						
+						Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(id));
+						StringBuilder builder = new StringBuilder();
+						builder.append("<request>");
+						builder.append("<RegisterId>" + registerId + "</RegisterId>");
+						builder.append("<AuthKey>" + authKey + "</AuthKey>");
+						builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
+						builder.append("<AmountDue>" + ticket.getTotalAmount() + "</AmountDue>");
+						builder.append("<TotalAmount>" + ticket.getDueAmount() + "</TotalAmount>");
+						builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
+						List<TicketItem> ticketItems = ticket.getTicketItems();
+						for (TicketItem ticketItem : ticketItems) {
+							builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount(), ticketItem.getItemQuantity()));
+						}
+						builder.append("</Goods>");
+						builder.append("</InvoiceData>");
+						builder.append("</request>");
+						System.out.println(builder.toString());
+						url = new URL(
+								"http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(builder.toString(), "utf-8"));
+						urlConnection = url.openConnection();
+						urlConnection.connect();
+						stream = urlConnection.getInputStream();
+						string2 = IOUtils.toString(stream);
+						while (StringUtils.isNotEmpty(string2)) {
+							System.out.println(string2);
+							string2 = IOUtils.toString(stream);
+						}
+						stream.close();
+
+						System.out.println("Execution complete!");
 					} catch (XPathExpressionException e) {
 						e.printStackTrace();
 					}
-					string2 = IOUtils.toString(stream);
 				}
 				stream.close();
 
-				url = new URL(
-						"http://spinpos.net:80/spin/cgi.html?TerminalTransaction=%3Crequest%3E%0D%0A%3CRegisterId%3E9375755%3C%2FRegisterId%3E%0D%0A%3CAuthKey%3EpbwB89ay72%3C%2FAuthKey%3E%0D%0A%3CInvoiceData%20id%3D%221%22%20name%3D%22Shadat%22%3E%0D%0A%3CAmountDue%3E9700%3C%2FAmountDue%3E%0D%0A%20%20%3CTotalAmount%3E10000%3C%2FTotalAmount%3E%0D%0A%20%20%3CGoods%20count%3D%225%22%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22miso%20soup%22%20amount%3D%223000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22coffee%22%20amount%3D%223600%22%20quantity%3D%222%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22cheeseburger%22%20amount%3D%221000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22hamburger%22%20amount%3D%229000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%20%20%3CItem%20name%3D%22pancake%22%20amount%3D%2215000%22%20quantity%3D%221%22%20%2F%3E%0D%0A%20%20%3C%2FGoods%3E%0D%0A%3C%2FInvoiceData%3E%0D%0A%3C%2Frequest%3E");
-				urlConnection = url.openConnection();
-				urlConnection.connect();
-				stream = urlConnection.getInputStream();
-				string2 = IOUtils.toString(stream);
-				while (StringUtils.isNotEmpty(string2)) {
-					System.out.println(string2);
-					string2 = IOUtils.toString(stream);
-				}
-				stream.close();
-
-				System.out.println("Execution complete!");
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
+	}
+	
+	private String getXpathValue(String xpath, String input) {
+		try {
+			XPathFactory xPathFactory = XPathFactory.newInstance();
+			XPath newXPath = xPathFactory.newXPath();
+			return newXPath.evaluate(xpath, new InputSource(new StringReader(input)));
+		} catch (Exception e) {
+			return "";
+		}
 	}
 
 }
