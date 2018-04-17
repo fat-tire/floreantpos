@@ -110,7 +110,7 @@ public class DejavooProxyServer implements HttpHandler {
 					//<Invoice id="1" name="John Abrams" amount="10000" type="open" />
 					//ticket.getId(), ticket.getCustomer() != null ? ticket.getCustomer().getName() : ""
 					stringBuilder.append(String.format("<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>", ticket.getId(),
-							ticket.getOwner().getFirstName(), ticket.getTotalAmount(), ticket.isClosed() ? "" : "open"));
+							ticket.getOwner().getFirstName(), ticket.getTotalAmount()*100, ticket.isClosed() ? "" : "open"));
 				}
 				stringBuilder.append("</InvoiceList>");
 				stringBuilder.append("</request>");
@@ -138,12 +138,12 @@ public class DejavooProxyServer implements HttpHandler {
 						builder.append("<RegisterId>" + registerId + "</RegisterId>");
 						builder.append("<AuthKey>" + authKey + "</AuthKey>");
 						builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
-						builder.append("<AmountDue>" + ticket.getTotalAmount() + "</AmountDue>");
-						builder.append("<TotalAmount>" + ticket.getDueAmount() + "</TotalAmount>");
+						builder.append("<AmountDue>" + ticket.getTotalAmount()*100 + "</AmountDue>");
+						builder.append("<TotalAmount>" + ticket.getDueAmount()*100 + "</TotalAmount>");
 						builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
 						List<TicketItem> ticketItems = ticket.getTicketItems();
 						for (TicketItem ticketItem : ticketItems) {
-							builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount(), ticketItem.getItemQuantity()));
+							builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount()*100, ticketItem.getItemCount()));
 						}
 						builder.append("</Goods>");
 						builder.append("</InvoiceData>");
