@@ -21,6 +21,7 @@ import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -116,7 +117,7 @@ public class DejavooProxyServer implements HttpHandler {
 
 	private void sendTicketList() throws Exception {
 		List<Ticket> ticketList = TicketDAO.getInstance().findOpenTickets();
-		
+
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<request>");
 		stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
@@ -139,85 +140,104 @@ public class DejavooProxyServer implements HttpHandler {
 
 	}
 
-	private void sendTicketInvoice() {
-
+	private void sendTicketDetail(String ticketId) throws Exception {
+		Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(ticketId));
+		StringBuilder builder = new StringBuilder();
+		builder.append("<request>");
+		builder.append("<RegisterId>" + registerId + "</RegisterId>");
+		builder.append("<AuthKey>" + authKey + "</AuthKey>");
+		builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
+		builder.append("<AmountDue>" + ticket.getTotalAmount() * 100 + "</AmountDue>");
+		builder.append("<TotalAmount>" + ticket.getDueAmount() * 100 + "</TotalAmount>");
+		builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
+		List<TicketItem> ticketItems = ticket.getTicketItems();
+		for (TicketItem ticketItem : ticketItems) {
+			builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount() * 100,
+					ticketItem.getItemCount()));
+		}
+		builder.append("</Goods>");
+		builder.append("</InvoiceData>");
+		builder.append("</request>");
+		System.out.println(builder.toString());
+		
+		sendData(builder.toString());
 	}
 
 	private void doProcess(List<Ticket> ticketList) throws Exception {
-//		URL url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(stringBuilder.toString(), "utf-8"));
-//		URLConnection urlConnection = url.openConnection();
-//		urlConnection.setDoOutput(true);
-//		urlConnection.connect();
-//		InputStream stream = urlConnection.getInputStream();
-//		OutputStream outputStream = urlConnection.getOutputStream();
-//
-//		String string2 = IOUtils.toString(stream);
-//
-//		while (StringUtils.isNotEmpty(string2)) {
-//			System.out.println(string2);
-//			XPathFactory xPathFactory = XPathFactory.newInstance();
-//			XPath newXPath = xPathFactory.newXPath();
-//			try {
-//				String id = newXPath.evaluate("/xmp/response/ID", new InputSource(new StringReader(string2)));
-//				if ("-1".equals(id)) {
-//					stream.close();
-//					return;
-//				}
-//
-//				Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(id));
-//				StringBuilder builder = new StringBuilder();
-//				builder.append("<request>");
-//				builder.append("<RegisterId>" + registerId + "</RegisterId>");
-//				builder.append("<AuthKey>" + authKey + "</AuthKey>");
-//				builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
-//				builder.append("<AmountDue>" + ticket.getTotalAmount() * 100 + "</AmountDue>");
-//				builder.append("<TotalAmount>" + ticket.getDueAmount() * 100 + "</TotalAmount>");
-//				builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
-//				List<TicketItem> ticketItems = ticket.getTicketItems();
-//				for (TicketItem ticketItem : ticketItems) {
-//					builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount() * 100,
-//							ticketItem.getItemCount()));
-//				}
-//				builder.append("</Goods>");
-//				builder.append("</InvoiceData>");
-//				builder.append("</request>");
-//				System.out.println(builder.toString());
-//
-//				outputStream.write(builder.toString().getBytes());
-//
-//				//url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(builder.toString(), "utf-8"));
-//				//urlConnection = url.openConnection();
-//				//urlConnection.connect();
-//				//stream = urlConnection.getInputStream();
-//				//string2 = IOUtils.toString(stream);
-//				//while (StringUtils.isNotEmpty(string2)) {
-//				//	System.out.println(string2);
-//				//	string2 = IOUtils.toString(stream);
-//				//}
-//
-//				//						StringBuilder transactionSB = new StringBuilder();
-//				//						transactionSB.append("<xmp>");
-//				//						transactionSB.append("<response>");
-//				//						transactionSB.append("<RegisterId>"+registerId+"</RegisterId>");
-//				//						transactionSB.append("<Message>Successful</Message>");
-//				//						transactionSB.append(String.format("<InvoiceReport id=\"%s\">",ticket.getId()));
-//				//						transactionSB.append("<xmp>");
-//				//						transactionSB.append("<response>");
-//				//						
-//				//						transactionSB.append("</response>");
-//				//						transactionSB.append("</xmp>");
-//				//						transactionSB.append("</InvoiceReport>");
-//				//						transactionSB.append("</response>");
-//				//						transactionSB.append("</xmp>");
-//
-//				stream.close();
-//
-//				System.out.println("Execution complete!");
-//			} catch (XPathExpressionException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		stream.close();
+		//		URL url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(stringBuilder.toString(), "utf-8"));
+		//		URLConnection urlConnection = url.openConnection();
+		//		urlConnection.setDoOutput(true);
+		//		urlConnection.connect();
+		//		InputStream stream = urlConnection.getInputStream();
+		//		OutputStream outputStream = urlConnection.getOutputStream();
+		//
+		//		String string2 = IOUtils.toString(stream);
+		//
+		//		while (StringUtils.isNotEmpty(string2)) {
+		//			System.out.println(string2);
+		//			XPathFactory xPathFactory = XPathFactory.newInstance();
+		//			XPath newXPath = xPathFactory.newXPath();
+		//			try {
+		//				String id = newXPath.evaluate("/xmp/response/ID", new InputSource(new StringReader(string2)));
+		//				if ("-1".equals(id)) {
+		//					stream.close();
+		//					return;
+		//				}
+		//
+		//				Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(id));
+		//				StringBuilder builder = new StringBuilder();
+		//				builder.append("<request>");
+		//				builder.append("<RegisterId>" + registerId + "</RegisterId>");
+		//				builder.append("<AuthKey>" + authKey + "</AuthKey>");
+		//				builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
+		//				builder.append("<AmountDue>" + ticket.getTotalAmount() * 100 + "</AmountDue>");
+		//				builder.append("<TotalAmount>" + ticket.getDueAmount() * 100 + "</TotalAmount>");
+		//				builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
+		//				List<TicketItem> ticketItems = ticket.getTicketItems();
+		//				for (TicketItem ticketItem : ticketItems) {
+		//					builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount() * 100,
+		//							ticketItem.getItemCount()));
+		//				}
+		//				builder.append("</Goods>");
+		//				builder.append("</InvoiceData>");
+		//				builder.append("</request>");
+		//				System.out.println(builder.toString());
+		//
+		//				outputStream.write(builder.toString().getBytes());
+		//
+		//				//url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(builder.toString(), "utf-8"));
+		//				//urlConnection = url.openConnection();
+		//				//urlConnection.connect();
+		//				//stream = urlConnection.getInputStream();
+		//				//string2 = IOUtils.toString(stream);
+		//				//while (StringUtils.isNotEmpty(string2)) {
+		//				//	System.out.println(string2);
+		//				//	string2 = IOUtils.toString(stream);
+		//				//}
+		//
+		//				//						StringBuilder transactionSB = new StringBuilder();
+		//				//						transactionSB.append("<xmp>");
+		//				//						transactionSB.append("<response>");
+		//				//						transactionSB.append("<RegisterId>"+registerId+"</RegisterId>");
+		//				//						transactionSB.append("<Message>Successful</Message>");
+		//				//						transactionSB.append(String.format("<InvoiceReport id=\"%s\">",ticket.getId()));
+		//				//						transactionSB.append("<xmp>");
+		//				//						transactionSB.append("<response>");
+		//				//						
+		//				//						transactionSB.append("</response>");
+		//				//						transactionSB.append("</xmp>");
+		//				//						transactionSB.append("</InvoiceReport>");
+		//				//						transactionSB.append("</response>");
+		//				//						transactionSB.append("</xmp>");
+		//
+		//				stream.close();
+		//
+		//				System.out.println("Execution complete!");
+		//			} catch (XPathExpressionException e) {
+		//				e.printStackTrace();
+		//			}
+		//		}
+		//		stream.close();
 	}
 
 	private void sendData(String data) throws Exception {
@@ -225,17 +245,15 @@ public class DejavooProxyServer implements HttpHandler {
 		URLConnection urlConnection = url.openConnection();
 		urlConnection.connect();
 		InputStream inputStream = urlConnection.getInputStream();
+
 		String requestString = IOUtils.toString(inputStream);
+		inputStream.close();
+		System.out.println("request: " + requestString);
+		System.out.println("Execution complete!");
 
-		while (StringUtils.isNotEmpty(requestString)) {
-			System.out.println("request: " + requestString);
+		processRequest(requestString);
 
-			processRequest(requestString);
-
-			inputStream.close();
-
-			System.out.println("Execution complete!");
-		}
+		//}
 	}
 
 	private void processRequest(String requestString) throws Exception {
@@ -244,6 +262,10 @@ public class DejavooProxyServer implements HttpHandler {
 			if ("cancel".equalsIgnoreCase(xpathValue)) {
 				return;
 			}
+		}
+		
+		if (requestString.startsWith("<xmp")) {
+			sendTicketDetail("2");
 		}
 
 		String xpathValue = getXpathValue(SERVER_NUM, requestString);
@@ -259,8 +281,8 @@ public class DejavooProxyServer implements HttpHandler {
 			sendTicketTable();
 		}
 		else {
-			xpathValue = getXpathValue(INVOICE_NUM, requestString);
-			sendTicketInvoice();
+			//xpathValue = getXpathValue(INVOICE_NUM, requestString);
+			//sendTicketInvoice();
 		}
 	}
 }
