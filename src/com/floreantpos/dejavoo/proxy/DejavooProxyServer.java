@@ -4,28 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
 
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jdom2.Document;
 import org.xml.sax.InputSource;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
@@ -82,14 +77,16 @@ public class DejavooProxyServer implements HttpHandler {
 		@Override
 		public void run() {
 			try {
-				System.out.println("request method: " + exchange.getRequestMethod());
 				InputStream inputStream = exchange.getRequestBody();
 				String requestString = IOUtils.toString(inputStream);
-				System.out.println("request body: " + requestString);
 				inputStream.close();
 
 				byte[] bs = requestString.getBytes("UTF-8");
 				exchange.sendResponseHeaders(200, bs.length);
+				OutputStream outputStream = exchange.getResponseBody();
+				outputStream.write(bs);
+				outputStream.flush();
+				outputStream.close();
 
 				processRequest(requestString);
 
@@ -228,7 +225,6 @@ public class DejavooProxyServer implements HttpHandler {
 		URLConnection urlConnection = url.openConnection();
 		urlConnection.connect();
 		InputStream inputStream = urlConnection.getInputStream();
-
 		String requestString = IOUtils.toString(inputStream);
 
 		while (StringUtils.isNotEmpty(requestString)) {
