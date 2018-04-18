@@ -132,7 +132,7 @@ public class DejavooProxyServer implements HttpHandler {
 		stringBuilder.append("</InvoiceList>");
 		stringBuilder.append("</request>");
 
-		System.out.println(stringBuilder.toString());
+		System.out.println("sending: " + stringBuilder.toString());
 		sendData(stringBuilder.toString());
 	}
 
@@ -158,7 +158,7 @@ public class DejavooProxyServer implements HttpHandler {
 		builder.append("</Goods>");
 		builder.append("</InvoiceData>");
 		builder.append("</request>");
-		System.out.println(builder.toString());
+		System.out.println("sending ticket detail:"+builder.toString());
 		
 		sendData(builder.toString());
 	}
@@ -248,8 +248,7 @@ public class DejavooProxyServer implements HttpHandler {
 
 		String requestString = IOUtils.toString(inputStream);
 		inputStream.close();
-		System.out.println("request: " + requestString);
-		System.out.println("Execution complete!");
+		System.out.println("data sent complete!");
 
 		processRequest(requestString);
 
@@ -257,6 +256,7 @@ public class DejavooProxyServer implements HttpHandler {
 	}
 
 	private void processRequest(String requestString) throws Exception {
+		System.out.println("request received: " + requestString);
 		if (requestString.startsWith("InvoiceData")) {
 			String xpathValue = getXpathValue("/InvoiceData/@status", requestString);
 			if ("cancel".equalsIgnoreCase(xpathValue)) {
@@ -265,7 +265,8 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		
 		if (requestString.startsWith("<xmp")) {
-			sendTicketDetail("2");
+			processSpinResponse(requestString);
+			return;
 		}
 
 		String xpathValue = getXpathValue(SERVER_NUM, requestString);
@@ -274,7 +275,9 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		else if (StringUtils.isEmpty(xpathValue)) {
 			xpathValue = getXpathValue(GET_LIST, requestString);
-			sendTicketList();
+			if ("true".equals(xpathValue)) {
+				sendTicketList();
+			}
 		}
 		else if (StringUtils.isEmpty(xpathValue)) {
 			xpathValue = getXpathValue(TABLE_NUM, requestString);
@@ -283,6 +286,16 @@ public class DejavooProxyServer implements HttpHandler {
 		else {
 			//xpathValue = getXpathValue(INVOICE_NUM, requestString);
 			//sendTicketInvoice();
+		}
+	}
+
+	private void processSpinResponse(String requestString) throws Exception {
+		String xpathValue = getXpathValue("/xmp/response/Message", requestString);
+		if ("Error".equalsIgnoreCase(xpathValue) || "ok".equalsIgnoreCase(xpathValue)) {
+			System.out.println("Processing terminated.");
+		}
+		else  {
+			sendTicketDetail("2");
 		}
 	}
 }
