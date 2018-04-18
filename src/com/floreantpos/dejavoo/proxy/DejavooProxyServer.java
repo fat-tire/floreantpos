@@ -19,13 +19,17 @@ import org.xml.sax.InputSource;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.main.Application;
 import com.floreantpos.model.PaymentStatusFilter;
+import com.floreantpos.model.PaymentType;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao._RootDAO;
+import com.floreantpos.services.PosTransactionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -40,7 +44,9 @@ public class DejavooProxyServer implements HttpHandler {
 	private final String INVOICE_NUM = "/TranRequest/invoice_num";
 
 	public DejavooProxyServer() {
-		_RootDAO.initialize();
+		//_RootDAO.initialize();
+		Application application = Application.getInstance();
+		application.initializeSystemHeadless();
 
 		authKey = AppConfig.getString("Dejavoo.AUTH_KEY");
 		registerId = AppConfig.getString("Dejavoo.REGISTER_ID");
@@ -257,10 +263,38 @@ public class DejavooProxyServer implements HttpHandler {
 
 	private void processRequest(String requestString) throws Exception {
 		System.out.println("request received: " + requestString);
-		if (requestString.startsWith("InvoiceData")) {
-			String xpathValue = getXpathValue("/InvoiceData/@status", requestString);
-			if ("cancel".equalsIgnoreCase(xpathValue)) {
+		if (requestString.startsWith("<InvoiceData")) {
+			String status = getXpathValue("/InvoiceData/@status", requestString);
+			if ("cancel".equalsIgnoreCase(status)) {
 				return;
+			}
+			if ("ok".equalsIgnoreCase(status)) {
+				String trans = getXpathValue("/InvoiceData/trans/@transType", requestString);
+				if (StringUtils.isNotEmpty(trans)) {
+					String invoice_ref_id = getXpathValue("/InvoiceData/@refId", requestString);
+					String reg_id = getXpathValue("/InvoiceData/@regId", requestString);
+					String payType = getXpathValue("/InvoiceData/trans/@paymType", requestString);
+					String transType = getXpathValue("/InvoiceData/trans/@transType", requestString);
+					String batchN = getXpathValue("/InvoiceData/trans/@batchNum", requestString);
+					String invN = getXpathValue("/InvoiceData/trans/@invNum", requestString);
+					String trans_ref_id = getXpathValue("/InvoiceData/trans/@refId", requestString);
+					String amount = getXpathValue("/InvoiceData/trans/@amount", requestString);
+					String tip = getXpathValue("/InvoiceData/trans/@tip", requestString);
+					String untipped = getXpathValue("/InvoiceData/trans/@untipped", requestString);
+					
+					Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(invN));
+					PosTransaction posTransaction = PaymentType.CREDIT_CARD.createTransaction();
+					
+					if ("Debit".equals(payType)) {
+						posTransaction = PaymentType.DEBIT_CARD.createTransaction();
+					}
+					posTransaction.setTicket(ticket);
+					posTransaction.setAmount(Double.parseDouble(amount) / 100.0);
+					posTransaction.setCardTransactionId(trans_ref_id);
+					posTransaction.addProperty("batchNo", batchN);
+					PosTransactionService.getInstance().settleTicket(ticket, posTransaction);
+					return;
+				}
 			}
 		}
 		
@@ -295,7 +329,11 @@ public class DejavooProxyServer implements HttpHandler {
 			System.out.println("Processing terminated.");
 		}
 		else  {
-			sendTicketDetail("2");
+			String ticketId = getXpathValue("/xmp/response/ID", requestString);
+			if ("-1".equals(ticketId)) {
+				return;
+			}
+			sendTicketDetail(ticketId);
 		}
 	}
 }

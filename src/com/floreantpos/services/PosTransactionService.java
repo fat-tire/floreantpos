@@ -48,6 +48,9 @@ public class PosTransactionService {
 	public void settleTicket(Ticket ticket, PosTransaction transaction) throws Exception {
 		Application application = Application.getInstance();
 		User currentUser = Application.getCurrentUser();
+		if (currentUser == null) {
+			currentUser = ticket.getOwner();
+		}
 		Terminal terminal = application.refreshAndGetTerminal();
 
 		Session session = null;
