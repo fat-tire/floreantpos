@@ -52,6 +52,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Recepie;
 import com.floreantpos.model.RecepieItem;
 import com.floreantpos.model.Shift;
+import com.floreantpos.model.ShopTableStatus;
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
@@ -525,7 +526,6 @@ public class TicketDAO extends BaseTicketDAO {
 
 				criteria.add(Restrictions.ge(Ticket.PROP_CLOSING_DATE, currentTime.getTime()));
 			}
-
 			if (otFilter != POSConstants.ALL) {
 				criteria.add(Restrictions.eq(Ticket.PROP_TICKET_TYPE, otFilter));
 			}
@@ -1295,4 +1295,32 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
+	public List<Ticket> findTicketsByTableNum(int tableNumber) {
+		Session session = null;
+		Criteria criteria = null;
+		try {
+			session = createNewSession();
+			criteria = session.createCriteria(ShopTableStatus.class);
+			criteria.add(Restrictions.eq(ShopTableStatus.PROP_ID, tableNumber));
+			
+			ShopTableStatus status = (ShopTableStatus) criteria.uniqueResult();
+			List<Ticket> tickets = new ArrayList<>();
+			if (status != null) {
+				List<Integer> list = status.getListOfTicketNumbers();
+				if (list != null && !list.isEmpty()) {
+					for (Integer ticketId : list) {
+						Ticket ticket = TicketDAO.getInstance().get(ticketId);
+						if (ticket != null) {
+							tickets.add(ticket);
+						}
+					}
+				}
+			}
+			return tickets;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
 }
