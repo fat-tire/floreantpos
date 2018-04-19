@@ -302,7 +302,12 @@ public class ReceiptPrintService {
 	public static void printTransaction(PosTransaction transaction) {
 		try {
 			Ticket ticket = transaction.getTicket();
-
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			if(paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+				paymentGateway.printTicket(ticket);
+				return;
+			}
+			
 			TicketPrintProperties printProperties = new TicketPrintProperties(Messages.getString("ReceiptPrintService.3"), true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
