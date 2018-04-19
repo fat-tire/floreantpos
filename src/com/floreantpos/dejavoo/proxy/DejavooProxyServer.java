@@ -140,7 +140,8 @@ public class DejavooProxyServer implements HttpHandler {
 		stringBuilder.append(String.format("<InvoiceList title=\"%s\" count=\"%s\">", "invoices", ticketList.size()));
 		for (Ticket ticket : ticketList) {
 			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
-			String invoiceFormat = String.format(invoice, ticket.getId(), ticket.getOwner().getFirstName(), ticket.getTotalAmount() * 100,
+			String name = ticket.getCustomer() == null ? ticket.getOwner().getFirstName() : ticket.getCustomer().getName();
+			String invoiceFormat = String.format(invoice, ticket.getId(), name, ticket.getTotalAmount() * 100,
 					ticket.isClosed() ? "closed" : "open");
 			stringBuilder.append(invoiceFormat);
 		}
@@ -235,28 +236,7 @@ public class DejavooProxyServer implements HttpHandler {
 			if ("ok".equalsIgnoreCase(status)) {
 				String trans = getXpathValue("/InvoiceData/trans/@transType", requestString);
 				if (StringUtils.isNotEmpty(trans)) {
-					String invoice_ref_id = getXpathValue("/InvoiceData/@refId", requestString);
-					String reg_id = getXpathValue("/InvoiceData/@regId", requestString);
-					String payType = getXpathValue("/InvoiceData/trans/@paymType", requestString);
-					String transType = getXpathValue("/InvoiceData/trans/@transType", requestString);
-					String batchN = getXpathValue("/InvoiceData/trans/@batchNum", requestString);
-					String invN = getXpathValue("/InvoiceData/trans/@invNum", requestString);
-					String trans_ref_id = getXpathValue("/InvoiceData/trans/@refId", requestString);
-					String amount = getXpathValue("/InvoiceData/trans/@amount", requestString);
-					String tip = getXpathValue("/InvoiceData/trans/@tip", requestString);
-					String untipped = getXpathValue("/InvoiceData/trans/@untipped", requestString);
-
-					Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(invN));
-					PosTransaction posTransaction = PaymentType.CREDIT_CARD.createTransaction();
-
-					if ("Debit".equals(payType)) {
-						posTransaction = PaymentType.DEBIT_CARD.createTransaction();
-					}
-					posTransaction.setTicket(ticket);
-					posTransaction.setAmount(Double.parseDouble(amount) / 100.0);
-					posTransaction.setCardTransactionId(trans_ref_id);
-					posTransaction.addProperty("batchNo", batchN);
-					PosTransactionService.getInstance().settleTicket(ticket, posTransaction);
+					processPayment(requestString);
 					return;
 				}
 			}
@@ -290,6 +270,40 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 	}
 
+	private void processPayment(String requestString) throws Exception {
+		//String invoice_ref_id = getXpathValue("/InvoiceData/@refId", requestString);
+		//String reg_id = getXpathValue("/InvoiceData/@regId", requestString);
+		String payType = getXpathValue("/InvoiceData/trans/@paymType", requestString);
+		//String transType = getXpathValue("/InvoiceData/trans/@transType", requestString);
+		String batchN = getXpathValue("/InvoiceData/trans/@batchNum", requestString);
+		String invN = getXpathValue("/InvoiceData/trans/@invNum", requestString);
+		String trans_ref_id = getXpathValue("/InvoiceData/trans/@refId", requestString);
+		String amountString = getXpathValue("/InvoiceData/trans/@amount", requestString);
+		String tipsString = getXpathValue("/InvoiceData/trans/@tip", requestString);
+		//String untipped = getXpathValue("/InvoiceData/trans/@untipped", requestString);
+
+		double amount = Double.parseDouble(amountString) / 100.0;
+		double tips = 0;
+		Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(invN));
+		if (StringUtils.isNotEmpty(tipsString)) {
+			tips = Double.parseDouble(tipsString) / 100.0;
+			amount = amount + tips;
+			ticket.setGratuityAmount(tips);
+			ticket.calculatePrice();
+		}
+		PosTransaction posTransaction = PaymentType.CREDIT_CARD.createTransaction();
+
+		if ("Debit".equals(payType)) {
+			posTransaction = PaymentType.DEBIT_CARD.createTransaction();
+		}
+		posTransaction.setTicket(ticket);
+		posTransaction.setAmount(amount);
+		posTransaction.setTipsAmount(tips);
+		posTransaction.setCardTransactionId(trans_ref_id);
+		posTransaction.addProperty("batchNo", batchN);
+		PosTransactionService.getInstance().settleTicket(ticket, posTransaction);
+	}
+
 	private void processSpinResponse(String requestString) throws Exception {
 		String xpathValue = getXpathValue("/xmp/response/Message", requestString);
 		if ("Error".equalsIgnoreCase(xpathValue) || "ok".equalsIgnoreCase(xpathValue)) {
@@ -297,7 +311,7 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		else {
 			String ticketId = getXpathValue("/xmp/response/ID", requestString);
-			if ("-1".equals(ticketId)) {
+			if (StringUtils.isEmpty(ticketId) || "-1".equals(ticketId)) {
 				return;
 			}
 			sendTicketDetail(ticketId);
