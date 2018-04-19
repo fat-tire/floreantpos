@@ -27,6 +27,7 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.PosTransactionService;
@@ -148,24 +149,11 @@ public class DejavooProxyServer implements HttpHandler {
 		return stringBuilder;
 	}
 
-	private void sendTicketTable() throws Exception {
-
-		int x = TicketDAO.getInstance().getNumTickets();
-		List<Ticket> ticketList = TicketDAO.getInstance().findTicketByCustomer(x);
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("<request>");
-		stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
-		stringBuilder.append("<AuthKey>" + authKey + "</AuthKey>");
-		stringBuilder.append(String.format("<InvoiceList title=\"%s\" count=\"%s\">", "invoices", ticketList.size()));
-		for (Ticket ticket : ticketList) {
-			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
-			String invoiceFormat = String.format(invoice, ticket.getId(), ticket.getOwner().getFirstName(), ticket.getTotalAmount() * 100,
-					ticket.isClosed() ? "closed" : "open");
-			stringBuilder.append(invoiceFormat);
-		}
-		stringBuilder.append("</InvoiceList>");
-		stringBuilder.append("</request>");
-
+	private void sendTicketsByTable(String tableNum) throws Exception {
+		List<Ticket> ticketList = TicketDAO.getInstance().findTicketsByTableNum(Integer.parseInt(tableNum));
+		
+		StringBuilder stringBuilder = createInvoiceList(ticketList);
+		
 		System.out.println("sending: " + stringBuilder.toString());
 		sendData(stringBuilder.toString());
 
@@ -292,7 +280,7 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		xpathValue = getXpathValue(TABLE_NUM, requestString);
 		if (StringUtils.isNotEmpty(xpathValue)) {
-			//sendTicketDetail(xpathValue);
+			sendTicketsByTable(xpathValue);
 			return;
 		}
 		xpathValue = getXpathValue(SERVER_NUM, requestString);
