@@ -114,23 +114,10 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 	}
 
-	private void sendTicketServer() throws Exception {
-		int serverId = 1;
-		User user = UserDAO.getInstance().get(serverId);
+	private void sendTicketsByServer(String serverId) throws Exception {
+		User user = UserDAO.getInstance().get(Integer.parseInt(serverId));
 		List<Ticket> ticketList = TicketDAO.getInstance().findTicketsForUser(PaymentStatusFilter.OPEN, POSConstants.ALL, user);
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("<request>");
-		stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
-		stringBuilder.append("<AuthKey>" + authKey + "</AuthKey>");
-		stringBuilder.append(String.format("<InvoiceList title=\"%s\" count=\"%s\">", "invoices", ticketList.size()));
-		for (Ticket ticket : ticketList) {
-			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
-			String invoiceFormat = String.format(invoice, ticket.getId(), ticket.getOwner().getFirstName(), ticket.getTotalAmount() * 100,
-					ticket.isClosed() ? "closed" : "open");
-			stringBuilder.append(invoiceFormat);
-		}
-		stringBuilder.append("</InvoiceList>");
-		stringBuilder.append("</request>");
+		StringBuilder stringBuilder = createInvoiceList(ticketList);
 
 		System.out.println("sending: " + stringBuilder.toString());
 		sendData(stringBuilder.toString());
@@ -138,7 +125,13 @@ public class DejavooProxyServer implements HttpHandler {
 
 	private void sendTicketList() throws Exception {
 		List<Ticket> ticketList = TicketDAO.getInstance().findOpenTickets();
+		StringBuilder stringBuilder = createInvoiceList(ticketList);
 
+		System.out.println("sending: " + stringBuilder.toString());
+		sendData(stringBuilder.toString());
+	}
+
+	private StringBuilder createInvoiceList(List<Ticket> ticketList) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<request>");
 		stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
@@ -152,9 +145,7 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		stringBuilder.append("</InvoiceList>");
 		stringBuilder.append("</request>");
-
-		System.out.println("sending: " + stringBuilder.toString());
-		sendData(stringBuilder.toString());
+		return stringBuilder;
 	}
 
 	private void sendTicketTable() throws Exception {
@@ -187,8 +178,8 @@ public class DejavooProxyServer implements HttpHandler {
 		builder.append("<RegisterId>" + registerId + "</RegisterId>");
 		builder.append("<AuthKey>" + authKey + "</AuthKey>");
 		builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
-		builder.append("<AmountDue>" + ticket.getTotalAmount() * 100 + "</AmountDue>");
-		builder.append("<TotalAmount>" + ticket.getDueAmount() * 100 + "</TotalAmount>");
+		builder.append("<AmountDue>" + ticket.getDueAmount() * 100 + "</AmountDue>");
+		builder.append("<TotalAmount>" + ticket.getTotalAmount() * 100 + "</TotalAmount>");
 		builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		for (TicketItem ticketItem : ticketItems) {
@@ -197,27 +188,28 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		builder.append("</Goods>");
 		//@formatter:off
-		Set<PosTransaction> transactions = ticket.getTransactions();
-		int transactionSize = ticket.getTransactions().size();
-		if (transactions != null) {
-			builder.append(String.format("<Payments count=\"%s\">",transactionSize));
-			for (PosTransaction posTransaction : transactions) {
-            builder.append(String.format("<Payment "
-            		+ "refId=\"%s\" "
-            		+ "name=\"%\" "
-            		+ "amount=\"%s\" "
-            		+ "tip=\"%s\" "
-            		+ "type=\"%s\" "
-            		+ "acctLast4=\"%s\"/>", 
-            		posTransaction.getId(),
-            		posTransaction.getPaymentType(),
-            		posTransaction.getAmount(),
-            		posTransaction.getTipsAmount(),
-            		posTransaction.getTicket().isClosed() ? "closed" : "open",
-            		posTransaction.getCardNumber()));
-			}
-			builder.append("</Payments>");
-		}
+//		Set<PosTransaction> transactions = ticket.getTransactions();
+//		int transactionSize = ticket.getTransactions().size();
+//		if (transactions != null) {
+//			builder.append(String.format("<Payments count=\"%s\">",transactionSize));
+//			for (PosTransaction posTransaction : transactions) {
+//            builder.append(String.format("<Payment "
+//            		+ "refId=\"%s\" "
+//            		+ "name=\"%s\" "
+//            		+ "amount=\"%s\" "
+//            		+ "tip=\"%s\" "
+//            		+ "type=\"%s\" />",
+//            		//+ "acctLast4=\"%s\"/>", 
+//            		posTransaction.getId(),
+//            		posTransaction.getPaymentType(),
+//            		posTransaction.getAmount() * 100.0,
+//            		posTransaction.getTipsAmount() * 100.0,
+//            		posTransaction.getTicket().isClosed() ? "closed" : "open"
+//            		//posTransaction.getCardNumber()
+//            		));
+//			}
+//			builder.append("</Payments>");
+//		}
 		//@formatter:off
 		builder.append("</InvoiceData>");
 		builder.append("</request>");
@@ -287,23 +279,26 @@ public class DejavooProxyServer implements HttpHandler {
 			return;
 		}
 
-		String xpathValue = getXpathValue(SERVER_NUM, requestString);
+		//String xpathValue = getXpathValue(SERVER_NUM, requestString);
+		String xpathValue = getXpathValue(GET_LIST, requestString);
+		if ("true".equals(xpathValue)) {
+			sendTicketList();
+			return;
+		}
+		xpathValue = getXpathValue(INVOICE_NUM, requestString);
 		if (StringUtils.isNotEmpty(xpathValue)) {
-			sendTicketServer();
+			sendTicketDetail(xpathValue);
+			return;
 		}
-		else if (StringUtils.isEmpty(xpathValue)) {
-			xpathValue = getXpathValue(GET_LIST, requestString);
-			if ("true".equals(xpathValue)) {
-				sendTicketList();
-			}
+		xpathValue = getXpathValue(TABLE_NUM, requestString);
+		if (StringUtils.isNotEmpty(xpathValue)) {
+			//sendTicketDetail(xpathValue);
+			return;
 		}
-		else if (StringUtils.isEmpty(xpathValue)) {
-			xpathValue = getXpathValue(TABLE_NUM, requestString);
-			sendTicketTable();
-		}
-		else {
-			//xpathValue = getXpathValue(INVOICE_NUM, requestString);
-			//sendTicketInvoice();
+		xpathValue = getXpathValue(SERVER_NUM, requestString);
+		if (StringUtils.isNotEmpty(xpathValue)) {
+			sendTicketsByServer(xpathValue);
+			return;
 		}
 	}
 
