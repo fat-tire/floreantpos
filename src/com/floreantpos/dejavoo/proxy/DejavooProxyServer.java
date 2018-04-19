@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
@@ -28,7 +29,6 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
-import com.floreantpos.model.dao._RootDAO;
 import com.floreantpos.services.PosTransactionService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -118,7 +118,22 @@ public class DejavooProxyServer implements HttpHandler {
 		int serverId = 1;
 		User user = UserDAO.getInstance().get(serverId);
 		List<Ticket> ticketList = TicketDAO.getInstance().findTicketsForUser(PaymentStatusFilter.OPEN, POSConstants.ALL, user);
-		doProcess(ticketList);
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<request>");
+		stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
+		stringBuilder.append("<AuthKey>" + authKey + "</AuthKey>");
+		stringBuilder.append(String.format("<InvoiceList title=\"%s\" count=\"%s\">", "invoices", ticketList.size()));
+		for (Ticket ticket : ticketList) {
+			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
+			String invoiceFormat = String.format(invoice, ticket.getId(), ticket.getOwner().getFirstName(), ticket.getTotalAmount() * 100,
+					ticket.isClosed() ? "closed" : "open");
+			stringBuilder.append(invoiceFormat);
+		}
+		stringBuilder.append("</InvoiceList>");
+		stringBuilder.append("</request>");
+
+		System.out.println("sending: " + stringBuilder.toString());
+		sendData(stringBuilder.toString());
 	}
 
 	private void sendTicketList() throws Exception {
@@ -142,7 +157,26 @@ public class DejavooProxyServer implements HttpHandler {
 		sendData(stringBuilder.toString());
 	}
 
-	private void sendTicketTable() {
+	private void sendTicketTable() throws Exception {
+
+		int x = TicketDAO.getInstance().getNumTickets();
+		List<Ticket> ticketList = TicketDAO.getInstance().findTicketByCustomer(x);
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<request>");
+		stringBuilder.append("<RegisterId>" + registerId + "</RegisterId>");
+		stringBuilder.append("<AuthKey>" + authKey + "</AuthKey>");
+		stringBuilder.append(String.format("<InvoiceList title=\"%s\" count=\"%s\">", "invoices", ticketList.size()));
+		for (Ticket ticket : ticketList) {
+			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
+			String invoiceFormat = String.format(invoice, ticket.getId(), ticket.getOwner().getFirstName(), ticket.getTotalAmount() * 100,
+					ticket.isClosed() ? "closed" : "open");
+			stringBuilder.append(invoiceFormat);
+		}
+		stringBuilder.append("</InvoiceList>");
+		stringBuilder.append("</request>");
+
+		System.out.println("sending: " + stringBuilder.toString());
+		sendData(stringBuilder.toString());
 
 	}
 
@@ -162,89 +196,40 @@ public class DejavooProxyServer implements HttpHandler {
 					ticketItem.getItemCount()));
 		}
 		builder.append("</Goods>");
+		//@formatter:off
+		Set<PosTransaction> transactions = ticket.getTransactions();
+		int transactionSize = ticket.getTransactions().size();
+		if (transactions != null) {
+			builder.append(String.format("<Payments count=\"%s\">",transactionSize));
+			for (PosTransaction posTransaction : transactions) {
+            builder.append(String.format("<Payment "
+            		+ "refId=\"%s\" "
+            		+ "name=\"%\" "
+            		+ "amount=\"%s\" "
+            		+ "tip=\"%s\" "
+            		+ "type=\"%s\" "
+            		+ "acctLast4=\"%s\"/>", 
+            		posTransaction.getId(),
+            		posTransaction.getPaymentType(),
+            		posTransaction.getAmount(),
+            		posTransaction.getTipsAmount(),
+            		posTransaction.getTicket().isClosed() ? "closed" : "open",
+            		posTransaction.getCardNumber()));
+			}
+			builder.append("</Payments>");
+		}
+		//@formatter:off
 		builder.append("</InvoiceData>");
 		builder.append("</request>");
-		System.out.println("sending ticket detail:"+builder.toString());
-		
+		System.out.println("sending ticket detail:" + builder.toString());
+
 		sendData(builder.toString());
 	}
-
-	private void doProcess(List<Ticket> ticketList) throws Exception {
-		//		URL url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(stringBuilder.toString(), "utf-8"));
-		//		URLConnection urlConnection = url.openConnection();
-		//		urlConnection.setDoOutput(true);
-		//		urlConnection.connect();
-		//		InputStream stream = urlConnection.getInputStream();
-		//		OutputStream outputStream = urlConnection.getOutputStream();
-		//
-		//		String string2 = IOUtils.toString(stream);
-		//
-		//		while (StringUtils.isNotEmpty(string2)) {
-		//			System.out.println(string2);
-		//			XPathFactory xPathFactory = XPathFactory.newInstance();
-		//			XPath newXPath = xPathFactory.newXPath();
-		//			try {
-		//				String id = newXPath.evaluate("/xmp/response/ID", new InputSource(new StringReader(string2)));
-		//				if ("-1".equals(id)) {
-		//					stream.close();
-		//					return;
-		//				}
-		//
-		//				Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(id));
-		//				StringBuilder builder = new StringBuilder();
-		//				builder.append("<request>");
-		//				builder.append("<RegisterId>" + registerId + "</RegisterId>");
-		//				builder.append("<AuthKey>" + authKey + "</AuthKey>");
-		//				builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
-		//				builder.append("<AmountDue>" + ticket.getTotalAmount() * 100 + "</AmountDue>");
-		//				builder.append("<TotalAmount>" + ticket.getDueAmount() * 100 + "</TotalAmount>");
-		//				builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
-		//				List<TicketItem> ticketItems = ticket.getTicketItems();
-		//				for (TicketItem ticketItem : ticketItems) {
-		//					builder.append(String.format("<Item name=\"%s\" amount=\"%s\" quantity=\"%s\" />", ticketItem.getName(), ticketItem.getTotalAmount() * 100,
-		//							ticketItem.getItemCount()));
-		//				}
-		//				builder.append("</Goods>");
-		//				builder.append("</InvoiceData>");
-		//				builder.append("</request>");
-		//				System.out.println(builder.toString());
-		//
-		//				outputStream.write(builder.toString().getBytes());
-		//
-		//				//url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(builder.toString(), "utf-8"));
-		//				//urlConnection = url.openConnection();
-		//				//urlConnection.connect();
-		//				//stream = urlConnection.getInputStream();
-		//				//string2 = IOUtils.toString(stream);
-		//				//while (StringUtils.isNotEmpty(string2)) {
-		//				//	System.out.println(string2);
-		//				//	string2 = IOUtils.toString(stream);
-		//				//}
-		//
-		//				//						StringBuilder transactionSB = new StringBuilder();
-		//				//						transactionSB.append("<xmp>");
-		//				//						transactionSB.append("<response>");
-		//				//						transactionSB.append("<RegisterId>"+registerId+"</RegisterId>");
-		//				//						transactionSB.append("<Message>Successful</Message>");
-		//				//						transactionSB.append(String.format("<InvoiceReport id=\"%s\">",ticket.getId()));
-		//				//						transactionSB.append("<xmp>");
-		//				//						transactionSB.append("<response>");
-		//				//						
-		//				//						transactionSB.append("</response>");
-		//				//						transactionSB.append("</xmp>");
-		//				//						transactionSB.append("</InvoiceReport>");
-		//				//						transactionSB.append("</response>");
-		//				//						transactionSB.append("</xmp>");
-		//
-		//				stream.close();
-		//
-		//				System.out.println("Execution complete!");
-		//			} catch (XPathExpressionException e) {
-		//				e.printStackTrace();
-		//			}
-		//		}
-		//		stream.close();
-	}
+	/*
+	 *  <Payments count="2">
+	<Payment refId="1" name="Cash" amount="100" tip="30" type="closed" acctLast4="1111" />
+	<Payment refId="2" name="Credit" amount="200" tip="0" type="incomplete" acctLast4="5454" />
+	  </Payment>*/
 
 	private void sendData(String data) throws Exception {
 		URL url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(data, "utf-8"));
@@ -258,7 +243,6 @@ public class DejavooProxyServer implements HttpHandler {
 
 		processRequest(requestString);
 
-		//}
 	}
 
 	private void processRequest(String requestString) throws Exception {
@@ -281,10 +265,10 @@ public class DejavooProxyServer implements HttpHandler {
 					String amount = getXpathValue("/InvoiceData/trans/@amount", requestString);
 					String tip = getXpathValue("/InvoiceData/trans/@tip", requestString);
 					String untipped = getXpathValue("/InvoiceData/trans/@untipped", requestString);
-					
+
 					Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(invN));
 					PosTransaction posTransaction = PaymentType.CREDIT_CARD.createTransaction();
-					
+
 					if ("Debit".equals(payType)) {
 						posTransaction = PaymentType.DEBIT_CARD.createTransaction();
 					}
@@ -297,7 +281,7 @@ public class DejavooProxyServer implements HttpHandler {
 				}
 			}
 		}
-		
+
 		if (requestString.startsWith("<xmp")) {
 			processSpinResponse(requestString);
 			return;
@@ -328,7 +312,7 @@ public class DejavooProxyServer implements HttpHandler {
 		if ("Error".equalsIgnoreCase(xpathValue) || "ok".equalsIgnoreCase(xpathValue)) {
 			System.out.println("Processing terminated.");
 		}
-		else  {
+		else {
 			String ticketId = getXpathValue("/xmp/response/ID", requestString);
 			if ("-1".equals(ticketId)) {
 				return;
