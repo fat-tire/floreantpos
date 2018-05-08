@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.StaleStateException;
 
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
@@ -53,6 +54,7 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.RefreshableView;
 import com.floreantpos.ui.dialog.MultiCurrencyTenderDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
@@ -110,10 +112,11 @@ public class PaymentView extends JPanel {
 	private boolean clearPreviousAmount = true;
 	private Ticket ticket;
 	private SettleTicketProcessor ticketProcessor;
+	private RefreshableView refreshableView;
 
-	public PaymentView(SettleTicketProcessor ticketProcessor) {
+	public PaymentView(SettleTicketProcessor ticketProcessor, RefreshableView refreshableView) {
 		this.ticketProcessor = ticketProcessor;
-
+		this.refreshableView = refreshableView;
 		initComponents();
 	}
 
@@ -447,8 +450,10 @@ public class PaymentView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ticketProcessor.doSettle(PaymentType.CREDIT_CARD, getTenderedAmount());
-				} catch (ParseException e1) {
-					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				} catch (StaleStateException x) {
+					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
+				} catch (Exception e1) {
+					PosLog.error(PaymentView.class, e1.getMessage().toString());
 				}
 			}
 		});
@@ -458,8 +463,10 @@ public class PaymentView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ticketProcessor.doSettle(PaymentType.DEBIT_CARD, getTenderedAmount());
-				} catch (ParseException e1) {
-					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				} catch (StaleStateException x) {
+					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
+				} catch (Exception e1) {
+					PosLog.error(PaymentView.class, e1.getMessage().toString());
 				}
 			}
 		});
@@ -470,8 +477,8 @@ public class PaymentView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ticketProcessor.doSettle(PaymentType.GIFT_CERTIFICATE, getTenderedAmount());
-				} catch (ParseException e1) {
-					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				} catch (Exception e1) {
+					PosLog.error(PaymentView.class, e1.getMessage().toString());
 				}
 			}
 		});
@@ -482,8 +489,8 @@ public class PaymentView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ticketProcessor.doSettle(PaymentType.CUSTOM_PAYMENT, getTenderedAmount());
-				} catch (ParseException e1) {
-					PosLog.error(PaymentView.class, e1.getMessage(), e1);
+				} catch (Exception e1) {
+					PosLog.error(PaymentView.class, e1.getMessage().toString());
 				}
 			}
 		});
@@ -678,7 +685,10 @@ public class PaymentView extends JPanel {
 				return;
 			}
 			ticketProcessor.doSettle(PaymentType.CASH, terderAmount);
+		} catch (StaleStateException x) {
+			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 		} catch (Exception e) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(),e.getMessage().toString());
 			org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
 		}
 	}

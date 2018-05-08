@@ -28,6 +28,7 @@ import javax.json.JsonObject;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.StaleStateException;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -52,6 +53,7 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.ui.RefreshableView;
 import com.floreantpos.ui.dialog.DiscountSelectionDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
@@ -68,132 +70,133 @@ public class SettleTicketProcessor implements CardInputListener {
 	private Ticket ticket;
 	private String cardName;
 	private User currentUser;
+	private RefreshableView refreshableView;
 
-	public SettleTicketProcessor(User currentUser) {
+	public SettleTicketProcessor(User currentUser, RefreshableView refreshableView) {
 		super();
 		this.currentUser = currentUser;
+		this.refreshableView = refreshableView;
 	}
 
-	public void doSettle(PaymentType paymentType, double tenderAmount) {
+	public void doSettle(PaymentType paymentType, double tenderAmount) throws Exception {
 		doSettle(paymentType, tenderAmount, null);
 	}
 
-	public void doSettle(PaymentType paymentType, double tenderAmount, CustomPayment customPayment) {
-		try {
-			this.tenderAmount = tenderAmount;
-			this.paymentType = paymentType;
-			if (ticket == null)
-				return;
-			if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
-				POSMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
-				return;
-			}
+	public void doSettle(PaymentType paymentType, double tenderAmount, CustomPayment customPayment) throws Exception {
+		this.tenderAmount = tenderAmount;
+		this.paymentType = paymentType;
+		if (ticket == null)
+			return;
+		if (ticket.getTicketItems() == null || ticket.getTicketItems().size() == 0) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
+			return;
+		}
 
-			/*if (ticket.getOrderType().isBarTab()) { //fix
-				doSettleBarTabTicket(ticket);
-				return;
-			}*/
+		/*if (ticket.getOrderType().isBarTab()) { //fix
+			doSettleBarTabTicket(ticket);
+			return;
+		}*/
 
-			if (ticket.getId() == null) {
-				OrderController.saveOrder(ticket);
-			}
+		OrderController.saveOrder(ticket);
+		
+		if (ticket.getDueAmount() == 0 && ticket.getOrderType().isCloseOnPaid()) {
+			ticket.setClosed(true);
+			doInformListenerPaymentDone();
+			return;
+		}
 
-			cardName = paymentType.getDisplayString();
-			PosTransaction transaction = null;
+		cardName = paymentType.getDisplayString();
+		PosTransaction transaction = null;
 
-			switch (paymentType) {
-				case CASH:
-					if (!confirmPayment()) {
-						return;
-					}
+		switch (paymentType) {
+			case CASH:
+				if (!confirmPayment()) {
+					return;
+				}
 
-					transaction = paymentType.createTransaction();
-					transaction.setTicket(ticket);
-					transaction.setCaptured(true);
-					setTransactionAmounts(transaction);
+				transaction = paymentType.createTransaction();
+				transaction.setTicket(ticket);
+				transaction.setCaptured(true);
+				setTransactionAmounts(transaction);
 
-					settleTicket(transaction);
-					break;
+				settleTicket(transaction);
+				break;
 
-				case CUSTOM_PAYMENT:
+			case CUSTOM_PAYMENT:
 
-					CustomPaymentSelectionDialog customPaymentDialog = new CustomPaymentSelectionDialog();
-					customPaymentDialog.setTitle(Messages.getString("SettleTicketDialog.8")); //$NON-NLS-1$
-					customPaymentDialog.pack();
-					customPaymentDialog.open();
+				CustomPaymentSelectionDialog customPaymentDialog = new CustomPaymentSelectionDialog();
+				customPaymentDialog.setTitle(Messages.getString("SettleTicketDialog.8")); //$NON-NLS-1$
+				customPaymentDialog.pack();
+				customPaymentDialog.open();
 
-					if (customPaymentDialog.isCanceled())
-						return;
+				if (customPaymentDialog.isCanceled())
+					return;
 
-					if (!confirmPayment()) {
-						return;
-					}
+				if (!confirmPayment()) {
+					return;
+				}
 
-					transaction = paymentType.createTransaction();
-					transaction.setCustomPaymentFieldName(customPaymentDialog.getPaymentFieldName());
-					transaction.setCustomPaymentName(customPaymentDialog.getPaymentName());
-					transaction.setCustomPaymentRef(customPaymentDialog.getPaymentRef());
-					transaction.setTicket(ticket);
-					transaction.setCaptured(true);
-					setTransactionAmounts(transaction);
+				transaction = paymentType.createTransaction();
+				transaction.setCustomPaymentFieldName(customPaymentDialog.getPaymentFieldName());
+				transaction.setCustomPaymentName(customPaymentDialog.getPaymentName());
+				transaction.setCustomPaymentRef(customPaymentDialog.getPaymentRef());
+				transaction.setTicket(ticket);
+				transaction.setCaptured(true);
+				setTransactionAmounts(transaction);
 
-					settleTicket(transaction);
-					break;
+				settleTicket(transaction);
+				break;
 
-				case CREDIT_CARD:
-				case CREDIT_VISA:
-				case CREDIT_MASTER_CARD:
-				case CREDIT_AMEX:
-				case CREDIT_DISCOVERY:
-					payUsingCard(cardName, tenderAmount);
-					break;
+			case CREDIT_CARD:
+			case CREDIT_VISA:
+			case CREDIT_MASTER_CARD:
+			case CREDIT_AMEX:
+			case CREDIT_DISCOVERY:
+				payUsingCard(cardName, tenderAmount);
+				break;
 
-				case DEBIT_CARD:
-				case DEBIT_VISA:
-				case DEBIT_MASTER_CARD:
-					payUsingCard(cardName, tenderAmount);
-					break;
+			case DEBIT_CARD:
+			case DEBIT_VISA:
+			case DEBIT_MASTER_CARD:
+				payUsingCard(cardName, tenderAmount);
+				break;
 
-				case GIFT_CERTIFICATE:
-					GiftCertDialog giftCertDialog = new GiftCertDialog();
-					giftCertDialog.pack();
-					giftCertDialog.open();
+			case GIFT_CERTIFICATE:
+				GiftCertDialog giftCertDialog = new GiftCertDialog();
+				giftCertDialog.pack();
+				giftCertDialog.open();
 
-					if (giftCertDialog.isCanceled())
-						return;
+				if (giftCertDialog.isCanceled())
+					return;
 
-					transaction = new GiftCertificateTransaction();
-					transaction.setPaymentType(PaymentType.GIFT_CERTIFICATE.name());
-					transaction.setTicket(ticket);
-					transaction.setCaptured(true);
-					setTransactionAmounts(transaction);
+				transaction = new GiftCertificateTransaction();
+				transaction.setPaymentType(PaymentType.GIFT_CERTIFICATE.name());
+				transaction.setTicket(ticket);
+				transaction.setCaptured(true);
+				setTransactionAmounts(transaction);
 
-					double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
-					double giftCertCashBackAmount = 0;
-					transaction.setTenderAmount(giftCertFaceValue);
+				double giftCertFaceValue = giftCertDialog.getGiftCertFaceValue();
+				double giftCertCashBackAmount = 0;
+				transaction.setTenderAmount(giftCertFaceValue);
 
-					if (giftCertFaceValue >= ticket.getDueAmount()) {
-						transaction.setAmount(ticket.getDueAmount());
-						giftCertCashBackAmount = giftCertFaceValue - ticket.getDueAmount();
-					}
-					else {
-						transaction.setAmount(giftCertFaceValue);
-					}
+				if (giftCertFaceValue >= ticket.getDueAmount()) {
+					transaction.setAmount(ticket.getDueAmount());
+					giftCertCashBackAmount = giftCertFaceValue - ticket.getDueAmount();
+				}
+				else {
+					transaction.setAmount(giftCertFaceValue);
+				}
 
-					transaction.setGiftCertNumber(giftCertDialog.getGiftCertNumber());
-					transaction.setGiftCertFaceValue(giftCertFaceValue);
-					transaction.setGiftCertPaidAmount(transaction.getAmount());
-					transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
+				transaction.setGiftCertNumber(giftCertDialog.getGiftCertNumber());
+				transaction.setGiftCertFaceValue(giftCertFaceValue);
+				transaction.setGiftCertPaidAmount(transaction.getAmount());
+				transaction.setGiftCertCashBackAmount(giftCertCashBackAmount);
 
-					settleTicket(transaction);
-					break;
+				settleTicket(transaction);
+				break;
 
-				default:
-					break;
-			}
-
-		} catch (Exception e) {
-			PosLog.error(getClass(), e);
+			default:
+				break;
 		}
 	}
 
@@ -272,8 +275,10 @@ public class SettleTicketProcessor implements CardInputListener {
 					settleTicket(barTabTransaction);
 				}
 			}
+		} catch (StaleStateException x) {
+			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage().toString());
 		}
 	}
 
@@ -437,6 +442,8 @@ public class SettleTicketProcessor implements CardInputListener {
 			else {
 				doInformListenerPaymentDone();
 			}
+		} catch (StaleStateException x) {
+			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 		} catch (UnknownHostException e) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.12")); //$NON-NLS-1$
 		} catch (Exception e) {
@@ -575,9 +582,11 @@ public class SettleTicketProcessor implements CardInputListener {
 
 				settleTicket(selectedTransaction);
 			}
+		} catch (StaleStateException x) {
+			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 		} catch (Exception e) {
 			PosLog.error(getClass(), e);
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage());
+			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage().toString());
 		} finally {
 			waitDialog.setVisible(false);
 		}

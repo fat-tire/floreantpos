@@ -42,6 +42,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.hibernate.StaleStateException;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
@@ -458,7 +459,10 @@ public class TicketView extends JPanel {
 
 			firePayOrderSelected();
 		} catch (PosException e) {
-			POSMessageDialog.showError(e.getMessage());
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e.getMessage().toString());
+		} catch (StaleStateException x) {
+			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
+			return;
 		}
 	}// GEN-LAST:event_doPayNow
 
@@ -640,8 +644,7 @@ public class TicketView extends JPanel {
 			titledBorder.setTitle(ticket.getTicketType() + " [New Ticket]"); //$NON-NLS-1$
 		}
 		else {
-			titledBorder.setTitle(ticket.getTicketType()
-					+ " " + Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers())); //$NON-NLS-1$ //$NON-NLS-2$
+			titledBorder.setTitle(ticket.getTicketType() + " " + Messages.getString("TicketView.37") + ticket.getId() + " Table# " + getTableNumbers(ticket.getTableNumbers()));
 
 			/*	titledBorder.setTitle(ticket.getTicketType()
 						+ " Ticket ["+ ticket.getId()+"]," + "Table [" + getTableNumbers(ticket.getTableNumbers())+"]"); //$NON-NLS-1$ //$NON-NLS-2$	
@@ -916,7 +919,7 @@ public class TicketView extends JPanel {
 				return false;
 			}
 			return true;
-		}//fractional Unit end here
+		} //fractional Unit end here
 
 		if (ticketItems == null || ticketItems.isEmpty()) {
 			if (menuItem.getStockAmount() < selectedTicketItem.getItemCount()) {

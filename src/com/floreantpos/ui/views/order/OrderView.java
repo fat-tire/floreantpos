@@ -79,6 +79,7 @@ import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.swing.PosButton;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.swing.TransparentPanel;
+import com.floreantpos.ui.RefreshableView;
 import com.floreantpos.ui.dialog.MiscTicketItemDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
@@ -100,9 +101,9 @@ import com.floreantpos.util.POSUtil;
  *
  * @author  MShahriar
  */
-public class OrderView extends ViewPanel implements PaymentListener, TicketEditListener {
+public class OrderView extends ViewPanel implements PaymentListener, TicketEditListener, RefreshableView {
 	private HashMap<String, JComponent> views = new HashMap<String, JComponent>();
-	private SettleTicketProcessor ticketProcessor = new SettleTicketProcessor(Application.getCurrentUser());
+	private SettleTicketProcessor ticketProcessor = new SettleTicketProcessor(Application.getCurrentUser(), this);
 	public final static String VIEW_NAME = "ORDER_VIEW"; //$NON-NLS-1$
 	private static OrderView instance;
 
@@ -278,10 +279,9 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 					ticketView.doFinishOrder();
 
 				} catch (StaleStateException x) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
-					return;
+					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), getInstance());
 				} catch (PosException x) {
-					POSMessageDialog.showError(x.getMessage());
+					POSMessageDialog.showError(POSUtil.getFocusedWindow(),x.getMessage());
 				} catch (Exception x) {
 					POSMessageDialog.showError(Application.getPosWindow(), POSConstants.ERROR_MESSAGE, x);
 				}
@@ -315,8 +315,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 					ticketView.updateView();
 					POSMessageDialog.showMessage("Items sent to kitchen");
 				} catch (StaleStateException x) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
-					return;
+					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), getInstance());
 				} catch (PosException x) {
 					POSMessageDialog.showError(x.getMessage());
 				} catch (Exception x) {
@@ -405,8 +404,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 					ticketView.doHoldOrder();
 					ticketView.setAllowToLogOut(true);
 				} catch (StaleStateException x) {
-					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
-					return;
+					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), getInstance());
 				} catch (PosException x) {
 					POSMessageDialog.showError(x.getMessage());
 				} catch (Exception x) {
@@ -746,13 +744,13 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 		}
 
 		/*TicketItem ticketItem = (TicketItem) selectedObject;
-
+		
 		double d = NumberSelectionDialog2.takeDoubleInput(
 				Messages.getString("TicketView.39"), Messages.getString("TicketView.40"), ticketItem.getDiscountAmount()); //$NON-NLS-1$ //$NON-NLS-2$
 		if (Double.isNaN(d)) {
 			return;
 		}
-
+		
 		ticketItem.setDiscountAmount(d);
 		ticketView.getTicketViewerTable().repaint();
 		ticketView.updateView();*/
@@ -969,7 +967,7 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 	private void showRetailView() {
 		removeAll();
 		if (paymentView == null) {
-			paymentView = new PaymentView(ticketProcessor);
+			paymentView = new PaymentView(ticketProcessor, this);
 		}
 
 		ticketSummaryView.setVisible(true);
@@ -1117,5 +1115,11 @@ public class OrderView extends ViewPanel implements PaymentListener, TicketEditL
 			updateView();
 			paymentView.updateView();
 		}
+	}
+
+	@Override
+	public void refresh() {
+		Ticket ticket = TicketDAO.getInstance().loadFullTicket(currentTicket.getId());
+		setCurrentTicket(ticket);
 	}
 }

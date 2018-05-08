@@ -33,7 +33,10 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import com.floreantpos.POSConstants;
+import com.floreantpos.config.AppProperties;
 import com.floreantpos.main.Application;
+import com.floreantpos.ui.RefreshableView;
 
 /**
  * 
@@ -134,5 +137,40 @@ public class POSMessageDialog {
 			return JOptionPane.CLOSED_OPTION;
 
 		return JOptionPane.YES_OPTION;
+	}
+	public static void showMessageDialogWithReloadButton(Component parent, RefreshableView refreshView) {
+		showMessageDialogWithReloadButton(parent, refreshView, "Data has been changed in other terminal. Please reload this window and try again.");
+	}
+	public static void showMessageDialogWithReloadButton(Component parent, RefreshableView refreshView, String msg) {
+		// @formatter:off
+		JOptionPane reloadPane = new JOptionPane(msg, 
+				JOptionPane.ERROR_MESSAGE, 
+				JOptionPane.YES_NO_OPTION, null, 
+				new String[] { "RELOAD", POSConstants.CANCEL.toUpperCase() });
+		// @formatter:on
+
+		Object[] options = reloadPane.getComponents();
+		for (Object object : options) {
+			if (object instanceof JPanel) {
+				JPanel panel = (JPanel) object;
+				Component[] components = panel.getComponents();
+				for (Component component : components) {
+					if (component instanceof JButton) {
+						component.setPreferredSize(new Dimension(component.getPreferredSize().width, 60));
+					}
+				}
+			}
+		}
+
+		JDialog dialog = reloadPane.createDialog(parent == null ? Application.getPosWindow() : parent, AppProperties.getAppName()); 
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setIconImage(Application.getApplicationIcon().getImage());
+		dialog.setVisible(true);
+		Object selectedValue = (String) reloadPane.getValue();
+		if (selectedValue.equals("RELOAD")) {
+			if (refreshView != null) {
+				refreshView.refresh();
+			}
+		}
 	}
 }

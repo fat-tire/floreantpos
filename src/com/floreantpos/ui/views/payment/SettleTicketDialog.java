@@ -35,8 +35,10 @@ import com.floreantpos.main.Application;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
+import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
+import com.floreantpos.ui.RefreshableView;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.ticket.TicketViewerTable;
 import com.floreantpos.ui.ticket.TicketViewerTableChangeListener;
@@ -47,7 +49,7 @@ import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
 
 //TODO: REVISE CODE
-public class SettleTicketDialog extends POSDialog implements PaymentListener, TicketViewerTableChangeListener {
+public class SettleTicketDialog extends POSDialog implements PaymentListener, TicketViewerTableChangeListener, RefreshableView {
 	public static final String LOYALTY_DISCOUNT_PERCENTAGE = "loyalty_discount_percentage"; //$NON-NLS-1$
 	public static final String LOYALTY_POINT = "loyalty_point"; //$NON-NLS-1$
 	public static final String LOYALTY_COUPON = "loyalty_coupon"; //$NON-NLS-1$
@@ -73,7 +75,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 	public SettleTicketDialog(Ticket ticket, User currentUser) {
 		super();
 		this.ticket = ticket;
-		ticketProcessor = new SettleTicketProcessor(currentUser);
+		ticketProcessor = new SettleTicketProcessor(currentUser,this);
 		if (ticket.getOrderType().isConsolidateItemsInReceipt()) {
 			ticket.consolidateTicketItems();
 		}
@@ -91,7 +93,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 		centerPanel.add(ticketScrollPane, BorderLayout.CENTER);
 		centerPanel.add(createTotalViewerPanel(), BorderLayout.SOUTH);
 
-		paymentView = new PaymentView(ticketProcessor);
+		paymentView = new PaymentView(ticketProcessor, this);
 		paymentView.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 20));
 
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
@@ -382,6 +384,13 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 
 	public SettleTicketProcessor getTicketProcessor() {
 		return ticketProcessor;
+	}
+
+	@Override
+	public void refresh() {
+		Ticket ticket = TicketDAO.getInstance().loadFullTicket(getTicket().getId());
+		setTicket(ticket);
+		ticketDataChanged();
 	}
 
 }
