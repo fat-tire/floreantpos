@@ -141,7 +141,7 @@ public class DejavooProxyServer implements HttpHandler {
 		for (Ticket ticket : ticketList) {
 			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
 			String name = ticket.getCustomer() == null ? ticket.getOwner().getFirstName() : ticket.getCustomer().getName();
-			String invoiceFormat = String.format(invoice, ticket.getId(), name, ticket.getTotalAmount() * 100,
+			String invoiceFormat = String.format(invoice, ticket.getId(), name, ticket.getDueAmount() * 100,
 					ticket.isClosed() ? "closed" : "open");
 			stringBuilder.append(invoiceFormat);
 		}
