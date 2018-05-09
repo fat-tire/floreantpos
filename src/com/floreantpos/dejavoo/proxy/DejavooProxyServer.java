@@ -169,6 +169,7 @@ public class DejavooProxyServer implements HttpHandler {
 		builder.append(String.format("<InvoiceData id=\"%s\" name=\"%s\">", ticket.getId(), ticket.getOwner().getFirstName()));
 		builder.append("<AmountDue>" + ticket.getDueAmount() * 100 + "</AmountDue>");
 		builder.append("<TotalAmount>" + ticket.getTotalAmount() * 100 + "</TotalAmount>");
+		builder.append("<TaxAmount>" + 200 + "</TaxAmount>");
 		builder.append("<Goods count=\"" + ticket.getTicketItems().size() + "\">");
 		List<TicketItem> ticketItems = ticket.getTicketItems();
 		for (TicketItem ticketItem : ticketItems) {
@@ -177,28 +178,28 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		builder.append("</Goods>");
 		//@formatter:off
-//		Set<PosTransaction> transactions = ticket.getTransactions();
-//		int transactionSize = ticket.getTransactions().size();
-//		if (transactions != null) {
-//			builder.append(String.format("<Payments count=\"%s\">",transactionSize));
-//			for (PosTransaction posTransaction : transactions) {
-//            builder.append(String.format("<Payment "
-//            		+ "refId=\"%s\" "
-//            		+ "name=\"%s\" "
-//            		+ "amount=\"%s\" "
-//            		+ "tip=\"%s\" "
-//            		+ "type=\"%s\" />",
-//            		//+ "acctLast4=\"%s\"/>", 
-//            		posTransaction.getId(),
-//            		posTransaction.getPaymentType(),
-//            		posTransaction.getAmount() * 100.0,
-//            		posTransaction.getTipsAmount() * 100.0,
-//            		posTransaction.getTicket().isClosed() ? "closed" : "open"
-//            		//posTransaction.getCardNumber()
-//            		));
-//			}
-//			builder.append("</Payments>");
-//		}
+		Set<PosTransaction> transactions = ticket.getTransactions();
+		int transactionSize = ticket.getTransactions().size();
+		if (transactions != null) {
+			builder.append(String.format("<Payments count=\"%s\">",transactionSize));
+			for (PosTransaction posTransaction : transactions) {
+            builder.append(String.format("<Payment "
+            		+ "refId=\"%s\" "
+            		+ "name=\"%s\" "
+            		+ "amount=\"%s\" "
+            		+ "tip=\"%s\" "
+            		+ "type=\"%s\" />",
+            		//+ "acctLast4=\"%s\"/>", 
+            		posTransaction.getId(),
+            		posTransaction.getPaymentType(),
+            		posTransaction.getAmount() * 100.0,
+            		posTransaction.getTipsAmount() * 100.0,
+            		posTransaction.getTicket().isClosed() ? "closed" : "open"
+            		//posTransaction.getCardNumber()
+            		));
+			}
+			builder.append("</Payments>");
+		}
 		//@formatter:off
 		builder.append("</InvoiceData>");
 		builder.append("</request>");
