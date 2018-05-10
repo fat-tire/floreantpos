@@ -1,8 +1,12 @@
 package com.floreantpos.dejavoo.proxy;
 
+import java.io.BufferedReader;
+import java.io.FilterReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -16,6 +20,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.xml.utils.XMLChar;
 import org.xml.sax.InputSource;
 
 import com.floreantpos.POSConstants;
@@ -86,8 +91,11 @@ public class DejavooProxyServer implements HttpHandler {
 		public void run() {
 			try {
 				InputStream inputStream = exchange.getRequestBody();
-				String requestString = IOUtils.toString(inputStream);
+				Reader reader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
+				InvalidXmlCharacterFilter filter = new InvalidXmlCharacterFilter(reader);
+				String requestString = IOUtils.toString(filter);
 				inputStream.close();
+				reader.close();
 
 				byte[] bs = requestString.getBytes("UTF-8");
 				exchange.sendResponseHeaders(200, bs.length);
@@ -141,8 +149,7 @@ public class DejavooProxyServer implements HttpHandler {
 		for (Ticket ticket : ticketList) {
 			String invoice = "<Invoice id=\"%s\" name=\"%s\" amount=\"%s\" type=\"%s\"/>";
 			String name = ticket.getCustomer() == null ? ticket.getOwner().getFirstName() : ticket.getCustomer().getName();
-			String invoiceFormat = String.format(invoice, ticket.getId(), name, ticket.getDueAmount() * 100,
-					ticket.isClosed() ? "closed" : "open");
+			String invoiceFormat = String.format(invoice, ticket.getId(), name, ticket.getDueAmount() * 100, ticket.isClosed() ? "closed" : "open");
 			stringBuilder.append(invoiceFormat);
 		}
 		stringBuilder.append("</InvoiceList>");
@@ -152,9 +159,9 @@ public class DejavooProxyServer implements HttpHandler {
 
 	private void sendTicketsByTable(String tableNum) throws Exception {
 		List<Ticket> ticketList = TicketDAO.getInstance().findTicketsByTableNum(Integer.parseInt(tableNum));
-		
+
 		StringBuilder stringBuilder = createInvoiceList(ticketList);
-		
+
 		System.out.println("sending: " + stringBuilder.toString());
 		sendData(stringBuilder.toString());
 
@@ -181,22 +188,14 @@ public class DejavooProxyServer implements HttpHandler {
 		Set<PosTransaction> transactions = ticket.getTransactions();
 		int transactionSize = ticket.getTransactions().size();
 		if (transactions != null) {
-			builder.append(String.format("<Payments count=\"%s\">",transactionSize));
+			builder.append(String.format("<Payments count=\"%s\">", transactionSize));
 			for (PosTransaction posTransaction : transactions) {
-            builder.append(String.format("<Payment "
-            		+ "refId=\"%s\" "
-            		+ "name=\"%s\" "
-            		+ "amount=\"%s\" "
-            		+ "tip=\"%s\" "
-            		+ "type=\"%s\" />",
-            		//+ "acctLast4=\"%s\"/>", 
-            		posTransaction.getId(),
-            		posTransaction.getPaymentType(),
-            		posTransaction.getAmount() * 100.0,
-            		posTransaction.getTipsAmount() * 100.0,
-            		posTransaction.getTicket().isClosed() ? "closed" : "open"
-            		//posTransaction.getCardNumber()
-            		));
+				builder.append(String.format("<Payment " + "refId=\"%s\" " + "name=\"%s\" " + "amount=\"%s\" " + "tip=\"%s\" " + "type=\"%s\" />",
+						//+ "acctLast4=\"%s\"/>", 
+						posTransaction.getId(), posTransaction.getPaymentType(), posTransaction.getAmount() * 100.0, posTransaction.getTipsAmount() * 100.0,
+						posTransaction.getTicket().isClosed() ? "closed" : "open"
+				//posTransaction.getCardNumber()
+				));
 			}
 			builder.append("</Payments>");
 		}
@@ -207,11 +206,30 @@ public class DejavooProxyServer implements HttpHandler {
 
 		sendData(builder.toString());
 	}
+
 	/*
 	 *  <Payments count="2">
 	<Payment refId="1" name="Cash" amount="100" tip="30" type="closed" acctLast4="1111" />
 	<Payment refId="2" name="Credit" amount="200" tip="0" type="incomplete" acctLast4="5454" />
 	  </Payment>*/
+	class InvalidXmlCharacterFilter extends FilterReader {
+		protected InvalidXmlCharacterFilter(Reader in) {
+			super(in);
+		}
+
+		@Override
+		public int read(char[] cbuf, int off, int len) throws IOException {
+			int read = super.read(cbuf, off, len);
+			if (read == -1)
+				return read;
+
+			for (int i = off; i < off + read; i++) {
+				if (!XMLChar.isValid(cbuf[i]))
+					cbuf[i] = '?';
+			}
+			return read;
+		}
+	}
 
 	private void sendData(String data) throws Exception {
 		URL url = new URL("http://spinpos.net:80/spin/cgi.html?TerminalTransaction=" + URLEncoder.encode(data, "utf-8"));
@@ -219,8 +237,11 @@ public class DejavooProxyServer implements HttpHandler {
 		urlConnection.connect();
 		InputStream inputStream = urlConnection.getInputStream();
 
-		String requestString = IOUtils.toString(inputStream);
-		inputStream.close();
+		Reader reader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
+		InvalidXmlCharacterFilter filter = new InvalidXmlCharacterFilter(reader);
+
+		String requestString = IOUtils.toString(filter);
+		reader.close();
 		System.out.println("data sent complete!");
 
 		processRequest(requestString);
