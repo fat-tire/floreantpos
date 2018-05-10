@@ -150,21 +150,21 @@ public class ReceiptPrintService {
 
 	/*public static void printTicket(Ticket ticket) {
 		try {
-
+	
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, null);
-
+	
 			JasperPrint jasperPrint = createPrint(ticket, map, null);
 			jasperPrint.setName(ORDER_ + ticket.getId());
 			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 			printQuitely(jasperPrint);
-
+	
 			JasperPrint jasperPrint = createPrint(ticket, map, null);
 			jasperPrint.setName(ORDER_ + ticket.getId());
 			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
 			printQuitely(jasperPrint);
-
+	
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
@@ -172,7 +172,7 @@ public class ReceiptPrintService {
 
 	public static void printTicket(Ticket ticket) {
 		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-		if(paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+		if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
 			paymentGateway.printTicket(ticket);
 			return;
 		}
@@ -222,11 +222,11 @@ public class ReceiptPrintService {
 
 	public static void printTicket(Ticket ticket, String copyType) {
 		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-		if(paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+		if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
 			paymentGateway.printTicket(ticket);
 			return;
 		}
-		
+
 		try {
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
@@ -303,11 +303,17 @@ public class ReceiptPrintService {
 		try {
 			Ticket ticket = transaction.getTicket();
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			if(paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
-				paymentGateway.printTicket(ticket);
+			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+				if (transaction != null && transaction.isCard() && ticket != null && !ticket.hasGratuity()) {
+					paymentGateway.printTicketWithTipsBlock(ticket, true);
+				}
+				else {
+					paymentGateway.printTicket(ticket);
+				}
+
 				return;
 			}
-			
+
 			TicketPrintProperties printProperties = new TicketPrintProperties(Messages.getString("ReceiptPrintService.3"), true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, transaction);
@@ -533,7 +539,7 @@ public class ReceiptPrintService {
 			if (transaction instanceof RefundTransaction)
 				refundAmount += transaction.getAmount();
 		}
-		map.put("additionalProperties", "<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+		map.put("additionalProperties","<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>"); //$NON-NLS-1$
 	}
 
 	private static String getCardInformation(PosTransaction transaction) {

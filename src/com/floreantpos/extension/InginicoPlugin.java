@@ -104,6 +104,6 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 	}
 
 	@Override
-	public void printTicketWithTipsBlock(Ticket ticket) {
+	public void printTicketWithTipsBlock(Ticket ticket,boolean allowTipsBlock) {
 	}
 }
