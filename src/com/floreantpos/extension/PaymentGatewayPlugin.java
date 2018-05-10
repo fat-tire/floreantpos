@@ -31,4 +31,5 @@ public abstract class PaymentGatewayPlugin extends AbstractFloreantPlugin {
 	public abstract String getSecurityCode();
 	public abstract boolean printUsingThisTerminal();
 	public abstract void printTicket(Ticket ticket);
+	public abstract void printTicketWithTipsBlock(Ticket ticket);
 }

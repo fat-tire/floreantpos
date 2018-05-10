@@ -130,4 +130,8 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	@Override
 	public void printTicket(Ticket ticket) {
 	}
+
+	@Override
+	public void printTicketWithTipsBlock(Ticket ticket) {
+	}
 }
