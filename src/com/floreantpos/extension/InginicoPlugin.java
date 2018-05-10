@@ -10,6 +10,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 import com.floreantpos.config.ui.ConfigurationView;
 import com.floreantpos.config.ui.InginicoConfigurationView;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.views.payment.CardProcessor;
 
@@ -105,5 +106,9 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 
 	@Override
 	public void printTicketWithTipsBlock(Ticket ticket,boolean allowTipsBlock) {
+	}
+
+	@Override
+	public void printTransaction(PosTransaction transaction) {
 	}
 }

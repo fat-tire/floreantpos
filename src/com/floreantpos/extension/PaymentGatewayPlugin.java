@@ -18,6 +18,7 @@
 package com.floreantpos.extension;
 
 import com.floreantpos.config.ui.ConfigurationView;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.ui.views.payment.CardProcessor;
 
@@ -33,6 +34,8 @@ public abstract class PaymentGatewayPlugin extends AbstractFloreantPlugin {
 	public abstract boolean printUsingThisTerminal();
 
 	public abstract void printTicket(Ticket ticket);
+	
+	public abstract void printTransaction(PosTransaction transaction);
 
 	public abstract void printTicketWithTipsBlock(Ticket ticket, boolean allowTipsBlock);
 }
