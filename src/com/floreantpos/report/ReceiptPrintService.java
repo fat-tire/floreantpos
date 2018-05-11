@@ -304,13 +304,7 @@ public class ReceiptPrintService {
 			Ticket ticket = transaction.getTicket();
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
-				if (transaction != null && transaction.isCard() && ticket != null && !ticket.hasGratuity()) {
-					paymentGateway.printTransaction(transaction);
-				}
-				else {
-					paymentGateway.printTicket(ticket);
-				}
-
+				paymentGateway.printTransaction(transaction);
 				return;
 			}
 
