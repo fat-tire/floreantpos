@@ -40,7 +40,7 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 	public String getId() {
 		return "Inginico"; // //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public String getSecurityCode() {
 		return "-1105096101";//$NON-NLS-1$
@@ -105,10 +105,7 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 	}
 
 	@Override
-	public void printTicketWithTipsBlock(Ticket ticket,boolean allowTipsBlock) {
-	}
+	public void printTransaction(PosTransaction transaction, boolean storeCopy, boolean customerCopy) {
 
-	@Override
-	public void printTransaction(PosTransaction transaction) {
 	}
 }

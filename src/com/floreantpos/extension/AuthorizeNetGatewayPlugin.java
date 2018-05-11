@@ -35,9 +35,9 @@ import com.floreantpos.ui.views.payment.CardProcessor;
 @PluginImplementation
 public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	public static final String ID = "Authorize.Net"; //$NON-NLS-1$
-	
+
 	protected DefaultMerchantGatewayConfigurationView view;
-	
+
 	@Override
 	public boolean requireLicense() {
 		return false;
@@ -47,15 +47,15 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	public String getProductName() {
 		return "Authorize.Net"; //$NON-NLS-1$
 	}
-	
+
 	@Override
 	public ConfigurationView getConfigurationPane() throws Exception {
-		if(view == null) {
+		if (view == null) {
 			view = new DefaultMerchantGatewayConfigurationView();
 			view.setMerchantDefaultValue("6tuU4N3H", "4k6955x3T8bCVPVm"); //$NON-NLS-1$ //$NON-NLS-2$
 			view.initialize();
 		}
-		
+
 		return view;
 	}
 
@@ -68,10 +68,10 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	public void initBackoffice() {
 
 	}
-	
+
 	@Override
 	public void initConfigurationView(JDialog dialog) {
-		
+
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	public String getId() {
 		return ID;
 	}
-	
+
 	@Override
 	public String getSecurityCode() {
 		return "-1956568219";
@@ -133,10 +133,6 @@ public class AuthorizeNetGatewayPlugin extends PaymentGatewayPlugin {
 	}
 
 	@Override
-	public void printTicketWithTipsBlock(Ticket ticket,boolean allowTipsBlock) {
-	}
-
-	@Override
-	public void printTransaction(PosTransaction transaction) {
+	public void printTransaction(PosTransaction transaction, boolean storeCopy, boolean customerCopy) {
 	}
 }

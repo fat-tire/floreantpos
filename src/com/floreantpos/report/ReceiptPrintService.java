@@ -304,7 +304,7 @@ public class ReceiptPrintService {
 			Ticket ticket = transaction.getTicket();
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
-				paymentGateway.printTransaction(transaction);
+				paymentGateway.printTransaction(transaction, false, false);
 				return;
 			}
 
@@ -344,9 +344,15 @@ public class ReceiptPrintService {
 		}
 	}
 
-	public static void printTransaction(PosTransaction transaction, boolean printCustomerCopy) {
+	public static void printTransaction(PosTransaction transaction, boolean printStoreCopy, boolean printCustomerCopy) {
 		try {
 			Ticket ticket = transaction.getTicket();
+
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+				paymentGateway.printTransaction(transaction, printStoreCopy, printCustomerCopy);
+				return;
+			}
 
 			TicketPrintProperties printProperties = new TicketPrintProperties(Messages.getString("ReceiptPrintService.6"), true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
@@ -533,7 +539,7 @@ public class ReceiptPrintService {
 			if (transaction instanceof RefundTransaction)
 				refundAmount += transaction.getAmount();
 		}
-		map.put("additionalProperties","<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>"); //$NON-NLS-1$
+		map.put("additionalProperties","<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>");
 	}
 
 	private static String getCardInformation(PosTransaction transaction) {

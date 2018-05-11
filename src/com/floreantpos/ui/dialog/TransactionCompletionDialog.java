@@ -52,23 +52,23 @@ public class TransactionCompletionDialog extends POSDialog {
 
 	private PosTransaction completedTransaction;
 	private List<PosTransaction> completedTransactions;
-	
-	private boolean isCard; 
+
+	private boolean isCard;
 
 	public TransactionCompletionDialog(PosTransaction transaction) {
 		this.completedTransaction = transaction;
-		isCard=completedTransaction.isCard(); 
-		initializeComponents(); 
+		isCard = completedTransaction.isCard();
+		initializeComponents();
 		//setResizable(false);
 	}
-	
+
 	public TransactionCompletionDialog(List<PosTransaction> transaction) {
 		this.completedTransactions = transaction;
 
-		initializeComponents(); 
+		initializeComponents();
 		//setResizable(false);
 	}
-	
+
 	private void initializeComponents() {
 		setTitle(com.floreantpos.POSConstants.TRANSACTION_COMPLETED);
 
@@ -119,7 +119,7 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					ReceiptPrintService.printTransaction(completedTransaction, false);
+					ReceiptPrintService.printTransaction(completedTransaction, true, false);
 
 				} catch (Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TransactionCompletionDialog.39"), ee); //$NON-NLS-1$
@@ -133,7 +133,7 @@ public class TransactionCompletionDialog extends POSDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					ReceiptPrintService.printTransaction(completedTransaction, true);
+					ReceiptPrintService.printTransaction(completedTransaction, true, true);
 
 				} catch (Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TransactionCompletionDialog.41"), ee); //$NON-NLS-1$
@@ -183,7 +183,6 @@ public class TransactionCompletionDialog extends POSDialog {
 		lblGratuityAmount.setText(NumberUtil.formatNumber(gratuityAmount));
 		lblChangeDue.setText(NumberUtil.formatNumber(changeAmount));
 	}
-
 
 	public double getDueAmount() {
 		return dueAmount;
