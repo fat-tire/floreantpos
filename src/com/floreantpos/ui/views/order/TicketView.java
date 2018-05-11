@@ -461,7 +461,7 @@ public class TicketView extends JPanel {
 		} catch (PosException e) {
 			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e.getMessage().toString());
 		} catch (StaleStateException x) {
-			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("OrderView.0")); //$NON-NLS-1$
+			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), OrderView.getInstance());
 			return;
 		}
 	}// GEN-LAST:event_doPayNow
