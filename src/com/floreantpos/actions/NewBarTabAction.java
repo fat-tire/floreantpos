@@ -32,6 +32,7 @@ import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
@@ -54,8 +55,11 @@ import com.floreantpos.ui.views.payment.CardInputProcessor;
 import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
 import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
+import com.floreantpos.ui.views.payment.SettleTicketProcessor;
 import com.floreantpos.ui.views.payment.SwipeCardDialog;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.GlobalIdGenerator;
+import com.floreantpos.util.POSUtil;
 
 public class NewBarTabAction extends AbstractAction implements CardInputListener {
 	private Component parentComponent;
@@ -71,18 +75,18 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PaymentTypeSelectionDialog paymentTypeSelectionDialog = new PaymentTypeSelectionDialog();
-		paymentTypeSelectionDialog.setCashButtonVisible(false);
-		paymentTypeSelectionDialog.pack();
-		paymentTypeSelectionDialog.setLocationRelativeTo(parentComponent);
-		paymentTypeSelectionDialog.setVisible(true);
-
-		if (paymentTypeSelectionDialog.isCanceled()) {
-			return;
-		}
-
-		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
-
+//		PaymentTypeSelectionDialog paymentTypeSelectionDialog = new PaymentTypeSelectionDialog();
+//		paymentTypeSelectionDialog.setCashButtonVisible(false);
+//		paymentTypeSelectionDialog.pack();
+//		paymentTypeSelectionDialog.setLocationRelativeTo(parentComponent);
+//		paymentTypeSelectionDialog.setVisible(true);
+//
+//		if (paymentTypeSelectionDialog.isCanceled()) {
+//			return;
+//		}
+//
+//		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
+//
 		String symbol = CurrencyUtil.getCurrencySymbol();
 		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.3"); //$NON-NLS-1$
 
@@ -90,11 +94,56 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		if (option != JOptionPane.YES_OPTION) {
 			return;
 		}
+		try {
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 
-		SwipeCardDialog dialog = new SwipeCardDialog(this);
-		dialog.setTitle(Messages.getString("NewBarTabAction.0")); //$NON-NLS-1$
-		dialog.pack();
-		dialog.open();
+			if (selectedPaymentType == null) {
+				selectedPaymentType = PaymentType.CREDIT_CARD;
+			}
+			if (!paymentGateway.shouldShowCardInputProcessor()) {
+				PosTransaction transaction = selectedPaymentType.createTransaction();
+				Ticket ticket = createTicket();
+				transaction.setTicket(ticket);
+				transaction.setAuthorizable(false);
+				//transaction.setCardType(cardName);
+				transaction.setCaptured(false);
+				transaction.setCardMerchantGateway(paymentGateway.getProductName());
+				transaction.setTenderAmount(CardConfig.getBartabLimit());
+				transaction.setAmount(CardConfig.getBartabLimit());
+				paymentGateway.getProcessor().preAuth(transaction);
+				
+				
+				saveTicket(transaction);
+				return;
+			}
+
+			CardReader cardReader = CardConfig.getCardReader();
+			switch (cardReader) {
+				case SWIPE:
+					SwipeCardDialog swipeCardDialog = new SwipeCardDialog(this);
+					swipeCardDialog.pack();
+					swipeCardDialog.open();
+					break;
+
+				case MANUAL:
+					ManualCardEntryDialog dialog = new ManualCardEntryDialog(this);
+					dialog.pack();
+					dialog.open();
+					break;
+
+				case EXTERNAL_TERMINAL:
+					AuthorizationCodeDialog authorizationCodeDialog = new AuthorizationCodeDialog(this);
+					authorizationCodeDialog.pack();
+					authorizationCodeDialog.open();
+					break;
+
+				default:
+					break;
+			}
+		} catch (Exception e3) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e3.getMessage(), e3);
+		}
+		
 	}
 
 	private Ticket createTicket() {
@@ -120,7 +169,8 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Calendar currentTime = Calendar.getInstance();
 		ticket.setCreateDate(currentTime.getTime());
 		ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
-
+		
+		TicketDAO.getInstance().save(ticket);
 		return ticket;
 	}
 
@@ -142,7 +192,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			CardProcessor cardProcessor = paymentGateway.getProcessor();
 
 			if (inputter instanceof SwipeCardDialog) {
-
 				SwipeCardDialog swipeCardDialog = (SwipeCardDialog) inputter;
 				String cardString = swipeCardDialog.getCardString();
 
