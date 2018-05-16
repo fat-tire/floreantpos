@@ -34,6 +34,7 @@ import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosException;
 import com.floreantpos.config.CardConfig;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.extension.PaymentGatewayPlugin;
@@ -55,8 +56,10 @@ import com.floreantpos.model.dao.RestaurantDAO;
 import com.floreantpos.model.dao.TerminalPrintersDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.util.DateUtil;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -172,19 +175,20 @@ public class ReceiptPrintService {
 	public static void printTicket(Ticket ticket) {
 		printTicket(ticket, false);
 	}
-	
+
 	public static void printTicket(Ticket ticket, boolean printTipsBlock) {
-		PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-		if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
-			if (printTipsBlock) {
-				paymentGateway.printTicketWithTipsBlock(ticket);
-			}
-			else {
-				paymentGateway.printTicket(ticket);
-			}
-			return;
-		}
 		try {
+			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
+			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+				if (printTipsBlock) {
+					paymentGateway.printTicketWithTipsBlock(ticket);
+				}
+				else {
+					paymentGateway.printTicket(ticket);
+				}
+				return;
+			}
+
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, null);
@@ -223,6 +227,8 @@ public class ReceiptPrintService {
 				}
 
 			}
+		} catch (PosException e) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e.getMessage());
 		} catch (Exception e) {
 			logger.error(com.floreantpos.POSConstants.PRINT_ERROR, e);
 		}
@@ -547,7 +553,8 @@ public class ReceiptPrintService {
 			if (transaction instanceof RefundTransaction)
 				refundAmount += transaction.getAmount();
 		}
-		map.put("additionalProperties","<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>");
+		map.put("additionalProperties",
+				"<html><b>" + Messages.getString("ReceiptPrintService.1") + " " + CurrencyUtil.getCurrencySymbol() + "&nbsp;" + refundAmount + "</b></html>");
 	}
 
 	private static String getCardInformation(PosTransaction transaction) {

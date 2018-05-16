@@ -41,6 +41,7 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
+import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.CustomPayment;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
@@ -55,6 +56,7 @@ import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.ui.RefreshableView;
 import com.floreantpos.ui.dialog.DiscountSelectionDialog;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.order.OrderController;
@@ -98,7 +100,7 @@ public class SettleTicketProcessor implements CardInputListener {
 		}*/
 
 		OrderController.saveOrder(ticket);
-		
+
 		if (ticket.getDueAmount() == 0 && ticket.getOrderType().isCloseOnPaid()) {
 			ticket.setClosed(true);
 			doInformListenerPaymentDone();
@@ -268,12 +270,36 @@ public class SettleTicketProcessor implements CardInputListener {
 				return;
 			}
 			else {
-				for (PosTransaction barTabTransaction : ticket.getTransactions()) {
-					barTabTransaction.setAmount(ticket.getDueAmount());
-					barTabTransaction.setTenderAmount(ticket.getDueAmount());
-					barTabTransaction.setAuthorizable(true);
-					settleTicket(barTabTransaction);
+				PosTransaction bartabTransaction = null;
+				for (PosTransaction transaction : ticket.getTransactions()) {
+					if (transaction instanceof CreditCardTransaction && transaction.isAuthorizable() && !transaction.isCaptured() && !transaction.isVoided()) {
+						bartabTransaction = transaction;
+						break;
+					}
 				}
+				if (bartabTransaction == null) {
+					for (PosTransaction transaction : ticket.getTransactions()) {
+						if (transaction instanceof CreditCardTransaction) {
+							bartabTransaction = transaction;
+							break;
+						}
+					}
+				}
+				
+				double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
+				bartabTransaction.setTipsAmount(tipsAmount);
+				bartabTransaction.setAmount(bartabTransaction.getAmount() + tipsAmount);
+				ticket.setGratuityAmount(tipsAmount);
+				ticket.setPaidAmount(0.0);
+				ticket.calculatePrice();
+				
+				bartabTransaction.setAmount(ticket.getTotalAmount());
+				bartabTransaction.setTenderAmount(ticket.getTotalAmount());
+				CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+				cardProcessor.captureAuthAmount(bartabTransaction);
+				bartabTransaction.setCaptured(true);
+
+				settleTicket(bartabTransaction);
 			}
 		} catch (StaleStateException x) {
 			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
@@ -289,6 +315,7 @@ public class SettleTicketProcessor implements CardInputListener {
 		dialog.setTotalAmount(dueAmount);
 		dialog.setPaidAmount(transaction.getAmount());
 		dialog.setDueAmount(ticket.getDueAmount());
+		dialog.setGratuityAmount(transaction.getTipsAmount());
 		if (tenderedAmount > transaction.getAmount()) {
 			dialog.setChangeAmount(tenderedAmount - transaction.getAmount());
 		}

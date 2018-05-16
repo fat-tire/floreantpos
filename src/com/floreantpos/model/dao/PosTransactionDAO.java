@@ -84,7 +84,10 @@ public class PosTransactionDAO extends BasePosTransactionDAO {
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.DAY_OF_MONTH, -1);
 			Date startOfDay = DateUtil.startOfDay(calendar.getTime());
-			Date endOfDay = DateUtil.endOfDay(new Date());
+			
+			calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			Date endOfDay = DateUtil.endOfDay(calendar.getTime());
 			//show credit card transactions of last 2 days
 			criteria.add(Restrictions.between(PosTransaction.PROP_TRANSACTION_TIME, startOfDay, endOfDay));
 
