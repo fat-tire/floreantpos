@@ -195,6 +195,11 @@ public class PosPrinters {
 	}
 
 	public static String getDefaultPrinterName() {
+		PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+		if (defaultPrintService != null) {
+			return defaultPrintService.getName();
+		}
+
 		PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
 		if (services.length > 0) {
 			return services[0].getName();
