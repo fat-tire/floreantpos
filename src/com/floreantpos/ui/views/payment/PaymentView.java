@@ -392,7 +392,7 @@ public class PaymentView extends JPanel {
 		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
 		btnPrint.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ReceiptPrintService.printTicket(ticketProcessor.getTicket());
+				ReceiptPrintService.printTicket(ticketProcessor.getTicket(), true);
 			}
 		});
 

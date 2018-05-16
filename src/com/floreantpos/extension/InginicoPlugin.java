@@ -108,4 +108,8 @@ public class InginicoPlugin extends PaymentGatewayPlugin {
 	public void printTransaction(PosTransaction transaction, boolean storeCopy, boolean customerCopy) {
 
 	}
+
+	@Override
+	public void printTicketWithTipsBlock(Ticket ticket) {
+	}
 }
