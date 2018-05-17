@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang.StringUtils;
 
 import com.floreantpos.Messages;
+import com.floreantpos.actions.NewBarTabAction;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.base.BaseTicket;
 import com.floreantpos.model.dao.CustomerDAO;
@@ -885,5 +886,27 @@ public class Ticket extends BaseTicket {
 		}
 		customer = CustomerDAO.getInstance().get(customerId);
 		return customer;
+	}
+
+	public PosTransaction getBartabTransaction() {
+		String bartabTransactionId = getProperty(NewBarTabAction.BARTAB_TRANSACTION_ID);
+		if (StringUtils.isNotEmpty(bartabTransactionId)) {
+			for (PosTransaction transaction : getTransactions()) {
+				if (bartabTransactionId.equals(String.valueOf(transaction.getId()))) {
+					return transaction;
+				}
+			}
+		}
+		for (PosTransaction transaction : getTransactions()) {
+			if (transaction instanceof CreditCardTransaction && transaction.isAuthorizable() && !transaction.isCaptured() && !transaction.isVoided()) {
+				return transaction;
+			}
+		}
+		for (PosTransaction transaction : getTransactions()) {
+			if (transaction instanceof CreditCardTransaction) {
+				return transaction;
+			}
+		}
+		return null;
 	}
 }

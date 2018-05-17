@@ -41,7 +41,6 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.CustomPayment;
 import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
@@ -264,28 +263,13 @@ public class SettleTicketProcessor implements CardInputListener {
 
 	public void doSettleBarTabTicket(Ticket ticket) {
 		try {
-			String msg = "Do you want to settle ticket?"; //$NON-NLS-1$
+			String msg = "Do you want to settle bar tab?"; //$NON-NLS-1$
 			int option1 = POSMessageDialog.showYesNoQuestionDialog(null, msg, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
 			if (option1 != JOptionPane.YES_OPTION) {
 				return;
 			}
 			else {
-				PosTransaction bartabTransaction = null;
-				for (PosTransaction transaction : ticket.getTransactions()) {
-					if (transaction instanceof CreditCardTransaction && transaction.isAuthorizable() && !transaction.isCaptured() && !transaction.isVoided()) {
-						bartabTransaction = transaction;
-						break;
-					}
-				}
-				if (bartabTransaction == null) {
-					for (PosTransaction transaction : ticket.getTransactions()) {
-						if (transaction instanceof CreditCardTransaction) {
-							bartabTransaction = transaction;
-							break;
-						}
-					}
-				}
-				
+				PosTransaction bartabTransaction = ticket.getBartabTransaction();
 				double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
 				bartabTransaction.setTipsAmount(tipsAmount);
 				bartabTransaction.setAmount(bartabTransaction.getAmount() + tipsAmount);

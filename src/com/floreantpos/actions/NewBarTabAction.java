@@ -32,7 +32,6 @@ import com.floreantpos.Messages;
 import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
 import com.floreantpos.config.CardConfig;
-import com.floreantpos.extension.InginicoPlugin;
 import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
@@ -41,12 +40,12 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
+import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.swing.PosOptionPane;
 import com.floreantpos.ui.dialog.POSMessageDialog;
-import com.floreantpos.ui.dialog.PaymentTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.AuthorizationCodeDialog;
@@ -55,13 +54,12 @@ import com.floreantpos.ui.views.payment.CardInputProcessor;
 import com.floreantpos.ui.views.payment.CardProcessor;
 import com.floreantpos.ui.views.payment.ManualCardEntryDialog;
 import com.floreantpos.ui.views.payment.PaymentProcessWaitDialog;
-import com.floreantpos.ui.views.payment.SettleTicketProcessor;
 import com.floreantpos.ui.views.payment.SwipeCardDialog;
 import com.floreantpos.util.CurrencyUtil;
-import com.floreantpos.util.GlobalIdGenerator;
 import com.floreantpos.util.POSUtil;
 
 public class NewBarTabAction extends AbstractAction implements CardInputListener {
+	public static final String BARTAB_TRANSACTION_ID = "bartab.transaction.id";
 	private Component parentComponent;
 	private PaymentType selectedPaymentType;
 	private OrderType orderType;
@@ -112,7 +110,8 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				transaction.setAmount(CardConfig.getBartabLimit());
 				paymentGateway.getProcessor().preAuth(transaction);
 				
-				
+				PosTransactionDAO.getInstance().save(transaction);
+				ticket.addProperty(BARTAB_TRANSACTION_ID, String.valueOf(transaction.getId()));
 				saveTicket(transaction);
 				return;
 			}
