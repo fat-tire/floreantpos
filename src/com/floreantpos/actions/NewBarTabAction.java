@@ -40,7 +40,6 @@ import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.ShopTable;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.dao.PosTransactionDAO;
 import com.floreantpos.model.dao.ShopTableDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.services.PosTransactionService;
@@ -110,8 +109,6 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 				transaction.setAmount(CardConfig.getBartabLimit());
 				paymentGateway.getProcessor().preAuth(transaction);
 				
-				PosTransactionDAO.getInstance().save(transaction);
-				ticket.addProperty(BARTAB_TRANSACTION_ID, String.valueOf(transaction.getId()));
 				saveTicket(transaction);
 				return;
 			}
@@ -258,15 +255,19 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 	private void saveTicket(PosTransaction transaction) {
 		try {
 			PosTransactionService transactionService = PosTransactionService.getInstance();
-			transactionService.settleBarTabTicket(transaction.getTicket(), transaction, false);
-			ShopTableDAO.getInstance().occupyTables(transaction.getTicket());
+			Ticket ticket = transaction.getTicket();
+			transactionService.settleBarTabTicket(ticket, transaction, false);
+			
+			ticket.addProperty(BARTAB_TRANSACTION_ID, String.valueOf(transaction.getId()));
+			TicketDAO.getInstance().saveOrUpdate(ticket);
+			ShopTableDAO.getInstance().occupyTables(ticket);
 
-			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + transaction.getTicket().getId()); //$NON-NLS-1$
+			POSMessageDialog.showMessage(Messages.getString("NewBarTabAction.5") + ticket.getId()); //$NON-NLS-1$
 			if (parentComponent instanceof ITicketList) {
 				((ITicketList) parentComponent).updateTicketList();
 			}
-
-			doEditTicket(transaction.getTicket());
+			
+			doEditTicket(ticket);
 		} catch (Exception e) {
 			PosLog.error(getClass(), e);
 		}
