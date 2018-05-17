@@ -44,8 +44,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.logging.LogFactory;
 import org.jdesktop.swingx.JXCollapsiblePane;
 
@@ -83,10 +81,10 @@ import com.floreantpos.ui.views.order.OrderController;
 import com.floreantpos.ui.views.order.OrderTypeSelectionDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
-import com.floreantpos.ui.views.order.TicketSelectionDialog;
 import com.floreantpos.ui.views.order.ViewPanel;
-import com.floreantpos.ui.views.payment.GroupSettleTicketDialog;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * 
@@ -337,11 +335,11 @@ public class SwitchboardView extends ViewPanel implements ActionListener, ITicke
 
 		ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
 
-		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
-		if (due != 0) {
-			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.5")); //$NON-NLS-1$
-			return;
-		}
+//		int due = (int) POSUtil.getDouble(ticket.getDueAmount());
+//		if (due != 0) {
+//			POSMessageDialog.showError(this, Messages.getString("SwitchboardView.5")); //$NON-NLS-1$
+//			return;
+//		}
 
 		int option = JOptionPane.showOptionDialog(Application.getPosWindow(),
 				Messages.getString("SwitchboardView.6") + ticket.getId() + Messages.getString("SwitchboardView.7"), POSConstants.CONFIRM, //$NON-NLS-1$ //$NON-NLS-2$
