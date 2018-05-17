@@ -93,10 +93,9 @@ public class BarTabSelectionView extends JPanel {
 			if (customerName == null) {
 				customerName = "Guest";
 			}
-			barTabButton
-					.setText("<html><center>" + customerName + "<br><h4 style='margin:0px;'>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							+ ticket.getId()
-							+ "</h4>" + CurrencyUtil.getCurrencySymbol() + ticket.getTotalAmount() + "<br><small style='margin:0px;'>Due: " + CurrencyUtil.getCurrencySymbol() + ticket.getDueAmount() + "</small></center></html>"); //$NON-NLS-1$
+			barTabButton.setText("<html><center>" + customerName + "<br><h4 style='margin:0px;'>" + ticket.getOwner().getFirstName() + "<br>Chk#" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ ticket.getId() + "</h4>" + CurrencyUtil.getCurrencySymbol() + ticket.getTotalAmount() + "<br><small style='margin:0px;'>Due: " //$NON-NLS-1$
+					+ CurrencyUtil.getCurrencySymbol() + ticket.getDueAmount() + "</small></center></html>");
 			if (!ticket.getOwner().getUserId().toString().equals(Application.getCurrentUser().getUserId().toString())) {
 				barTabButton.setBackground(new Color(139, 0, 139));
 				barTabButton.setForeground(Color.WHITE);
