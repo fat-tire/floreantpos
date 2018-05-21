@@ -302,12 +302,12 @@ public class AuthorizableTicketBrowser extends POSDialog {
 			CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
 			if (cardProcessor.supportTipsAdjustMent()) {
 				cardProcessor.adjustTips(transaction);
-				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(),"Success!");
 			}
 			else {
 				throw new PosException("Payment Gateway can not process Tip Adjustment!!!");
 			}
 			updateTransactiontList();
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(),"Success!");
 		}
 	}
 }
