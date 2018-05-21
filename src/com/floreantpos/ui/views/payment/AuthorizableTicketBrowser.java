@@ -48,6 +48,7 @@ import com.floreantpos.ui.TransactionListView;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import com.floreantpos.util.POSUtil;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -113,9 +114,9 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		if (!currentUser.hasPermission(UserPermission.VIEW_ALL_OPEN_TICKETS)) {
 			owner = currentUser;
 		}
-
 		authWaitingListView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions(owner));
 		authClosedListView.setTransactions(PosTransactionDAO.getInstance().findAuthorizedTransactions(owner));
+		
 	}
 
 	private boolean confirmAuthorize(String message) {
@@ -295,11 +296,12 @@ public class AuthorizableTicketBrowser extends POSDialog {
 			if (Double.isNaN(newTipsAmount))
 				return;
 
-			transaction.setTipsAmount(newTipsAmount);
+			transaction.getTicket().setGratuityAmount(newTipsAmount);
 
 			CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
 			if (cardProcessor.supportTipsAdjustMent()) {
 				cardProcessor.adjustTips(transaction);
+				POSMessageDialog.showMessage(POSUtil.getFocusedWindow(),"Success!");
 			}
 			else {
 				throw new PosException("Payment Gateway can not process Tip Adjustment!!!");
