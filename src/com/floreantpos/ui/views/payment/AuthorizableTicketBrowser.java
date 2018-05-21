@@ -297,6 +297,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 				return;
 
 			transaction.getTicket().setGratuityAmount(newTipsAmount);
+			transaction.setTipsAmount(newTipsAmount);
 
 			CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
 			if (cardProcessor.supportTipsAdjustMent()) {
