@@ -511,16 +511,10 @@
         </dependency>
 	</dependencies>
 
-	<!-- <repositories>
-		<repository>
-			<id>local-repo</id>
-			<url>file://${project.basedir}/local-lib</url>
-		</repository>
-	</repositories> -->
 	<repositories>
 		<repository>
-			<id>oro</id>
-			<url>http://team.orocube.net:8081/nexus/content/groups/public/</url>
+			<id>orodev.net</id>
+			<url>http://orodev.net:8081/nexus/content/groups/public/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -529,15 +523,4 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>oro</id>
-			<name>oro release</name>
-			<url>http://team.orocube.net:8081/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>oro</id>
-			<url>http://team.orocube.net:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>
