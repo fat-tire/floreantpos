@@ -40,6 +40,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.PosLog;
@@ -119,7 +120,7 @@ public class Application {
 	public void start() {
 		setApplicationLook();
 
-		applicationIcon = new ImageIcon(getClass().getResource("/icons/icon.png")); //$NON-NLS-1$
+		applicationIcon = IconFactory.getIcon("/ui_icons/","icon.png"); //$NON-NLS-1$
 		posWindow = new PosWindow();
 		posWindow.setTitle(getTitle());
 		posWindow.setIconImage(applicationIcon.getImage());
@@ -556,7 +557,7 @@ public class Application {
 	}
 
 	public static String getTitle() {
-		return "Floreant POS - Version " + VERSION; //$NON-NLS-1$
+		return AppProperties.getAppName() + " - Version " + VERSION; //$NON-NLS-1$
 	}
 
 	public static ImageIcon getApplicationIcon() {

@@ -26,7 +26,7 @@
 				<directory>resources</directory>
 			</resource>
 			<resource>
-				<directory>filters</directory>
+				<directory>profiles/${build.profile.id}</directory>
 				<filtering>true</filtering>
 				<includes>
 					<include>*.properties</include>
@@ -115,7 +115,8 @@
 					</execution>
 				</executions>
 				<configuration>
-					<descriptor>resources/META-INF/mvn-assembly.xml</descriptor>
+					<!-- <descriptor>resources/META-INF/mvn-assembly.xml</descriptor> -->
+					<descriptor>profiles/${build.profile.id}/mvn-assembly.xml</descriptor>
 				</configuration>
 			</plugin>
 
@@ -264,12 +265,12 @@
 			<artifactId>derbyclient</artifactId>
 			<version>10.8.1.2</version>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>1.18.1</version>
-        </dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.18.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.jgoodies</groupId>
@@ -490,25 +491,25 @@
 			<version>20161230</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.google.maps</groupId>
-   			<artifactId>google-maps-services</artifactId>
-    		<version>0.1.12</version>
+			<groupId>com.google.maps</groupId>
+			<artifactId>google-maps-services</artifactId>
+			<version>0.1.12</version>
 		</dependency>
-		<dependency> 
-            <groupId>net.java.dev.jna</groupId> 
-            <artifactId>jna</artifactId> 
-            <version>4.2.2</version> 
-        </dependency> 
-        <dependency> 
-            <groupId>net.java.dev.jna</groupId> 
-            <artifactId>jna-platform</artifactId> 
-            <version>4.2.2</version> 
-        </dependency>
-        <dependency> 
-            <groupId>com.floreantpos</groupId> 
-            <artifactId>ploader</artifactId> 
-            <version>1.1.2</version> 
-        </dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.floreantpos</groupId>
+			<artifactId>ploader</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -523,4 +524,22 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<properties>
+				<build.profile.id>default</build.profile.id>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>devinepos</id>
+			<properties>
+				<build.profile.id>devinepos</build.profile.id>
+			</properties>
+		</profile>
+	</profiles>
 </project>

@@ -2,7 +2,7 @@
     <wb-module deploy-name="floreantpos">
         <wb-resource deploy-path="/" source-path="/src"/>
         <wb-resource deploy-path="/" source-path="/resources"/>
-        <wb-resource deploy-path="/" source-path="/filters"/>
         <wb-resource deploy-path="/" source-path="/i18n"/>
+        <wb-resource deploy-path="/" source-path="/profiles/default"/>
     </wb-module>
 </project-modules>

@@ -102,9 +102,9 @@ public class PosWindow extends JFrame implements WindowListener {
 		JPanel statusBarContainer = new JPanel(new BorderLayout());
 		statusBarContainer.setBackground(Color.WHITE);
 		statusBarContainer.add(new JSeparator(JSeparator.HORIZONTAL), BorderLayout.NORTH);
-		ImageIcon icon = IconFactory.getIcon("/images/", "logo-icon.png");
+		ImageIcon icon = IconFactory.getIcon("/ui_icons/", "footer-logo.png");
 		statusLabel.setIcon(icon);
-		statusLabel.setText("Floreant POS by OROCUBE LLC.");
+		//statusLabel.setText("Floreant POS by OROCUBE LLC.");
 		statusBarContainer.add(infoPanel, BorderLayout.CENTER);
 		getContentPane().add(statusBarContainer, BorderLayout.SOUTH);
 		clockTimer.start();
