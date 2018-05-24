@@ -72,18 +72,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		PaymentTypeSelectionDialog paymentTypeSelectionDialog = new PaymentTypeSelectionDialog();
-//		paymentTypeSelectionDialog.setCashButtonVisible(false);
-//		paymentTypeSelectionDialog.pack();
-//		paymentTypeSelectionDialog.setLocationRelativeTo(parentComponent);
-//		paymentTypeSelectionDialog.setVisible(true);
-//
-//		if (paymentTypeSelectionDialog.isCanceled()) {
-//			return;
-//		}
-//
-//		selectedPaymentType = paymentTypeSelectionDialog.getSelectedPaymentType();
-//
+
 		String symbol = CurrencyUtil.getCurrencySymbol();
 		String message = symbol + CardConfig.getBartabLimit() + Messages.getString("NewBarTabAction.3"); //$NON-NLS-1$
 
@@ -100,15 +89,17 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			if (!paymentGateway.shouldShowCardInputProcessor()) {
 				PosTransaction transaction = selectedPaymentType.createTransaction();
 				Ticket ticket = createTicket();
+				if (ticket == null) {
+					return;
+				}
 				transaction.setTicket(ticket);
 				transaction.setAuthorizable(false);
-				//transaction.setCardType(cardName);
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 				transaction.setTenderAmount(CardConfig.getBartabLimit());
 				transaction.setAmount(CardConfig.getBartabLimit());
 				paymentGateway.getProcessor().preAuth(transaction);
-				
+
 				saveTicket(transaction);
 				return;
 			}
@@ -139,7 +130,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		} catch (Exception e3) {
 			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e3.getMessage(), e3);
 		}
-		
+
 	}
 
 	private Ticket createTicket() {
@@ -153,6 +144,9 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		}
 		else {
 			String customerTabName = PosOptionPane.showInputDialog("Enter bar tab name");
+			if (StringUtils.isEmpty(customerTabName)) {
+				return null;
+			}
 			ticket.addProperty(Ticket.CUSTOMER_NAME, customerTabName);
 		}
 		Application application = Application.getInstance();
@@ -165,7 +159,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		Calendar currentTime = Calendar.getInstance();
 		ticket.setCreateDate(currentTime.getTime());
 		ticket.setCreationHour(currentTime.get(Calendar.HOUR_OF_DAY));
-		
+
 		TicketDAO.getInstance().save(ticket);
 		return ticket;
 	}
@@ -180,6 +174,9 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			PosTransaction transaction = selectedPaymentType.createTransaction();
 
 			Ticket ticket = createTicket();
+			if (ticket == null) {
+				return;
+			}
 			transaction.setTicket(ticket);
 			transaction.setAuthorizable(false);
 			transaction.setTenderAmount(CardConfig.getBartabLimit());
@@ -256,8 +253,8 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 		try {
 			PosTransactionService transactionService = PosTransactionService.getInstance();
 			Ticket ticket = transaction.getTicket();
-			transactionService.settleBarTabTicket(ticket, transaction, false);
-			
+			((PosTransactionService) transactionService).bookBartabTicket(ticket, transaction, false);
+
 			ticket.addProperty(BARTAB_TRANSACTION_ID, String.valueOf(transaction.getId()));
 			TicketDAO.getInstance().saveOrUpdate(ticket);
 			ShopTableDAO.getInstance().occupyTables(ticket);
@@ -266,7 +263,7 @@ public class NewBarTabAction extends AbstractAction implements CardInputListener
 			if (parentComponent instanceof ITicketList) {
 				((ITicketList) parentComponent).updateTicketList();
 			}
-			
+
 			doEditTicket(ticket);
 		} catch (Exception e) {
 			PosLog.error(getClass(), e);

@@ -72,7 +72,6 @@ public class PaymentView extends JPanel {
 	private com.floreantpos.swing.PosButton btnCash;
 	private com.floreantpos.swing.PosButton btnPrint;
 	private com.floreantpos.swing.PosButton btnCreditCard;
-	private com.floreantpos.swing.PosButton btnDebitCard;
 	private com.floreantpos.swing.PosButton btnGift;
 	private com.floreantpos.swing.PosButton btnOther;
 
@@ -113,7 +112,7 @@ public class PaymentView extends JPanel {
 	private Ticket ticket;
 	private SettleTicketProcessor ticketProcessor;
 	private RefreshableView refreshableView;
-
+	
 	public PaymentView(SettleTicketProcessor ticketProcessor, RefreshableView refreshableView) {
 		this.ticketProcessor = ticketProcessor;
 		this.refreshableView = refreshableView;
@@ -444,7 +443,7 @@ public class PaymentView extends JPanel {
 			}
 		});
 
-		btnCreditCard = new PosButton(Messages.getString("PaymentView.33")); //$NON-NLS-1$
+		btnCreditCard = new PosButton("CARD"); //$NON-NLS-1$
 		actionButtonPanel.add(btnCreditCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnCreditCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -453,20 +452,8 @@ public class PaymentView extends JPanel {
 				} catch (StaleStateException x) {
 					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 				} catch (Exception e1) {
-					PosLog.error(PaymentView.class, e1.getMessage().toString());
-				}
-			}
-		});
-		btnDebitCard = new PosButton("DEBIT CARD"); //$NON-NLS-1$
-		actionButtonPanel.add(btnDebitCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
-		btnDebitCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ticketProcessor.doSettle(PaymentType.DEBIT_CARD, getTenderedAmount());
-				} catch (StaleStateException x) {
-					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
-				} catch (Exception e1) {
-					PosLog.error(PaymentView.class, e1.getMessage().toString());
+					POSMessageDialog.showError(POSUtil.getFocusedWindow(), e1.getMessage());
+					setTicket(TicketDAO.getInstance().loadFullTicket(ticket.getId()));
 				}
 			}
 		});

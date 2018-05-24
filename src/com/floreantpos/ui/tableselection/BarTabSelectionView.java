@@ -77,7 +77,7 @@ public class BarTabSelectionView extends JPanel {
 		List<Ticket> openTickets = TicketDAO.getInstance().findOpenTicketsByOrderType(orderType);
 		for (Ticket ticket : openTickets) {
 			BarTabButton barTabButton = new BarTabButton(ticket);
-			barTabButton.setPreferredSize(PosUIManager.getSize(157, 138));
+			barTabButton.setPreferredSize(PosUIManager.getSize(180, 160));
 			barTabButton.setFont(new Font(barTabButton.getFont().getName(), Font.BOLD, 24));
 			barTabButton.setText(barTabButton.getText());
 			barTabButton.addActionListener(new ActionListener() {

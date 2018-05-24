@@ -130,7 +130,7 @@ public class PosTransactionService {
 		ActionHistoryDAO.getInstance().saveHistory(Application.getCurrentUser(), ActionHistory.SETTLE_CHECK, actionMessage);
 	}
 
-	public void settleBarTabTicket(Ticket ticket, PosTransaction transaction, boolean closed) throws Exception {
+	public void bookBartabTicket(Ticket ticket, PosTransaction transaction, boolean closed) throws Exception {
 		Application application = Application.getInstance();
 		User currentUser = Application.getCurrentUser();
 		Terminal terminal = application.refreshAndGetTerminal();
@@ -149,8 +149,6 @@ public class PosTransactionService {
 			ticket.setVoided(false);
 			ticket.setDrawerResetted(false);
 			ticket.setTerminal(terminal);
-			ticket.setPaidAmount(ticket.getPaidAmount() + transaction.getAmount());
-
 			ticket.calculatePrice();
 
 			if (closed) {

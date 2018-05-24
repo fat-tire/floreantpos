@@ -17,14 +17,10 @@
  */
 package com.floreantpos.ui.views.payment;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.awt.HeadlessException;
 import java.net.UnknownHostException;
-import java.util.Set;
 import java.util.Vector;
 
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,21 +37,20 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
+import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.CustomPayment;
-import com.floreantpos.model.Discount;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
-import com.floreantpos.model.TicketDiscount;
 import com.floreantpos.model.User;
 import com.floreantpos.model.UserPermission;
 import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
 import com.floreantpos.ui.RefreshableView;
 import com.floreantpos.ui.dialog.DiscountSelectionDialog;
-import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.dialog.TransactionCompletionDialog;
 import com.floreantpos.ui.views.order.OrderController;
@@ -70,12 +65,11 @@ public class SettleTicketProcessor implements CardInputListener {
 	private PaymentType paymentType;
 	private Ticket ticket;
 	private String cardName;
-	private User currentUser;
 	private RefreshableView refreshableView;
+	public boolean terminate = false;
 
 	public SettleTicketProcessor(User currentUser, RefreshableView refreshableView) {
 		super();
-		this.currentUser = currentUser;
 		this.refreshableView = refreshableView;
 	}
 
@@ -92,11 +86,6 @@ public class SettleTicketProcessor implements CardInputListener {
 			POSMessageDialog.showError(POSUtil.getFocusedWindow(), com.floreantpos.POSConstants.TICKET_IS_EMPTY_);
 			return;
 		}
-
-		/*if (ticket.getOrderType().isBarTab()) { //fix
-			doSettleBarTabTicket(ticket);
-			return;
-		}*/
 
 		OrderController.saveOrder(ticket);
 
@@ -153,12 +142,16 @@ public class SettleTicketProcessor implements CardInputListener {
 			case CREDIT_MASTER_CARD:
 			case CREDIT_AMEX:
 			case CREDIT_DISCOVERY:
-				payUsingCard(cardName, tenderAmount);
-				break;
-
-			case DEBIT_CARD:
-			case DEBIT_VISA:
-			case DEBIT_MASTER_CARD:
+				OrderType orderType = ticket.getOrderType();
+				double dueAmount = ticket.getDueAmount();
+				PosTransaction bartabTransaction = ticket.getBartabTransaction();
+				if (bartabTransaction != null && orderType.isBarTab() && orderType.isPreAuthCreditCard() && !bartabTransaction.isCaptured()
+						&& !bartabTransaction.isVoided()) {
+					if (captureBartabTransaction(bartabTransaction)) {
+						doAfterSettleTask(bartabTransaction, dueAmount);
+						return;
+					}
+				}
 				payUsingCard(cardName, tenderAmount);
 				break;
 
@@ -201,6 +194,30 @@ public class SettleTicketProcessor implements CardInputListener {
 		}
 	}
 
+	private boolean captureBartabTransaction(PosTransaction bartabTransaction) throws Exception {
+		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+		if (bartabTransaction instanceof CreditCardTransaction) {
+			Double authorizedAmount = bartabTransaction.getAmount();
+			if (tenderAmount > authorizedAmount) {
+				tenderAmount = authorizedAmount;
+			}
+
+			if (tenderAmount >= ticket.getDueAmount()) {
+				bartabTransaction.setAmount(ticket.getDueAmount());
+				bartabTransaction.setTenderAmount(tenderAmount);
+
+			}
+			else {
+				bartabTransaction.setTenderAmount(bartabTransaction.getAmount());
+			}
+			ticket.setPaidAmount(ticket.getPaidAmount() + tenderAmount);
+			ticket.setDueAmount(ticket.getDueAmount() - tenderAmount);
+			cardProcessor.captureAuthAmount(bartabTransaction);
+			return true;
+		}
+		return false;
+	}
+
 	public void doApplyCoupon() {// GEN-FIRST:event_btnApplyCoupondoApplyCoupon
 		try {
 			if (ticket == null) {
@@ -209,8 +226,6 @@ public class SettleTicketProcessor implements CardInputListener {
 			if (ticket.getId() == null) {
 				OrderController.saveOrder(ticket);
 			}
-			//			ticket = TicketDAO.getInstance().loadFullTicket(ticket.getId());
-
 			if (!Application.getCurrentUser().hasPermission(UserPermission.ADD_DISCOUNT)) {
 				POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketDialog.7")); //$NON-NLS-1$
 				return;
@@ -261,37 +276,6 @@ public class SettleTicketProcessor implements CardInputListener {
 		doInformListenerPaymentUpdate();
 	}
 
-	public void doSettleBarTabTicket(Ticket ticket) {
-		try {
-			String msg = "Do you want to settle bar tab?"; //$NON-NLS-1$
-			int option1 = POSMessageDialog.showYesNoQuestionDialog(null, msg, Messages.getString("NewBarTabAction.4")); //$NON-NLS-1$
-			if (option1 != JOptionPane.YES_OPTION) {
-				return;
-			}
-			else {
-				PosTransaction bartabTransaction = ticket.getBartabTransaction();
-				double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
-				bartabTransaction.setTipsAmount(tipsAmount);
-				bartabTransaction.setAmount(bartabTransaction.getAmount() + tipsAmount);
-				ticket.setGratuityAmount(tipsAmount);
-				ticket.setPaidAmount(0.0);
-				ticket.calculatePrice();
-				
-				bartabTransaction.setAmount(ticket.getTotalAmount());
-				bartabTransaction.setTenderAmount(ticket.getTotalAmount());
-				CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-				cardProcessor.captureAuthAmount(bartabTransaction);
-				bartabTransaction.setCaptured(true);
-
-				settleTicket(bartabTransaction);
-			}
-		} catch (StaleStateException x) {
-			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
-		} catch (Exception e) {
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage().toString());
-		}
-	}
-
 	public static void showTransactionCompleteMsg(final double dueAmount, final double tenderedAmount, Ticket ticket, PosTransaction transaction) {
 		TransactionCompletionDialog dialog = new TransactionCompletionDialog(transaction);
 		dialog.setCompletedTransaction(transaction);
@@ -330,21 +314,6 @@ public class SettleTicketProcessor implements CardInputListener {
 		}
 	}
 
-	private void addCoupon(Ticket ticket, JsonObject jsonObject) {
-		Set<String> keys = jsonObject.keySet();
-		for (String key : keys) {
-			JsonNumber jsonNumber = jsonObject.getJsonNumber(key);
-			double doubleValue = jsonNumber.doubleValue();
-
-			TicketDiscount coupon = new TicketDiscount();
-			coupon.setName(key);
-			coupon.setType(Discount.FIXED_PER_ORDER);
-			coupon.setValue(doubleValue);
-
-			ticket.addTodiscounts(coupon);
-		}
-	}
-
 	private void updateModel() {
 		if (ticket == null) {
 			return;
@@ -354,11 +323,6 @@ public class SettleTicketProcessor implements CardInputListener {
 
 	private void payUsingCard(String cardName, final double tenderedAmount) throws Exception {
 		try {
-			//		if (!CardConfig.getMerchantGateway().isCardTypeSupported(cardName)) {
-			//			POSMessageDialog.showError(Application.getPosWindow(), "<html>Card <b>" + cardName + "</b> not supported.</html>");
-			//			return;
-			//		}
-
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 
 			if (paymentGateway instanceof InginicoPlugin) {
@@ -377,21 +341,19 @@ public class SettleTicketProcessor implements CardInputListener {
 					return;
 				}
 
-				//transaction.setCardType(cardName);
 				transaction.setCaptured(false);
 				transaction.setCardMerchantGateway(paymentGateway.getProductName());
 
 				setTransactionAmounts(transaction);
 
-				if (ticket.getOrderType().isPreAuthCreditCard()) {
+				OrderType orderType = ticket.getOrderType();
+				if (orderType.isPreAuthCreditCard()) {
 					paymentGateway.getProcessor().preAuth(transaction);
 				}
 				else {
 					paymentGateway.getProcessor().chargeAmount(transaction);
 				}
-
 				settleTicket(transaction);
-
 				return;
 			}
 
@@ -428,31 +390,16 @@ public class SettleTicketProcessor implements CardInputListener {
 		try {
 			final double dueAmount = ticket.getDueAmount();
 
-			confirmLoyaltyDiscount(ticket);
+			if (ticket.getOrderType().isBarTab()) {
+				doVoidBartab(ticket.getBartabTransaction());
+			}
 
 			PosTransactionService transactionService = PosTransactionService.getInstance();
 			transactionService.settleTicket(ticket, transaction);
 
-			//FIXME
-			printTicket(ticket, transaction);
-
-			showTransactionCompleteMsg(dueAmount, transaction.getTenderAmount(), ticket, transaction);
-
-			if (ticket.getDueAmount() > 0.0) {
-				int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), POSConstants.CONFIRM_PARTIAL_PAYMENT, POSConstants.MDS_POS,
-						JOptionPane.YES_NO_OPTION);
-
-				if (option != JOptionPane.YES_OPTION) {
-
-					doInformListenerPaymentDone();
-				}
-
-				setTicket(ticket);
-				doInformListenerPaymentUpdate();
-			}
-			else {
-				doInformListenerPaymentDone();
-			}
+			doAfterSettleTask(transaction, dueAmount);
+		} catch (PosException x) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), x.getMessage());
 		} catch (StaleStateException x) {
 			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 		} catch (UnknownHostException e) {
@@ -462,22 +409,43 @@ public class SettleTicketProcessor implements CardInputListener {
 		}
 	}
 
-	public void confirmLoyaltyDiscount(Ticket ticket) throws IOException, MalformedURLException {
-		//		try {
-		//			if (ticket.hasProperty(LOYALTY_ID)) {
-		//				String url = buildLoyaltyApiURL(ticket, ticket.getProperty(LOYALTY_ID));
-		//				url += "&paid=1"; //$NON-NLS-1$
-		//
-		//				IOUtils.toString(new URL(url).openStream());
-		//			}
-		//		} catch (Exception e) {
-		//			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage(), e);
-		//		}
+	private void doVoidBartab(PosTransaction barTabTransaction) throws Exception, PosException {
+		if (barTabTransaction == null || barTabTransaction.isVoided() || barTabTransaction.isCaptured()) {
+			return;
+		}
+
+		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+		String question = "Do you want to void pre authorized card transaction?";
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), question, "Void transaction");
+
+		if (option == JOptionPane.YES_OPTION) {
+			cardProcessor.voidTransaction(barTabTransaction);
+		}
+		else {
+			throw new PosException("Pre authorized transaction must be captured or voided first");
+		}
+	}
+
+	private void doAfterSettleTask(PosTransaction transaction, final double dueAmount) throws HeadlessException {
+		printTicket(ticket, transaction);
+		showTransactionCompleteMsg(dueAmount, transaction.getTenderAmount(), ticket, transaction);
+		if (ticket.getDueAmount() > 0.0) {
+			int option = JOptionPane.showConfirmDialog(Application.getPosWindow(), POSConstants.CONFIRM_PARTIAL_PAYMENT, POSConstants.MDS_POS,
+					JOptionPane.YES_NO_OPTION);
+
+			if (option != JOptionPane.YES_OPTION) {
+				doInformListenerPaymentDone();
+			}
+			setTicket(ticket);
+			doInformListenerPaymentUpdate();
+		}
+		else {
+			doInformListenerPaymentDone();
+		}
 	}
 
 	private void setTransactionAmounts(PosTransaction transaction) {
 		transaction.setTenderAmount(tenderAmount);
-
 		if (tenderAmount >= ticket.getDueAmount()) {
 			transaction.setAmount(ticket.getDueAmount());
 		}

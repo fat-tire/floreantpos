@@ -29,7 +29,6 @@ import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
-import com.floreantpos.util.POSUtil;
 
 public class SettleTicketAction extends AbstractAction {
 
@@ -58,18 +57,20 @@ public class SettleTicketAction extends AbstractAction {
 			return false;
 		}
 
-		SettleTicketDialog posDialog = new SettleTicketDialog(ticket, currentUser);
+		SettleTicketDialog openSettleTicketDialog = new SettleTicketDialog(ticket, currentUser);
 
 		if (ticket.isBarTab()) {
-			posDialog.getTicketProcessor().doSettleBarTabTicket(ticket);
-			return true;
+            openSettleTicketDialog.setSize(Application.getPosWindow().getSize());
+            openSettleTicketDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            openSettleTicketDialog.openUndecoratedFullScreen();
+		    return true;
 
 		}
 		else {
-			posDialog.setSize(Application.getPosWindow().getSize());
-			posDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			posDialog.openUndecoratedFullScreen();
-			return !posDialog.isCanceled();
+			openSettleTicketDialog.setSize(Application.getPosWindow().getSize());
+			openSettleTicketDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			openSettleTicketDialog.openUndecoratedFullScreen();
+			return !openSettleTicketDialog.isCanceled();
 		}
 	}
 
