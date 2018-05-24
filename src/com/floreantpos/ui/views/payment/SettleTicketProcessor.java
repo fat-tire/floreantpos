@@ -142,6 +142,9 @@ public class SettleTicketProcessor implements CardInputListener {
 			case CREDIT_MASTER_CARD:
 			case CREDIT_AMEX:
 			case CREDIT_DISCOVERY:
+			case DEBIT_CARD:
+			case DEBIT_VISA:
+			case DEBIT_MASTER_CARD:
 				OrderType orderType = ticket.getOrderType();
 				double dueAmount = ticket.getDueAmount();
 				PosTransaction bartabTransaction = ticket.getBartabTransaction();
