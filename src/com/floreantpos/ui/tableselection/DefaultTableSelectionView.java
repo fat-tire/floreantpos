@@ -81,18 +81,13 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 
 	private ScrollableFlowPanel buttonsPanel;
 	private BarTabSelectionView barTab;
-
 	private POSToggleButton btnGroup;
 	private POSToggleButton btnUnGroup;
-
 	private static PosButton btnCancelDialog;
-
 	private PosButton btnDone;
 	private PosButton btnCancel;
 	private PosButton btnRefresh;
-
 	private PosButton btnNewBarTab;
-
 	private ButtonGroup btnGroups;
 	private JTabbedPane tabbedPane;
 
@@ -104,7 +99,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		setLayout(new BorderLayout());
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
-		barTab = new BarTabSelectionView();
+		barTab  =	new BarTabSelectionView();
 
 		setLayout(new java.awt.BorderLayout(10, 10));
 
@@ -165,6 +160,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			public void actionPerformed(ActionEvent e) {
 				List<ShopTable> selectedTables = getSelectedTables();
 				new NewBarTabAction(orderType, selectedTables, Application.getPosWindow()).actionPerformed(e);
+				redererTables();
 			}
 		});
 
@@ -519,8 +515,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			return;
 
 		int userInput = 0;
-		int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
-				Messages.getString("TableSelectionView.0"), Messages.getString("TableSelectionView.1")); //$NON-NLS-1$ //$NON-NLS-2$
+		int result = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(), Messages.getString("TableSelectionView.0"), //$NON-NLS-1$
+				Messages.getString("TableSelectionView.1")); //$NON-NLS-1$
 
 		if (result == JOptionPane.YES_OPTION) {
 
