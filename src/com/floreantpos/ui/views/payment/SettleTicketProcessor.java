@@ -145,16 +145,16 @@ public class SettleTicketProcessor implements CardInputListener {
 			case DEBIT_CARD:
 			case DEBIT_VISA:
 			case DEBIT_MASTER_CARD:
-				OrderType orderType = ticket.getOrderType();
-				double dueAmount = ticket.getDueAmount();
-				PosTransaction bartabTransaction = ticket.getBartabTransaction();
-				if (bartabTransaction != null && orderType.isBarTab() && orderType.isPreAuthCreditCard() && !bartabTransaction.isCaptured()
-						&& !bartabTransaction.isVoided()) {
-					if (captureBartabTransaction(bartabTransaction)) {
-						doAfterSettleTask(bartabTransaction, dueAmount);
-						return;
-					}
-				}
+//				OrderType orderType = ticket.getOrderType();
+//				double dueAmount = ticket.getDueAmount();
+//				PosTransaction bartabTransaction = ticket.getBartabTransaction();
+//				if (bartabTransaction != null && orderType.isBarTab() && orderType.isPreAuthCreditCard() && !bartabTransaction.isCaptured()
+//						&& !bartabTransaction.isVoided()) {
+//					if (captureBartabTransaction(bartabTransaction)) {
+//						doAfterSettleTask(bartabTransaction, dueAmount);
+//						return;
+//					}
+//				}
 				payUsingCard(cardName, tenderAmount);
 				break;
 
@@ -196,29 +196,28 @@ public class SettleTicketProcessor implements CardInputListener {
 				break;
 		}
 	}
-
-	private boolean captureBartabTransaction(PosTransaction bartabTransaction) throws Exception {
+	
+	public boolean captureBartabTransaction(PosTransaction bartabTransaction) throws Exception {
 		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-		if (bartabTransaction instanceof CreditCardTransaction) {
-			Double authorizedAmount = bartabTransaction.getAmount();
-			if (tenderAmount > authorizedAmount) {
-				tenderAmount = authorizedAmount;
-			}
-
-			if (tenderAmount >= ticket.getDueAmount()) {
-				bartabTransaction.setAmount(ticket.getDueAmount());
-				bartabTransaction.setTenderAmount(tenderAmount);
-
-			}
-			else {
-				bartabTransaction.setTenderAmount(bartabTransaction.getAmount());
-			}
-			ticket.setPaidAmount(ticket.getPaidAmount() + tenderAmount);
-			ticket.setDueAmount(ticket.getDueAmount() - tenderAmount);
+//		if (bartabTransaction instanceof CreditCardTransaction) {
+//			Double authorizedAmount = bartabTransaction.getAmount();
+//			if (tenderAmount > authorizedAmount) {
+//				tenderAmount = authorizedAmount;
+//			}
+//
+//			if (tenderAmount >= ticket.getDueAmount()) {
+//				bartabTransaction.setAmount(ticket.getDueAmount());
+//				bartabTransaction.setTenderAmount(tenderAmount);
+//
+//			}
+//			else {
+//				bartabTransaction.setTenderAmount(bartabTransaction.getAmount());
+//			}
+//			ticket.setPaidAmount(ticket.getPaidAmount() + tenderAmount);
+//			ticket.setDueAmount(ticket.getDueAmount() - tenderAmount);
 			cardProcessor.captureAuthAmount(bartabTransaction);
 			return true;
-		}
-		return false;
+//		}
 	}
 
 	public void doApplyCoupon() {// GEN-FIRST:event_btnApplyCoupondoApplyCoupon
@@ -400,7 +399,7 @@ public class SettleTicketProcessor implements CardInputListener {
 			PosTransactionService transactionService = PosTransactionService.getInstance();
 			transactionService.settleTicket(ticket, transaction);
 
-			doAfterSettleTask(transaction, dueAmount);
+			doAfterSettleTask(transaction, dueAmount, true);
 		} catch (PosException x) {
 			POSMessageDialog.showError(POSUtil.getFocusedWindow(), x.getMessage());
 		} catch (StaleStateException x) {
@@ -412,24 +411,24 @@ public class SettleTicketProcessor implements CardInputListener {
 		}
 	}
 
-	private void doVoidBartab(PosTransaction barTabTransaction) throws Exception, PosException {
+	public void doVoidBartab(PosTransaction barTabTransaction) throws Exception, PosException {
 		if (barTabTransaction == null || barTabTransaction.isVoided() || barTabTransaction.isCaptured()) {
 			return;
 		}
 
 		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-		String question = "Do you want to void pre authorized card transaction?";
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), question, "Void transaction");
-
-		if (option == JOptionPane.YES_OPTION) {
+//		String question = "Do you want to void pre authorized card transaction?";
+//		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), question, "Void transaction");
+//
+//		if (option == JOptionPane.YES_OPTION) {
 			cardProcessor.voidTransaction(barTabTransaction);
-		}
-		else {
-			throw new PosException("Pre authorized transaction must be captured or voided first");
-		}
+//		}
+//		else {
+//			throw new PosException("Pre authorized transaction must be captured or voided first");
+//		}
 	}
 
-	private void doAfterSettleTask(PosTransaction transaction, final double dueAmount) throws HeadlessException {
+	public void doAfterSettleTask(PosTransaction transaction, final double dueAmount, boolean printTicket) throws HeadlessException {
 		printTicket(ticket, transaction);
 		showTransactionCompleteMsg(dueAmount, transaction.getTenderAmount(), ticket, transaction);
 		if (ticket.getDueAmount() > 0.0) {
@@ -592,6 +591,10 @@ public class SettleTicketProcessor implements CardInputListener {
 		for (PaymentListener paymentListener : paymentListeners) {
 			paymentListener.paymentDone();
 		}
+	}
+
+	public void setTenderAmount(Double dueAmount) {
+		this.tenderAmount = dueAmount;
 	}
 
 }

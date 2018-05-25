@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -31,15 +32,20 @@ import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.Messages;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.RefreshableView;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSDialog;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.ticket.TicketViewerTable;
 import com.floreantpos.ui.ticket.TicketViewerTableChangeListener;
 import com.floreantpos.ui.views.order.OrderController;
@@ -67,7 +73,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 	private JTextField tfTotal;
 	private JTextField tfGratuity;
 	private SettleTicketProcessor ticketProcessor = null;
-	
+
 	public SettleTicketDialog(Ticket ticket) {
 		this(ticket, Application.getCurrentUser());
 	}
@@ -75,7 +81,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 	public SettleTicketDialog(Ticket ticket, User currentUser) {
 		super();
 		this.ticket = ticket;
-		ticketProcessor = new SettleTicketProcessor(currentUser,this);
+		ticketProcessor = new SettleTicketProcessor(currentUser, this);
 		if (ticket.getOrderType().isConsolidateItemsInReceipt()) {
 			ticket.consolidateTicketItems();
 		}
@@ -393,4 +399,44 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 		ticketDataChanged();
 	}
 
+	public void settleBartab() throws Exception {
+		PosTransaction bartabTransaction = ticket.getBartabTransaction();
+		if (bartabTransaction != null && !bartabTransaction.isCaptured() && !bartabTransaction.isVoided()) {
+			String message = "Pay using";
+			String title = "Payment option";
+			String yesButtonText = "Pre-Authorized Tab";
+			String noButtonText = "Other Payment";
+			int option = POSMessageDialog.showYesNoQuestionDialog(this, message, title, yesButtonText, noButtonText);
+			if (option == JOptionPane.YES_OPTION) {
+				//capture
+				ReceiptPrintService.printTicket(ticket, true);
+				
+				double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
+				if (tipsAmount > 0) {
+					ticket.setGratuityAmount(tipsAmount);
+					ticket.calculatePrice();
+				}
+				
+				Double dueAmount = ticket.getDueAmount();
+				
+				bartabTransaction.setTipsAmount(tipsAmount);
+				bartabTransaction.setAmount(dueAmount);
+				bartabTransaction.setTenderAmount(dueAmount);
+				ticketProcessor.setTenderAmount(dueAmount);
+				ticketProcessor.captureBartabTransaction(bartabTransaction);
+				ticketProcessor.doAfterSettleTask(bartabTransaction, dueAmount, true);
+				return;
+			}
+		}
+		
+		int option2 = POSMessageDialog.showYesNoQuestionDialog(this, "This will void Pre-Authorized amount in Tab", "Warning", "Void", "Cancel");
+		if (option2 != JOptionPane.YES_OPTION) {
+			POSMessageDialog.showMessage("Payment canceled");
+			setCanceled(true);
+			dispose();
+			return;
+		}
+		ticketProcessor.doVoidBartab(bartabTransaction);
+		POSMessageDialog.showMessage("Pre-Authorized tab is voided");
+	}
 }

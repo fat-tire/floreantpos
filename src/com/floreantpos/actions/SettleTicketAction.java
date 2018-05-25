@@ -18,17 +18,22 @@
 package com.floreantpos.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.payment.SettleTicketDialog;
+import com.floreantpos.util.POSUtil;
 
 public class SettleTicketAction extends AbstractAction {
 
@@ -50,28 +55,37 @@ public class SettleTicketAction extends AbstractAction {
 	}
 
 	public boolean execute() {
-		Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
+		final Ticket ticket = TicketDAO.getInstance().loadFullTicket(ticketId);
 
 		if (ticket.isPaid()) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketAction.0")); //$NON-NLS-1$
 			return false;
 		}
 
-		SettleTicketDialog openSettleTicketDialog = new SettleTicketDialog(ticket, currentUser);
-
-		if (ticket.isBarTab()) {
-            openSettleTicketDialog.setSize(Application.getPosWindow().getSize());
-            openSettleTicketDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            openSettleTicketDialog.openUndecoratedFullScreen();
-		    return true;
-
-		}
-		else {
-			openSettleTicketDialog.setSize(Application.getPosWindow().getSize());
-			openSettleTicketDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			openSettleTicketDialog.openUndecoratedFullScreen();
-			return !openSettleTicketDialog.isCanceled();
-		}
+		final SettleTicketDialog settleTicketDialog = new SettleTicketDialog(ticket, currentUser);
+		settleTicketDialog.setSize(Application.getPosWindow().getSize());
+		settleTicketDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		settleTicketDialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				doSettleBartab(ticket, settleTicketDialog);
+			}
+		});
+		settleTicketDialog.openUndecoratedFullScreen();
+		return !settleTicketDialog.isCanceled();
 	}
 
+	private void doSettleBartab(final Ticket ticket, final SettleTicketDialog settleTicketDialog) {
+		try {
+			OrderType orderType = ticket.getOrderType();
+			if (orderType.isBarTab()) {
+				PosTransaction bartabTransaction = ticket.getBartabTransaction();
+				if (bartabTransaction != null && !bartabTransaction.isCaptured() && !bartabTransaction.isVoided()) {
+					settleTicketDialog.settleBartab();
+				}
+			}
+		} catch (Exception e2) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e2.getMessage(), e2);
+		}
+	}
 }
