@@ -19,6 +19,7 @@ package com.floreantpos.ui.views.payment;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,17 +30,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import net.miginfocom.swing.MigLayout;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
-import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
-import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.RefreshableView;
@@ -53,6 +54,8 @@ import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 //TODO: REVISE CODE
 public class SettleTicketDialog extends POSDialog implements PaymentListener, TicketViewerTableChangeListener, RefreshableView {
@@ -408,23 +411,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 			String noButtonText = "Other Payment";
 			int option = POSMessageDialog.showYesNoQuestionDialog(this, message, title, yesButtonText, noButtonText);
 			if (option == JOptionPane.YES_OPTION) {
-				//capture
-				ReceiptPrintService.printTicket(ticket, true);
-				
-				double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
-				if (tipsAmount > 0) {
-					ticket.setGratuityAmount(tipsAmount);
-					ticket.calculatePrice();
-				}
-				
-				Double dueAmount = ticket.getDueAmount();
-				
-				bartabTransaction.setTipsAmount(tipsAmount);
-				bartabTransaction.setAmount(dueAmount);
-				bartabTransaction.setTenderAmount(dueAmount);
-				ticketProcessor.setTenderAmount(dueAmount);
-				ticketProcessor.captureBartabTransaction(bartabTransaction);
-				ticketProcessor.doAfterSettleTask(bartabTransaction, dueAmount, true);
+				payUsingPreAuthorizedBartab(bartabTransaction);
 				return;
 			}
 		}
@@ -438,5 +425,48 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 		}
 		ticketProcessor.doVoidBartab(bartabTransaction);
 		POSMessageDialog.showMessage("Pre-Authorized tab is voided");
+	}
+
+	private void payUsingPreAuthorizedBartab(PosTransaction bartabTransaction) throws Exception {
+		//capture
+		//ReceiptPrintService.printTicket(ticket, true);
+		
+		double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
+		if (tipsAmount > 0) {
+			ticket.setGratuityAmount(tipsAmount);
+			ticket.calculatePrice();
+		}
+		
+		Double dueAmount = ticket.getDueAmount();
+		
+		bartabTransaction.setTipsAmount(tipsAmount);
+		bartabTransaction.setAmount(dueAmount);
+		bartabTransaction.setTenderAmount(dueAmount);
+		ticketProcessor.setTenderAmount(dueAmount);
+		ticketProcessor.captureBartabTransaction(bartabTransaction);
+		if (ticket.getDueAmount() == 0.0) {
+			ticket.setPaid(true);
+			OrderType ticketType = ticket.getOrderType();
+			if (ticketType.isCloseOnPaid()) {//fix
+				ticket.setClosed(true);
+				ticket.setClosingDate(new Date());
+			}
+		}
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = TicketDAO.getInstance().createNewSession();
+			tx = session.beginTransaction();
+			TicketDAO.getInstance().update(ticket, session);
+			tx.commit();
+			ticketProcessor.doAfterSettleTask(bartabTransaction, dueAmount, true);
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			TicketDAO.getInstance().closeSession(session);
+		}
 	}
 }

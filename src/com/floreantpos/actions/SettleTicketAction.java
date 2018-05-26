@@ -86,6 +86,8 @@ public class SettleTicketAction extends AbstractAction {
 			}
 		} catch (Exception e2) {
 			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e2.getMessage(), e2);
+			settleTicketDialog.setCanceled(true);
+			settleTicketDialog.dispose();
 		}
 	}
 }

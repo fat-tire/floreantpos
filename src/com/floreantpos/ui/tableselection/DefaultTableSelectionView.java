@@ -160,7 +160,6 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			public void actionPerformed(ActionEvent e) {
 				List<ShopTable> selectedTables = getSelectedTables();
 				new NewBarTabAction(orderType, selectedTables, Application.getPosWindow()).actionPerformed(e);
-				redererTables();
 			}
 		});
 
