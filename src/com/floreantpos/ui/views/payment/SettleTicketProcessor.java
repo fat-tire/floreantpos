@@ -37,7 +37,6 @@ import com.floreantpos.extension.PaymentGatewayPlugin;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CardReader;
 import com.floreantpos.model.CashTransaction;
-import com.floreantpos.model.CreditCardTransaction;
 import com.floreantpos.model.CustomPayment;
 import com.floreantpos.model.GiftCertificateTransaction;
 import com.floreantpos.model.Gratuity;
@@ -145,16 +144,6 @@ public class SettleTicketProcessor implements CardInputListener {
 			case DEBIT_CARD:
 			case DEBIT_VISA:
 			case DEBIT_MASTER_CARD:
-//				OrderType orderType = ticket.getOrderType();
-//				double dueAmount = ticket.getDueAmount();
-//				PosTransaction bartabTransaction = ticket.getBartabTransaction();
-//				if (bartabTransaction != null && orderType.isBarTab() && orderType.isPreAuthCreditCard() && !bartabTransaction.isCaptured()
-//						&& !bartabTransaction.isVoided()) {
-//					if (captureBartabTransaction(bartabTransaction)) {
-//						doAfterSettleTask(bartabTransaction, dueAmount);
-//						return;
-//					}
-//				}
 				payUsingCard(cardName, tenderAmount);
 				break;
 
@@ -196,28 +185,11 @@ public class SettleTicketProcessor implements CardInputListener {
 				break;
 		}
 	}
-	
+
 	public boolean captureBartabTransaction(PosTransaction bartabTransaction) throws Exception {
 		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-//		if (bartabTransaction instanceof CreditCardTransaction) {
-//			Double authorizedAmount = bartabTransaction.getAmount();
-//			if (tenderAmount > authorizedAmount) {
-//				tenderAmount = authorizedAmount;
-//			}
-//
-//			if (tenderAmount >= ticket.getDueAmount()) {
-//				bartabTransaction.setAmount(ticket.getDueAmount());
-//				bartabTransaction.setTenderAmount(tenderAmount);
-//
-//			}
-//			else {
-//				bartabTransaction.setTenderAmount(bartabTransaction.getAmount());
-//			}
-//			ticket.setPaidAmount(ticket.getPaidAmount() + tenderAmount);
-//			ticket.setDueAmount(ticket.getDueAmount() - tenderAmount);
-			cardProcessor.captureAuthAmount(bartabTransaction);
-			return true;
-//		}
+		cardProcessor.captureAuthAmount(bartabTransaction);
+		return true;
 	}
 
 	public void doApplyCoupon() {// GEN-FIRST:event_btnApplyCoupondoApplyCoupon
@@ -417,15 +389,15 @@ public class SettleTicketProcessor implements CardInputListener {
 		}
 
 		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
-//		String question = "Do you want to void pre authorized card transaction?";
-//		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), question, "Void transaction");
-//
-//		if (option == JOptionPane.YES_OPTION) {
-			cardProcessor.voidTransaction(barTabTransaction);
-//		}
-//		else {
-//			throw new PosException("Pre authorized transaction must be captured or voided first");
-//		}
+		//		String question = "Do you want to void pre authorized card transaction?";
+		//		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(), question, "Void transaction");
+		//
+		//		if (option == JOptionPane.YES_OPTION) {
+		cardProcessor.voidTransaction(barTabTransaction);
+		//		}
+		//		else {
+		//			throw new PosException("Pre authorized transaction must be captured or voided first");
+		//		}
 	}
 
 	public void doAfterSettleTask(PosTransaction transaction, final double dueAmount, boolean printTicket) throws HeadlessException {

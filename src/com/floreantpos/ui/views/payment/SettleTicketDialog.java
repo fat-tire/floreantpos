@@ -41,6 +41,7 @@ import com.floreantpos.model.Restaurant;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.RefreshableView;
@@ -429,7 +430,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 
 	private void payUsingPreAuthorizedBartab(PosTransaction bartabTransaction) throws Exception {
 		//capture
-		//ReceiptPrintService.printTicket(ticket, true);
+		ReceiptPrintService.printTicket(ticket, true);
 		
 		double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
 		if (tipsAmount > 0) {
