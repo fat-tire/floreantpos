@@ -11,7 +11,7 @@ public class TableSelectorFactory {
 		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if (tableSelector == null) {
 			if (floorLayoutPlugin == null) {
-				tableSelector = new DefaultTableSelectionView();
+				tableSelector = DefaultTableSelectionView.getInstance();
 			}
 			else {
 				tableSelector = floorLayoutPlugin.createTableSelector();

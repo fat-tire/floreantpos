@@ -17,6 +17,7 @@
  */
 package com.floreantpos.ui.tableselection;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -58,19 +59,19 @@ public class BarTabSelectionView extends JPanel {
 	}
 
 	private void init() {
-		setLayout(new java.awt.BorderLayout(10, 10));
+		setLayout(new BorderLayout(10,10));
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
 		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, "Bar Tab Tickets", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 
-		JPanel leftPanel = new JPanel(new java.awt.BorderLayout(5, 5));
-		leftPanel.setBorder(new CompoundBorder(titledBorder1, new EmptyBorder(2, 2, 2, 2)));
+		JPanel rightPanel = new JPanel(new java.awt.BorderLayout(5, 5));
+		rightPanel.setBorder(new CompoundBorder(titledBorder1, new EmptyBorder(2, 2, 2, 2)));
 
 		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(PosUIManager.getSize(60, 0));
 
-		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
-		add(leftPanel, java.awt.BorderLayout.CENTER);
+		rightPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
+		add(rightPanel, java.awt.BorderLayout.CENTER);
 	}
 
 	private void rendererBarTickets() {

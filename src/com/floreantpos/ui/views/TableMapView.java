@@ -58,7 +58,7 @@ public class TableMapView extends ViewPanel {
 
 		FloorLayoutPlugin floorLayoutPlugin = (FloorLayoutPlugin) ExtensionManager.getPlugin(FloorLayoutPlugin.class);
 		if (floorLayoutPlugin == null) {
-			tableSelector = new DefaultTableSelectionView();
+			tableSelector = DefaultTableSelectionView.getInstance();
 
 		}
 		else {

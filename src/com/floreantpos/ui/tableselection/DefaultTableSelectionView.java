@@ -42,8 +42,6 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -73,6 +71,8 @@ import com.floreantpos.ui.views.payment.SplitedTicketSelectionDialog;
 import com.floreantpos.util.TicketAlreadyExistsException;
 import com.jidesoft.swing.JideScrollPane;
 
+import net.miginfocom.swing.MigLayout;
+
 public class DefaultTableSelectionView extends TableSelector implements ActionListener {
 
 	private DefaultListModel<ShopTableButton> addedTableListModel = new DefaultListModel<ShopTableButton>();
@@ -91,35 +91,33 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	private ButtonGroup btnGroups;
 	private JTabbedPane tabbedPane;
 
-	public DefaultTableSelectionView() {
+	private static DefaultTableSelectionView instance;
+
+	private DefaultTableSelectionView() {
 		init();
 	}
 
 	private void init() {
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(10,10));
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
-		barTab  =	new BarTabSelectionView();
-
-		setLayout(new java.awt.BorderLayout(10, 10));
-
 		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.TABLES, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
 
 		JPanel leftPanel = new JPanel(new java.awt.BorderLayout(5, 5));
 		leftPanel.setBorder(new CompoundBorder(titledBorder1, new EmptyBorder(2, 2, 2, 2)));
 
-		//redererTable();
+		barTab = new BarTabSelectionView();
 
 		JideScrollPane scrollPane = new JideScrollPane(buttonsPanel, JideScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JideScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setPreferredSize(PosUIManager.getSize(60, 0));
 
 		tabbedPane = new JTabbedPane();
-
 		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
+
 		tabbedPane.addTab("Dining Room", leftPanel);
+		tabbedPane.addTab("Bar Tab", barTab);
 
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
-
 		createButtonActionPanel();
 	}
 
@@ -536,12 +534,17 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	public void setOrderType(OrderType orderType) {
 		super.setOrderType(orderType);
 		btnNewBarTab.setVisible(orderType.isBarTab());
-		if (orderType.isBarTab())
-			tabbedPane.addTab("Bar Tab", barTab);
 	}
 
 	@Override
 	public void updateView(boolean update) {
 		btnCancelDialog.setVisible(update);
+	}
+
+	public static DefaultTableSelectionView getInstance() {
+		if (instance == null) {
+			return new DefaultTableSelectionView();
+		}
+		return instance;
 	}
 }
