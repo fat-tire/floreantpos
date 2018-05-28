@@ -27,6 +27,7 @@
 		<property column="PAID_AMOUNT" length="52" name="paidAmount" type="java.lang.Double" />
 		<property column="DUE_AMOUNT" length="52" name="dueAmount" type="java.lang.Double" />
 		<property column="ADVANCE_AMOUNT" length="52" name="advanceAmount" type="java.lang.Double" />
+		<property column="ADJUSTMENT_AMOUNT" length="52" name="adjustmentAmount" type="java.lang.Double" />
 		<!--tableNumber should be -1 for take out -->
 		<property column="NUMBER_OF_GUESTS" name="numberOfGuests" type="java.lang.Integer" />
 		<property column="STATUS" name="status" type="string" length="30" />

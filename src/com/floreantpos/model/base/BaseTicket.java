@@ -34,6 +34,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	public static String PROP_SERVICE_CHARGE = "serviceCharge"; //$NON-NLS-1$
 	public static String PROP_VOID_REASON = "voidReason"; //$NON-NLS-1$
 	public static String PROP_DRAWER_RESETTED = "drawerResetted"; //$NON-NLS-1$
+	public static String PROP_ADJUSTMENT_AMOUNT = "adjustmentAmount"; //$NON-NLS-1$
 	public static String PROP_TICKET_TYPE = "ticketType"; //$NON-NLS-1$
 	public static String PROP_VOIDED_BY = "voidedBy"; //$NON-NLS-1$
 	public static String PROP_VOIDED = "voided"; //$NON-NLS-1$
@@ -102,6 +103,7 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 		protected java.lang.Double paidAmount;
 		protected java.lang.Double dueAmount;
 		protected java.lang.Double advanceAmount;
+		protected java.lang.Double adjustmentAmount;
 		protected java.lang.Integer numberOfGuests;
 		protected java.lang.String status;
 		protected java.lang.Boolean barTab;
@@ -507,6 +509,23 @@ public abstract class BaseTicket  implements Comparable, Serializable {
 	 */
 	public void setAdvanceAmount (java.lang.Double advanceAmount) {
 		this.advanceAmount = advanceAmount;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: ADJUSTMENT_AMOUNT
+	 */
+	public java.lang.Double getAdjustmentAmount () {
+									return adjustmentAmount == null ? Double.valueOf(0) : adjustmentAmount;
+					}
+
+	/**
+	 * Set the value related to the column: ADJUSTMENT_AMOUNT
+	 * @param adjustmentAmount the ADJUSTMENT_AMOUNT value
+	 */
+	public void setAdjustmentAmount (java.lang.Double adjustmentAmount) {
+		this.adjustmentAmount = adjustmentAmount;
 	}
 
 

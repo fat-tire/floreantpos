@@ -72,17 +72,16 @@ public class Ticket extends BaseTicket {
 	public static final String PROPERTY_CARD_AUTH_CODE = "card_auth_code"; //$NON-NLS-1$
 
 	private OrderType orderType;
-	private String diffWithCrntTime;
 
 	/* [CONSTRUCTOR MARKER BEGIN] */
-	public Ticket() {
+	public Ticket () {
 		super();
 	}
 
 	/**
 	 * Constructor for primary key
 	 */
-	public Ticket(java.lang.Integer id) {
+	public Ticket (java.lang.Integer id) {
 		super(id);
 	}
 
@@ -304,7 +303,8 @@ public class Ticket extends BaseTicket {
 		if (getGratuity() != null) {
 			totalAmount += getGratuity().getAmount();
 		}
-
+		
+		totalAmount += getAdjustmentAmount();
 		totalAmount = fixInvalidAmount(totalAmount);
 
 		setServiceCharge(serviceChargeAmount);
@@ -873,7 +873,6 @@ public class Ticket extends BaseTicket {
 	}
 
 	public void setDiffWithCrntTime(String diffWithCrntTime) {
-		this.diffWithCrntTime = diffWithCrntTime;
 	}
 
 	public Customer getCustomer() {
