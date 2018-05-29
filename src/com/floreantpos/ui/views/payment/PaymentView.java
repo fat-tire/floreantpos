@@ -72,6 +72,7 @@ public class PaymentView extends JPanel {
 	private com.floreantpos.swing.PosButton btnCash;
 	private com.floreantpos.swing.PosButton btnPrint;
 	private com.floreantpos.swing.PosButton btnCreditCard;
+	private com.floreantpos.swing.PosButton btnDebitCard;
 	private com.floreantpos.swing.PosButton btnGift;
 	private com.floreantpos.swing.PosButton btnOther;
 
@@ -112,7 +113,7 @@ public class PaymentView extends JPanel {
 	private Ticket ticket;
 	private SettleTicketProcessor ticketProcessor;
 	private RefreshableView refreshableView;
-	
+
 	public PaymentView(SettleTicketProcessor ticketProcessor, RefreshableView refreshableView) {
 		this.ticketProcessor = ticketProcessor;
 		this.refreshableView = refreshableView;
@@ -443,7 +444,7 @@ public class PaymentView extends JPanel {
 			}
 		});
 
-		btnCreditCard = new PosButton("CARD"); //$NON-NLS-1$
+		btnCreditCard = new PosButton("CREDIT CARD"); //$NON-NLS-1$
 		actionButtonPanel.add(btnCreditCard, "grow,w " + width + "!"); //$NON-NLS-1$ //$NON-NLS-2$
 		btnCreditCard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -454,6 +455,21 @@ public class PaymentView extends JPanel {
 				} catch (Exception e1) {
 					POSMessageDialog.showError(POSUtil.getFocusedWindow(), e1.getMessage());
 					setTicket(TicketDAO.getInstance().loadFullTicket(ticket.getId()));
+				}
+			}
+		});
+
+		btnDebitCard = new PosButton("DEBIT CARD");
+		actionButtonPanel.add(btnDebitCard, "grow, w " + width + "!");
+		btnDebitCard.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ticketProcessor.doSettle(PaymentType.DEBIT_CARD, getTenderedAmount());
+				} catch (StaleStateException x) {
+					POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
+				} catch (Exception exception) {
+					POSMessageDialog.showError(POSUtil.getFocusedWindow(), exception.getMessage());
 				}
 			}
 		});
@@ -675,7 +691,7 @@ public class PaymentView extends JPanel {
 		} catch (StaleStateException x) {
 			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
 		} catch (Exception e) {
-			POSMessageDialog.showError(POSUtil.getFocusedWindow(),e.getMessage().toString());
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), e.getMessage().toString());
 			org.apache.commons.logging.LogFactory.getLog(getClass()).error(e);
 		}
 	}

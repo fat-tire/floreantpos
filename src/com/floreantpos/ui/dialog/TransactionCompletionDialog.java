@@ -42,6 +42,7 @@ public class TransactionCompletionDialog extends POSDialog {
 	private double dueAmount;
 	private double gratuityAmount;
 	private double changeAmount;
+	private double feeAmount;
 
 	private JLabel lblTenderedAmount;
 	private JLabel lblTotalAmount;
@@ -49,10 +50,9 @@ public class TransactionCompletionDialog extends POSDialog {
 	private JLabel lblDueAmount;
 	private JLabel lblChangeDue;
 	private JLabel lblGratuityAmount;
+	private JLabel lblFeeAmount;
 
 	private PosTransaction completedTransaction;
-	private List<PosTransaction> completedTransactions;
-
 	private boolean isCard;
 
 	public TransactionCompletionDialog(PosTransaction transaction) {
@@ -63,8 +63,6 @@ public class TransactionCompletionDialog extends POSDialog {
 	}
 
 	public TransactionCompletionDialog(List<PosTransaction> transaction) {
-		this.completedTransactions = transaction;
-
 		initializeComponents();
 		//setResizable(false);
 	}
@@ -97,6 +95,12 @@ public class TransactionCompletionDialog extends POSDialog {
 		add(createLabel(Messages.getString("TransactionCompletionDialog.25") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		lblGratuityAmount = createLabel("0.0", JLabel.RIGHT); //$NON-NLS-1$
 		add(lblGratuityAmount, "span, grow"); //$NON-NLS-1$
+
+		add(new JSeparator(), "newline,span, grow"); //$NON-NLS-1$
+
+		add(createLabel(Messages.getString("TransactionCompletionDialog.42") + ":", JLabel.LEFT), "newline,grow"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		lblFeeAmount = createLabel("0.0", JLabel.RIGHT);
+		add(lblFeeAmount, "span,grow");
 
 		add(new JSeparator(), "newline,span, grow"); //$NON-NLS-1$
 
@@ -181,9 +185,16 @@ public class TransactionCompletionDialog extends POSDialog {
 		lblPaidAmount.setText(NumberUtil.formatNumber(paidAmount));
 		lblDueAmount.setText(NumberUtil.formatNumber(dueAmount));
 		lblGratuityAmount.setText(NumberUtil.formatNumber(gratuityAmount));
+		lblFeeAmount.setText(NumberUtil.formatNumber(feeAmount));
 		lblChangeDue.setText(NumberUtil.formatNumber(changeAmount));
 	}
 
+	public double getFeeAmount() {
+		return feeAmount;
+	}
+	public void setFeeAmount(double feeAmount) {
+		this.feeAmount = feeAmount;
+	}
 	public double getDueAmount() {
 		return dueAmount;
 	}

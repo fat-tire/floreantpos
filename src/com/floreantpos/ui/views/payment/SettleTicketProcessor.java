@@ -258,6 +258,7 @@ public class SettleTicketProcessor implements CardInputListener {
 		dialog.setPaidAmount(transaction.getAmount());
 		dialog.setDueAmount(ticket.getDueAmount());
 		dialog.setGratuityAmount(transaction.getTipsAmount());
+		dialog.setFeeAmount(ticket.getAdjustmentAmount());
 		if (tenderedAmount > transaction.getAmount()) {
 			dialog.setChangeAmount(tenderedAmount - transaction.getAmount());
 		}

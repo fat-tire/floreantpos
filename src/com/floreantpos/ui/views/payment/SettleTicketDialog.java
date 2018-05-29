@@ -416,7 +416,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 				return;
 			}
 		}
-		
+
 		int option2 = POSMessageDialog.showYesNoQuestionDialog(this, "This will void Pre-Authorized amount in Tab", "Warning", "Void", "Cancel");
 		if (option2 != JOptionPane.YES_OPTION) {
 			POSMessageDialog.showMessage("Payment canceled");
@@ -429,22 +429,29 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 	}
 
 	private void payUsingPreAuthorizedBartab(PosTransaction bartabTransaction) throws Exception {
-		//capture
-		ReceiptPrintService.printTicket(ticket, true);
 		
+		ReceiptPrintService.printTicket(ticket, true);
+
 		double tipsAmount = NumberSelectionDialog2.takeDoubleInput("Enter tips amount", 0.0);
+
 		if (tipsAmount > 0) {
 			ticket.setGratuityAmount(tipsAmount);
 			ticket.calculatePrice();
 		}
-		
+
 		Double dueAmount = ticket.getDueAmount();
-		
+
+		bartabTransaction.setTenderAmount(dueAmount);
 		bartabTransaction.setTipsAmount(tipsAmount);
 		bartabTransaction.setAmount(dueAmount);
-		bartabTransaction.setTenderAmount(dueAmount);
 		ticketProcessor.setTenderAmount(dueAmount);
 		ticketProcessor.captureBartabTransaction(bartabTransaction);
+
+		ticket.setPaidAmount(ticket.getPaidAmount() + bartabTransaction.getAmount());
+		ticket.calculatePrice();
+		
+		dueAmount = ticket.getDueAmount() + bartabTransaction.getAmount();
+
 		if (ticket.getDueAmount() == 0.0) {
 			ticket.setPaid(true);
 			OrderType ticketType = ticket.getOrderType();

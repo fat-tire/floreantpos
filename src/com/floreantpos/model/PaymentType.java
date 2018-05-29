@@ -16,7 +16,6 @@
  * ************************************************************************
  */
 package com.floreantpos.model;
-
 import com.floreantpos.config.CardConfig;
 
 public enum PaymentType {
@@ -93,6 +92,7 @@ public enum PaymentType {
 				transaction.setAuthorizable(true);
 				break;
 
+			case DEBIT_CARD:
 			case DEBIT_MASTER_CARD:
 			case DEBIT_VISA:
 				transaction = new DebitCardTransaction();
