@@ -1,6 +1,7 @@
 package com.floreantpos.dejavoo.proxy;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FilterReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,15 +13,23 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.xml.utils.XMLChar;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.floreantpos.POSConstants;
@@ -32,7 +41,6 @@ import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Ticket;
 import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
-import com.floreantpos.model.dao.ShopTableStatusDAO;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.services.PosTransactionService;
@@ -48,14 +56,12 @@ public class DejavooProxyServer implements HttpHandler {
 	private final String GET_LIST = "/TranRequest/get_list";
 	private final String TABLE_NUM = "/TranRequest/table_num";
 	private final String INVOICE_NUM = "/TranRequest/invoice_num";
+	private Map<String, DejavooTerminal> map = new HashMap<>();
 
-	public DejavooProxyServer() {
-		//_RootDAO.initialize();
+	public DejavooProxyServer() throws Exception {
 		Application application = Application.getInstance();
 		application.initializeSystemHeadless();
-
-		authKey = AppConfig.getString("Dejavoo.AUTH_KEY");
-		registerId = AppConfig.getString("Dejavoo.REGISTER_ID");
+		readTpnFromXmlFile();
 	}
 
 	public void start() throws Exception {
@@ -63,8 +69,7 @@ public class DejavooProxyServer implements HttpHandler {
 		server = HttpServer.create(inetAddress, 10);
 		server.createContext("/", this);
 		server.start();
-		System.out.println("started server");
-
+		System.out.println("Started Server");
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -75,7 +80,6 @@ public class DejavooProxyServer implements HttpHandler {
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		HttpRequestHandler target = new HttpRequestHandler(exchange);
-		//target.run();
 		Thread thread = new Thread(target);
 		thread.start();
 	}
@@ -193,9 +197,7 @@ public class DejavooProxyServer implements HttpHandler {
 				builder.append(String.format("<Payment " + "refId=\"%s\" " + "name=\"%s\" " + "amount=\"%s\" " + "tip=\"%s\" " + "type=\"%s\" />",
 						//+ "acctLast4=\"%s\"/>", 
 						posTransaction.getId(), posTransaction.getPaymentType(), posTransaction.getAmount() * 100.0, posTransaction.getTipsAmount() * 100.0,
-						posTransaction.getTicket().isClosed() ? "closed" : "open"
-				//posTransaction.getCardNumber()
-				));
+						posTransaction.getTicket().isClosed() ? "closed" : "open"));
 			}
 			builder.append("</Payments>");
 		}
@@ -207,11 +209,6 @@ public class DejavooProxyServer implements HttpHandler {
 		sendData(builder.toString());
 	}
 
-	/*
-	 *  <Payments count="2">
-	<Payment refId="1" name="Cash" amount="100" tip="30" type="closed" acctLast4="1111" />
-	<Payment refId="2" name="Credit" amount="200" tip="0" type="incomplete" acctLast4="5454" />
-	  </Payment>*/
 	class InvalidXmlCharacterFilter extends FilterReader {
 		protected InvalidXmlCharacterFilter(Reader in) {
 			super(in);
@@ -245,11 +242,14 @@ public class DejavooProxyServer implements HttpHandler {
 		System.out.println("data sent complete!");
 
 		processRequest(requestString);
-
 	}
 
 	private void processRequest(String requestString) throws Exception {
 		System.out.println("request received: " + requestString);
+		
+		adjustRegisterIdAndAuthKey(requestString);
+		
+		System.out.println();
 		if (requestString.startsWith("<InvoiceData")) {
 			String status = getXpathValue("/InvoiceData/@status", requestString);
 			if ("cancel".equalsIgnoreCase(status)) {
@@ -268,8 +268,6 @@ public class DejavooProxyServer implements HttpHandler {
 			processSpinResponse(requestString);
 			return;
 		}
-
-		//String xpathValue = getXpathValue(SERVER_NUM, requestString);
 		String xpathValue = getXpathValue(GET_LIST, requestString);
 		if ("true".equals(xpathValue)) {
 			sendTicketList();
@@ -292,17 +290,66 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 	}
 
+	private void adjustRegisterIdAndAuthKey(String requestString) {
+		String tpn = getXpathValue("/TranRequest/tpn", requestString);
+		if(StringUtils.isNotEmpty(tpn)) {
+			DejavooTerminal terminal = map.get(tpn);
+			if(terminal != null) {
+			  registerId = terminal.getRegId();
+			  authKey = terminal.getAuthKey();
+			}
+		}
+	}
+	
+	private void readTpnFromXmlFile() throws Exception {
+		try {
+			URL resource = getClass().getResource("/tpnlist.xml");
+			if (resource == null) {
+				String message = "tpnlist.xml file not found! Using authKey and regId from this system.";
+				System.out.println(message);
+				authKey = AppConfig.getString("Dejavoo.AUTH_KEY");
+				registerId = AppConfig.getString("Dejavoo.REGISTER_ID");
+				return;
+			}
+			File xmlFile = new File(resource.getFile());
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document document = dBuilder.parse(xmlFile);
+			document.getDocumentElement().normalize();
+		
+			NodeList nodeList = document.getElementsByTagName("tpn");
+			for (int temp = 0; temp < nodeList.getLength(); temp++) {
+				Node node = nodeList.item(temp);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element element = (Element) node;
+					String tpnId = element.getAttribute("id");
+					String regId = element.getElementsByTagName("registerId").item(0).getTextContent();
+					String authKey = element.getElementsByTagName("authkey").item(0).getTextContent();
+					
+					if (tpnId != null) {
+						DejavooTerminal terminal = new DejavooTerminal();
+						terminal.setTpn(tpnId);
+						terminal.setRegId(regId);
+						terminal.setAuthKey(authKey);
+						map.put(tpnId, terminal);
+					}
+				}
+			}
+		}catch (IOException e) {
+			System.out.println(e.getMessage().toString());
+		}catch(NullPointerException exception) {
+			System.out.println(exception.getMessage().toString());
+		}
+	}
+
 	private void processPayment(String requestString) throws Exception {
-		//String invoice_ref_id = getXpathValue("/InvoiceData/@refId", requestString);
-		//String reg_id = getXpathValue("/InvoiceData/@regId", requestString);
 		String payType = getXpathValue("/InvoiceData/trans/@paymType", requestString);
-		//String transType = getXpathValue("/InvoiceData/trans/@transType", requestString);
 		String batchN = getXpathValue("/InvoiceData/trans/@batchNum", requestString);
 		String invN = getXpathValue("/InvoiceData/trans/@invNum", requestString);
 		String trans_ref_id = getXpathValue("/InvoiceData/trans/@refId", requestString);
 		String amountString = getXpathValue("/InvoiceData/trans/@amount", requestString);
 		String tipsString = getXpathValue("/InvoiceData/trans/@tip", requestString);
-		//String untipped = getXpathValue("/InvoiceData/trans/@untipped", requestString);
 
 		double amount = Double.parseDouble(amountString) / 100.0;
 		double tips = 0;
