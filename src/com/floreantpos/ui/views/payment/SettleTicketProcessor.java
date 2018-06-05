@@ -538,9 +538,8 @@ public class SettleTicketProcessor implements CardInputListener {
 			}
 		} catch (StaleStateException x) {
 			POSMessageDialog.showMessageDialogWithReloadButton(POSUtil.getFocusedWindow(), refreshableView);
-		} catch (Exception e) {
-			PosLog.error(getClass(), e);
-			POSMessageDialog.showError(Application.getPosWindow(), e.getMessage().toString());
+		} catch (Exception exception) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), "Could not make payment. Please try again or consult system administrator.", exception);
 		} finally {
 			waitDialog.setVisible(false);
 		}
