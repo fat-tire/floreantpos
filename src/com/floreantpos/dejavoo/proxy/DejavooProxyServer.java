@@ -13,6 +13,7 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,15 +190,20 @@ public class DejavooProxyServer implements HttpHandler {
 		}
 		builder.append("</Goods>");
 		//@formatter:off
+		DecimalFormat numberFormat = new DecimalFormat("0");
 		Set<PosTransaction> transactions = ticket.getTransactions();
 		int transactionSize = ticket.getTransactions().size();
 		if (transactions != null) {
 			builder.append(String.format("<Payments count=\"%s\">", transactionSize));
 			for (PosTransaction posTransaction : transactions) {
+				String paymentType = posTransaction.getPaymentType();
+				if (paymentType != null && paymentType.equalsIgnoreCase("credit card")) {
+					paymentType = "Credit";
+				}
 				builder.append(String.format("<Payment " + "refId=\"%s\" " + "name=\"%s\" " + "amount=\"%s\" " + "tip=\"%s\" " + "type=\"%s\" />",
 						//+ "acctLast4=\"%s\"/>", 
-						posTransaction.getId(), posTransaction.getPaymentType(), posTransaction.getAmount() * 100.0, posTransaction.getTipsAmount() * 100.0,
-						posTransaction.getTicket().isClosed() ? "closed" : "open"));
+						posTransaction.getId(), paymentType, numberFormat.format(posTransaction.getAmount() * 100), numberFormat.format(posTransaction.getTipsAmount() * 100),
+						posTransaction.getTipsAmount() > 0 ? "closed" : "open"));
 			}
 			builder.append("</Payments>");
 		}
