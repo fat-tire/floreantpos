@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.xml.utils.XMLChar;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -35,7 +38,9 @@ import org.xml.sax.InputSource;
 
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
+import com.floreantpos.config.CardConfig;
 import com.floreantpos.main.Application;
+import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
@@ -44,7 +49,10 @@ import com.floreantpos.model.TicketItem;
 import com.floreantpos.model.User;
 import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
+import com.floreantpos.report.ReceiptPrintService;
 import com.floreantpos.services.PosTransactionService;
+import com.floreantpos.ui.dialog.NumberSelectionDialog2;
+import com.floreantpos.ui.views.payment.CardProcessor;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -174,6 +182,12 @@ public class DejavooProxyServer implements HttpHandler {
 
 	private void sendTicketDetail(String ticketId) throws Exception {
 		Ticket ticket = TicketDAO.getInstance().get(Integer.parseInt(ticketId));
+		if (ticket.getOrderType().isBarTab()) {
+			PosTransaction bartabTransaction = ticket.getBartabTransaction();
+			payUsingPreAuthorizedBartab(ticket, bartabTransaction);
+			return;
+		}
+
 		StringBuilder builder = new StringBuilder();
 		builder.append("<request>");
 		builder.append("<RegisterId>" + registerId + "</RegisterId>");
@@ -390,6 +404,48 @@ public class DejavooProxyServer implements HttpHandler {
 				return;
 			}
 			sendTicketDetail(ticketId);
+		}
+	}
+	
+	private void payUsingPreAuthorizedBartab(Ticket ticket, PosTransaction bartabTransaction) throws Exception {
+		ReceiptPrintService.printTicket(ticket, true);
+
+		Double dueAmount = ticket.getDueAmount();
+
+		bartabTransaction.setTenderAmount(dueAmount);
+		bartabTransaction.setAmount(dueAmount);
+		
+		CardProcessor cardProcessor = CardConfig.getPaymentGateway().getProcessor();
+		cardProcessor.captureAuthAmount(bartabTransaction);
+
+		ticket.setPaidAmount(ticket.getPaidAmount() + bartabTransaction.getAmount());
+		ticket.calculatePrice();
+		
+		dueAmount = ticket.getDueAmount() + bartabTransaction.getAmount();
+
+		if (ticket.getDueAmount() == 0.0) {
+			ticket.setPaid(true);
+			OrderType ticketType = ticket.getOrderType();
+			if (ticketType.isCloseOnPaid()) {//fix
+				ticket.setClosed(true);
+				ticket.setClosingDate(new Date());
+			}
+		}
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = TicketDAO.getInstance().createNewSession();
+			tx = session.beginTransaction();
+			TicketDAO.getInstance().update(ticket, session);
+			tx.commit();
+			ReceiptPrintService.printTransaction(bartabTransaction);
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			TicketDAO.getInstance().closeSession(session);
 		}
 	}
 }
