@@ -39,7 +39,9 @@ import org.xml.sax.InputSource;
 import com.floreantpos.POSConstants;
 import com.floreantpos.config.AppConfig;
 import com.floreantpos.config.CardConfig;
+import com.floreantpos.extension.ExtensionManager;
 import com.floreantpos.main.Application;
+import com.floreantpos.main.Main;
 import com.floreantpos.model.OrderType;
 import com.floreantpos.model.PaymentStatusFilter;
 import com.floreantpos.model.PaymentType;
@@ -70,6 +72,7 @@ public class DejavooProxyServer implements HttpHandler {
 	public DejavooProxyServer() throws Exception {
 		Application application = Application.getInstance();
 		application.initializeSystemHeadless();
+		ExtensionManager.getInstance().initialize(Main.class);
 		readTpnFromXmlFile();
 	}
 
