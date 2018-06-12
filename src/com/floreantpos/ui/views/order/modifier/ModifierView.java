@@ -29,6 +29,8 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -155,7 +157,12 @@ public class ModifierView extends SelectionView {
 				//				}
 				itemList.add(modifier);
 			}
-
+			Collections.sort(itemList, new Comparator<MenuModifier>() {
+				@Override
+				public int compare(MenuModifier o1, MenuModifier o2) {
+					return o1.getSortOrder() - o2.getSortOrder();
+				}
+			});
 			setItems(itemList);
 		} catch (PosException e) {
 			POSMessageDialog.showError(this, com.floreantpos.POSConstants.ERROR_MESSAGE, e);
@@ -213,11 +220,11 @@ public class ModifierView extends SelectionView {
 			TicketItemModifier ticketItemModifier = ticketItem.findTicketItemModifierFor(modifier);
 			if (ticketItemModifier != null) {
 				count++;
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + " <strong><span style='color:white;background-color:green;margin:0;" + "'>&nbsp; " + ticketItemModifier.getItemCount() + "&nbsp; </span></strong><h4>" //$NON-NLS-3$//$NON-NLS-4$
-						+ (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>");
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + " <strong><span style='color:white;background-color:green;margin:0;"+ "'>&nbsp; " + ticketItemModifier.getItemCount() + "&nbsp; </span></strong><h4>"
+				+ (!showPrice ? "": CurrencyUtil.getCurrencySymbol()+ (ticketItemModifier.getItemCount() >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice()))+ "</h4></center></html>");
 			}
 			else {
-				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>" + (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+				modifierButton.setText("<html><center>" + modifier.getDisplayName() + "<br><h4>"+ (!showPrice ? "" : CurrencyUtil.getCurrencySymbol() + (count >= maxQuantity ? modifier.getExtraPrice() : modifier.getPrice())) + "</h4></center></html>");
 			}
 		}
 

@@ -30,10 +30,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.POSConstants;
-import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.MenuItemModifierGroup;
 import com.floreantpos.model.MenuModifier;
@@ -46,6 +43,7 @@ import com.floreantpos.swing.PosButton;
 import com.floreantpos.ui.dialog.POSDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
@@ -82,7 +80,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		modifierView = new ModifierView(modifierSelectionModel);
 		ticketItemModifierView = new TicketItemModifierTableView(modifierSelectionModel, this);
 		buttonPanel = new com.floreantpos.swing.TransparentPanel();
-		buttonPanel.setLayout(new MigLayout("fill, ins 4", "fill", ""));
+		buttonPanel.setLayout(new MigLayout("fill, ins 1 4 8 4", "fill", ""));
 
 		westPanel.add(ticketItemModifierView);
 		add(modifierGroupView, java.awt.BorderLayout.EAST);
@@ -101,7 +99,7 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 	}
 
 	public void createButtonPanel() {
-		Dimension preferredButtonSize = new Dimension(100, TerminalConfig.getTouchScreenButtonHeight());
+		Dimension preferredButtonSize = new Dimension(100, 53);
 
 		btnSave = new PosButton("DONE");
 		btnSave.addActionListener(new java.awt.event.ActionListener() {
