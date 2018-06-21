@@ -42,6 +42,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import net.miginfocom.swing.MigLayout;
+
 import com.floreantpos.IconFactory;
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
@@ -68,10 +70,9 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.views.order.OrderView;
 import com.floreantpos.ui.views.order.RootView;
 import com.floreantpos.ui.views.payment.SplitedTicketSelectionDialog;
+import com.floreantpos.util.POSUtil;
 import com.floreantpos.util.TicketAlreadyExistsException;
 import com.jidesoft.swing.JideScrollPane;
-
-import net.miginfocom.swing.MigLayout;
 
 public class DefaultTableSelectionView extends TableSelector implements ActionListener {
 
@@ -83,6 +84,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	private BarTabSelectionView barTab;
 	private POSToggleButton btnGroup;
 	private POSToggleButton btnUnGroup;
+	private POSToggleButton btnRelease;
 	private static PosButton btnCancelDialog;
 	private PosButton btnDone;
 	private PosButton btnCancel;
@@ -98,7 +100,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 	}
 
 	private void init() {
-		setLayout(new BorderLayout(10,10));
+		setLayout(new BorderLayout(10, 10));
 
 		buttonsPanel = new ScrollableFlowPanel(FlowLayout.CENTER);
 		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(null, POSConstants.TABLES, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
@@ -114,8 +116,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		tabbedPane = new JTabbedPane();
 		leftPanel.add(scrollPane, java.awt.BorderLayout.CENTER);
 
-		tabbedPane.addTab("Dining Room", leftPanel);
-		tabbedPane.addTab("Bar Tab", barTab);
+		tabbedPane.addTab(Messages.getString("DefaultTableSelectionView.0"), leftPanel); //$NON-NLS-1$
+		tabbedPane.addTab(Messages.getString("DefaultTableSelectionView.1"), barTab); //$NON-NLS-1$
 
 		add(tabbedPane, java.awt.BorderLayout.CENTER);
 		createButtonActionPanel();
@@ -136,9 +138,11 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		btnUnGroup = new POSToggleButton(POSConstants.UNGROUP); //$NON-NLS-1$
 		btnDone = new PosButton(POSConstants.SAVE_BUTTON_TEXT); //$NON-NLS-1$
 		btnCancel = new PosButton(POSConstants.CANCEL); //$NON-NLS-1$
+		btnRelease = new POSToggleButton(Messages.getString("DefaultTableSelectionView.2")); //$NON-NLS-1$
 
 		btnGroup.addActionListener(this);
 		btnUnGroup.addActionListener(this);
+		btnRelease.addActionListener(this);
 		btnDone.addActionListener(this);
 		btnCancel.addActionListener(this);
 
@@ -151,7 +155,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		btnGroups.add(btnGroup);
 		btnGroups.add(btnUnGroup);
 
-		btnNewBarTab = new PosButton("New Tab");
+		btnNewBarTab = new PosButton(Messages.getString("DefaultTableSelectionView.3")); //$NON-NLS-1$
 		btnNewBarTab.addActionListener(new ActionListener() {
 
 			@Override
@@ -165,6 +169,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		actionBtnPanel.add(btnUnGroup, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnDone, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnCancel, "grow"); //$NON-NLS-1$
+		actionBtnPanel.add(btnRelease, "grow"); //$NON-NLS-1$
 		actionBtnPanel.add(btnNewBarTab, "grow"); //$NON-NLS-1$
 
 		rightPanel.add(actionBtnPanel);
@@ -178,7 +183,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 				redererTables();
 			}
 		});
-		southbuttonPanel.add(btnRefresh, "grow");
+		southbuttonPanel.add(btnRefresh, "grow"); //$NON-NLS-1$
 
 		btnCancelDialog = new PosButton(POSConstants.CANCEL);
 		btnCancelDialog.addActionListener(new ActionListener() {
@@ -188,7 +193,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			}
 		});
 
-		southbuttonPanel.add(btnCancelDialog, "grow");
+		southbuttonPanel.add(btnCancelDialog, "grow"); //$NON-NLS-1$
 		rightPanel.add(southbuttonPanel, BorderLayout.SOUTH);
 		add(rightPanel, java.awt.BorderLayout.EAST);
 
@@ -211,7 +216,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			tableButton.setPreferredSize(PosUIManager.getSize(157, 138));
 			tableButton.setFont(new Font(tableButton.getFont().getName(), Font.BOLD, PosUIManager.getTableNumberFontSize()));
 			if (shopTable.getId() == null) {
-				tableButton.setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
+				tableButton.setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else
 				tableButton.setText(tableButton.getText());
@@ -223,7 +228,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 						QuickMaintenanceExplorer.quickMaintain(button.getShopTable());
 						return;
 					}
-					addTable(e);
+					tableSelected(e);
 				}
 			});
 
@@ -236,7 +241,7 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		buttonsPanel.getContentPane().repaint();
 	}
 
-	private void addTable(ActionEvent e) {
+	private void tableSelected(ActionEvent e) {
 
 		ShopTableButton button = (ShopTableButton) e.getSource();
 		int tableNumber = button.getId();
@@ -248,6 +253,11 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		}
 
 		ShopTableStatus shopTableStatus = shopTable.getShopTableStatus();
+
+		if (btnRelease.isSelected()) {
+			doReleaseTable(shopTable);
+			return;
+		}
 
 		if (btnGroup.isSelected()) {
 			if (addedTableListModel.contains(button)) {
@@ -387,6 +397,8 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		btnUnGroup.setVisible(true);
 		btnDone.setVisible(false);
 		btnCancel.setVisible(false);
+		btnRelease.setSelected(false);
+		btnRelease.setVisible(true);
 	}
 
 	@Override
@@ -399,12 +411,24 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 			btnUnGroup.setVisible(false);
 			btnDone.setVisible(true);
 			btnCancel.setVisible(true);
+			btnRelease.setVisible(false);
+		}
+		else if (object == btnRelease) {
+			if (isCreateNewTicket()) {
+				addedTableListModel.clear();
+			}
+			removeTableListModel.clear();
+			btnGroup.setVisible(true);
+			btnUnGroup.setVisible(true);
+			btnDone.setVisible(false);
+			btnCancel.setVisible(false);
 		}
 		else if (object == btnUnGroup) {
 			removeTableListModel.clear();
 			btnGroup.setVisible(false);
 			btnDone.setVisible(true);
 			btnCancel.setVisible(true);
+			btnRelease.setVisible(false);
 		}
 		else if (object == btnDone) {
 			if (btnGroup.isSelected()) {
@@ -419,6 +443,25 @@ public class DefaultTableSelectionView extends TableSelector implements ActionLi
 		else if (object == btnCancel) {
 			clearSelection();
 			redererTables();
+		}
+	}
+
+	private void doReleaseTable(ShopTable shopTable) {
+		if (shopTable.isServing()) {
+			int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getFocusedWindow(),
+					Messages.getString("DefaultTableSelectionView.8"), Messages.getString("DefaultTableSelectionView.9")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (option != JOptionPane.YES_OPTION) {
+				clearSelection();
+				return;
+			}
+			ShopTableDAO.getInstance().releaseTable(shopTable);
+			clearSelection();
+			redererTables();
+			return;
+		}
+		else {
+			POSMessageDialog.showMessage(Messages.getString("DefaultTableSelectionView.10")); //$NON-NLS-1$
+			return;
 		}
 	}
 

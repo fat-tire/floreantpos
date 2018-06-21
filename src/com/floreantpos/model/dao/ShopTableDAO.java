@@ -369,6 +369,38 @@ public class ShopTableDAO extends BaseShopTableDAO {
 		}
 	}
 
+	public void releaseTable(ShopTable shopTable) {
+		List<Integer> tableNumbers = new ArrayList<>();
+		tableNumbers.add(shopTable.getId());
+		releaseTables(tableNumbers);
+	}
+
+	public void releaseTables(List tableNumbers) {
+		if (tableNumbers == null || tableNumbers.isEmpty())
+			return;
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = createNewSession();
+			tx = session.beginTransaction();
+			for (Iterator iterator = tableNumbers.iterator(); iterator.hasNext();) {
+				Integer integer = (Integer) iterator.next();
+				ShopTableStatus tableStatus = ShopTableStatusDAO.getInstance().get(integer, session);
+				if (tableStatus != null) {
+					tableStatus.setTicketId(null);
+					session.saveOrUpdate(tableStatus);
+				}
+			}
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			LogFactory.getLog(ShopTableDAO.class).error(e);
+			throw new RuntimeException(e);
+		} finally {
+			closeSession(session);
+		}
+	}
+
 	public boolean hasTable() {
 		Number result = (Number) getSession().createCriteria(getReferenceClass()).setProjection(Projections.rowCount()).uniqueResult();
 		return result.intValue() != 0;
