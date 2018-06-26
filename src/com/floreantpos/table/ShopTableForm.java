@@ -16,8 +16,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.hibernate.StaleObjectStateException;
 
 import com.floreantpos.Messages;
@@ -39,6 +37,8 @@ import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.BeanEditorDialog;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 public class ShopTableForm extends BeanEditor<ShopTable> {
 
@@ -78,21 +78,22 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 		JScrollPane tableTypeCheckBoxList = new JScrollPane(tableTypeCBoxList);
 		tableTypeCheckBoxList.setPreferredSize(new Dimension(0, 350));
 
-		JLabel lblName = new JLabel(Messages.getString("ShopTableForm.0")); //$NON-NLS-1$
-		add(lblName, "cell 0 0,alignx trailing,aligny center"); //$NON-NLS-1$
+		tfTableName = new FixedLengthTextField();
+
+		JLabel lblTableNo = new JLabel(Messages.getString("ShopTableForm.0")); //$NON-NLS-1$
+		add(lblTableNo, "cell 0 0,alignx trailing,aligny center"); //$NON-NLS-1$
 
 		tfTableNo = new IntegerTextField(6);
 		add(tfTableNo, "cell 1 0,aligny top"); //$NON-NLS-1$
 
-		tfTableName = new FixedLengthTextField();
-		JLabel lblAddress = new JLabel(Messages.getString("ShopTableForm.2")); //$NON-NLS-1$
-		add(lblAddress, "cell 0 2,alignx trailing"); //$NON-NLS-1$
+		JLabel lblDescription = new JLabel(Messages.getString("ShopTableForm.2")); //$NON-NLS-1$
+		add(lblDescription, "cell 0 2,alignx trailing"); //$NON-NLS-1$
 
 		tfTableDescription = new FixedLengthTextField();
 		add(tfTableDescription, "cell 1 2,growx"); //$NON-NLS-1$
 
-		JLabel lblCitytown = new JLabel(Messages.getString("ShopTableForm.3")); //$NON-NLS-1$
-		add(lblCitytown, "cell 0 3,alignx trailing"); //$NON-NLS-1$
+		JLabel lblCapacity = new JLabel(Messages.getString("ShopTableForm.3")); //$NON-NLS-1$
+		add(lblCapacity, "cell 0 3,alignx trailing,aligny center"); //$NON-NLS-1$
 
 		tfTableCapacity = new IntegerTextField(6);
 		add(tfTableCapacity, "flowx,grow,cell 1 3"); //$NON-NLS-1$
@@ -213,7 +214,7 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 	@Override
 	public void cancel() {
 		setBorder(BorderFactory.createTitledBorder(Messages.getString("ShopTableForm.46"))); //$NON-NLS-1$
-
+		updateView();
 	}
 
 	@Override
@@ -234,8 +235,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			if (bean2 == null)
 				return false;
 
-			int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
-					Messages.getString("ShopTableForm.14"), Messages.getString("ShopTableForm.15")); //$NON-NLS-1$ //$NON-NLS-2$
+			int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableForm.14"), //$NON-NLS-1$
+					Messages.getString("ShopTableForm.15")); //$NON-NLS-1$
 			if (option != JOptionPane.YES_OPTION) {
 				return false;
 			}
@@ -278,8 +279,8 @@ public class ShopTableForm extends BeanEditor<ShopTable> {
 			return false;
 		}
 
-		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(),
-				Messages.getString("ShopTableForm.20"), Messages.getString("ShopTableForm.21")); //$NON-NLS-1$ //$NON-NLS-2$
+		int option = POSMessageDialog.showYesNoQuestionDialog(POSUtil.getBackOfficeWindow(), Messages.getString("ShopTableForm.20"), //$NON-NLS-1$
+				Messages.getString("ShopTableForm.21")); //$NON-NLS-1$
 		if (option != JOptionPane.YES_OPTION) {
 			return false;
 		}
