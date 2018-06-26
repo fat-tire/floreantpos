@@ -71,9 +71,10 @@ public class SettleTicketAction extends AbstractAction {
 				doSettleBartab(ticket, settleTicketDialog);
 			}
 		});
-		settleTicketDialog.openUndecoratedFullScreen();
+		settleTicketDialog.openFullScreen();
 		return !settleTicketDialog.isCanceled();
 	}
+
 
 	private void doSettleBartab(final Ticket ticket, final SettleTicketDialog settleTicketDialog) {
 		try {
