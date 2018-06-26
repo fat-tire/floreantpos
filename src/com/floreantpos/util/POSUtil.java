@@ -32,14 +32,7 @@ import com.floreantpos.ui.dialog.POSMessageDialog;
 
 public class POSUtil {
 	public static Window getFocusedWindow() {
-		Window[] windows = Window.getWindows();
-		for (Window window : windows) {
-			if (window.hasFocus()) {
-				return window;
-			}
-		}
-
-		return null;
+		return javax.swing.FocusManager.getCurrentManager().getFocusedWindow();
 	}
 
 	public static BackOfficeWindow getBackOfficeWindow() {
