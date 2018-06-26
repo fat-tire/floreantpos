@@ -128,7 +128,7 @@ public class TransactionCompletionDialog extends POSDialog {
 				} catch (Exception ee) {
 					POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("TransactionCompletionDialog.39"), ee); //$NON-NLS-1$
 				}
-				dispose();
+				//dispose();
 			}
 		});
 
