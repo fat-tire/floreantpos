@@ -26,6 +26,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	public static String PROP_PRE_AUTH_CREDIT_CARD = "preAuthCreditCard"; //$NON-NLS-1$
 	public static String PROP_ENABLED = "enabled"; //$NON-NLS-1$
 	public static String PROP_BAR_TAB = "barTab"; //$NON-NLS-1$
+	public static String PROP_PROPERTIES = "properties"; //$NON-NLS-1$
 	public static String PROP_SHOW_STOCK_COUNT_ON_BUTTON = "showStockCountOnButton"; //$NON-NLS-1$
 	public static String PROP_NAME = "name"; //$NON-NLS-1$
 	public static String PROP_SHOW_IN_LOGIN_SCREEN = "showInLoginScreen"; //$NON-NLS-1$
@@ -96,6 +97,7 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 		protected java.lang.Boolean showPriceOnButton;
 		protected java.lang.Boolean showStockCountOnButton;
 		protected java.lang.Boolean showUnitPriceInTicketGrid;
+		protected java.lang.String properties;
 
 
 
@@ -474,6 +476,23 @@ public abstract class BaseOrderType  implements Comparable, Serializable {
 	 */
 	public void setShowUnitPriceInTicketGrid (java.lang.Boolean showUnitPriceInTicketGrid) {
 		this.showUnitPriceInTicketGrid = showUnitPriceInTicketGrid;
+	}
+
+
+
+	/**
+	 * Return the value associated with the column: PROPERTIES
+	 */
+	public java.lang.String getProperties () {
+					return properties;
+			}
+
+	/**
+	 * Set the value related to the column: PROPERTIES
+	 * @param properties the PROPERTIES value
+	 */
+	public void setProperties (java.lang.String properties) {
+		this.properties = properties;
 	}
 
 

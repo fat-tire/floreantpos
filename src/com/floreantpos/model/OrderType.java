@@ -1,13 +1,19 @@
 package com.floreantpos.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.floreantpos.model.base.BaseOrderType;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class OrderType extends BaseOrderType {
 	private static final long serialVersionUID = 1L;
 
 	public static final String BAR_TAB = "BAR_TAB"; //$NON-NLS-1$
-	public static final String FOR_HERE="FOR HERE";  //$NON-NLS-1$
-	public static final String TO_GO="TO GO";  //$NON-NLS-1$
+	public static final String FOR_HERE = "FOR HERE"; //$NON-NLS-1$
+	public static final String TO_GO = "TO GO"; //$NON-NLS-1$
+	
+	private transient JsonObject propertiesContainer;
 
 	public OrderType() {
 		super();
@@ -35,4 +41,38 @@ public class OrderType extends BaseOrderType {
 		return getName().replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Override
+	public String getProperties() {
+		if (propertiesContainer != null) {
+			return propertiesContainer.toString();
+		}
+		
+		String properties = super.getProperties();
+		if (StringUtils.isEmpty(properties)) {
+			return null;
+		}
+		
+		propertiesContainer = new Gson().fromJson(properties, JsonObject.class);
+		return properties;
+	}
+	
+	@Override
+	public void setProperties(String properties) {
+		super.setProperties(properties);
+		propertiesContainer = new Gson().fromJson(properties, JsonObject.class);
+	}
+
+	public void addProperty(String key, String value) {
+		if (propertiesContainer == null) {
+			propertiesContainer = new JsonObject();
+		}
+		propertiesContainer.addProperty(key, value);
+	}
+
+	public String getProperty(String key) {
+		if (propertiesContainer == null) {
+			return null;
+		}
+		return propertiesContainer.get(key).getAsString();
+	}
 }
