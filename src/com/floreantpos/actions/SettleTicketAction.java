@@ -61,8 +61,8 @@ public class SettleTicketAction extends AbstractAction {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("SettleTicketAction.0")); //$NON-NLS-1$
 			return false;
 		}
-
-		final SettleTicketDialog settleTicketDialog = new SettleTicketDialog(ticket, currentUser);
+		User currentUser2 = (currentUser == null) ? Application.getCurrentUser() : currentUser;
+		final SettleTicketDialog settleTicketDialog = new SettleTicketDialog(ticket, currentUser2);
 		settleTicketDialog.setSize(Application.getPosWindow().getSize());
 		settleTicketDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		settleTicketDialog.addWindowListener(new WindowAdapter() {
@@ -74,7 +74,6 @@ public class SettleTicketAction extends AbstractAction {
 		settleTicketDialog.openFullScreen();
 		return !settleTicketDialog.isCanceled();
 	}
-
 
 	private void doSettleBartab(final Ticket ticket, final SettleTicketDialog settleTicketDialog) {
 		try {
