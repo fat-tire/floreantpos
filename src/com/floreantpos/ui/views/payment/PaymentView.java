@@ -34,8 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.StaleStateException;
 
@@ -61,6 +59,8 @@ import com.floreantpos.util.CurrencyUtil;
 import com.floreantpos.util.DrawerUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 public class PaymentView extends JPanel {
 	private static final String ZERO = "0"; //$NON-NLS-1$
@@ -392,7 +392,11 @@ public class PaymentView extends JPanel {
 		btnPrint = new com.floreantpos.swing.PosButton(POSConstants.PRINT_TICKET);
 		btnPrint.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ReceiptPrintService.printTicket(ticketProcessor.getTicket(), true);
+				try {
+					printTicket();
+				} catch (Exception exception) {
+					POSMessageDialog.showError(POSUtil.getFocusedWindow(), exception.getMessage());
+				}
 			}
 		});
 
@@ -704,6 +708,18 @@ public class PaymentView extends JPanel {
 		this.ticket = ticket;
 		ticketProcessor.setTicket(ticket);
 		updateView();
+	}
+
+	private void printTicket() {
+		Ticket ticket = ticketProcessor.getTicket();
+		boolean addTipsLater = ticket.getOrderType().isAllowToAddTipsLater();
+		double gratuityAmount = ticket.getGratuityAmount();
+		if (addTipsLater && gratuityAmount <= 0) {
+			ReceiptPrintService.printTicket(ticket, true);
+		}
+		else {
+			ReceiptPrintService.printTicket(ticket, false);
+		}
 	}
 
 }

@@ -32,8 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import net.miginfocom.swing.MigLayout;
-
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
 import com.floreantpos.extension.ExtensionManager;
@@ -46,6 +44,8 @@ import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.POSUtil;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  *
@@ -75,6 +75,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 	private JCheckBox chkShowStockCountOnButton;
 	private JCheckBox chkShowUnitPriceInTicketGrid;
 	private JCheckBox chkRetailOrder;
+	private JCheckBox chkAllowToAddTipsLater;
 
 	OrderType orderType;
 	JList<String> list;
@@ -135,6 +136,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		chkShowStockCountOnButton = new JCheckBox("Show count on button");
 		chkShowUnitPriceInTicketGrid = new JCheckBox("Show unit price in ticket grid");
 		chkRetailOrder = new JCheckBox("Retail");
+		chkAllowToAddTipsLater = new JCheckBox("Allow to add tips later");
 
 		generalPanel.setLayout(new MigLayout("", "[87px][327px,grow]", "[19px][][19px][][][21px][15px]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		generalPanel.add(jLabel1, "cell 0 0,alignx left,aligny center"); //$NON-NLS-1$
@@ -159,9 +161,10 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		generalPanel.add(chkBarTab, "cell 1 16,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkPreAuthCreditCard, "cell 1 17,alignx left,aligny top"); //$NON-NLS-1$
 		generalPanel.add(chkShowPriceOnButton, "cell 1 18,alignx left,aligny top,wrap"); //$NON-NLS-1$
-		generalPanel.add(chkShowStockCountOnButton,"cell 1 19,alignx left,aligny top");
+		generalPanel.add(chkShowStockCountOnButton, "cell 1 19,alignx left,aligny top");
 		//generalPanel.add(chkShowUnitPriceInTicketGrid, "cell 1 19,alignx left,aligny top"); //$NON-NLS-1$
-		generalPanel.add(chkRetailOrder,"cell 1 20,alignx left,aligny top");
+		generalPanel.add(chkRetailOrder, "cell 1 20,alignx left,aligny top");
+		generalPanel.add(chkAllowToAddTipsLater, "cell 1 21,alignx left,aligny top");
 
 		add(new JScrollPane(generalPanel));
 	}
@@ -200,6 +203,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkShowStockCountOnButton.setSelected(orderType.isShowStockCountOnButton());
 			chkShowUnitPriceInTicketGrid.setSelected(orderType.isShowUnitPriceInTicketGrid());
 			chkRetailOrder.setSelected(ordersType.isRetailOrder());
+			chkAllowToAddTipsLater.setSelected(Boolean.parseBoolean(ordersType.getProperty(OrderType.ALLOW_TO_ADD_TIPS_LATER)));
 		}
 	}
 
@@ -235,8 +239,9 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 		ordersType.setShowPriceOnButton(chkShowPriceOnButton.isSelected());
 		ordersType.setShowStockCountOnButton(chkShowStockCountOnButton.isSelected());
 		ordersType.setShowUnitPriceInTicketGrid(chkShowUnitPriceInTicketGrid.isSelected());
-		ordersType.setRetailOrder(chkRetailOrder.isSelected());
 		ordersType.setBarTab(chkBarTab.isSelected());
+		ordersType.setRetailOrder(chkRetailOrder.isSelected());
+		ordersType.addProperty(OrderType.ALLOW_TO_ADD_TIPS_LATER, String.valueOf(chkAllowToAddTipsLater.isSelected()));
 
 		return true;
 	}

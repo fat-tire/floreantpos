@@ -12,7 +12,8 @@ public class OrderType extends BaseOrderType {
 	public static final String BAR_TAB = "BAR_TAB"; //$NON-NLS-1$
 	public static final String FOR_HERE = "FOR HERE"; //$NON-NLS-1$
 	public static final String TO_GO = "TO GO"; //$NON-NLS-1$
-	
+	public static final String ALLOW_TO_ADD_TIPS_LATER = "ALLOW_TO_ADD_TIPS_LATER";
+
 	private transient JsonObject propertiesContainer;
 
 	public OrderType() {
@@ -46,16 +47,14 @@ public class OrderType extends BaseOrderType {
 		if (propertiesContainer != null) {
 			return propertiesContainer.toString();
 		}
-		
 		String properties = super.getProperties();
 		if (StringUtils.isEmpty(properties)) {
 			return null;
 		}
-		
 		propertiesContainer = new Gson().fromJson(properties, JsonObject.class);
 		return properties;
 	}
-	
+
 	@Override
 	public void setProperties(String properties) {
 		super.setProperties(properties);
@@ -74,5 +73,13 @@ public class OrderType extends BaseOrderType {
 			return null;
 		}
 		return propertiesContainer.get(key).getAsString();
+	}
+
+	public boolean isAllowToAddTipsLater() {
+		String addTipsLaterStr = getProperty(OrderType.ALLOW_TO_ADD_TIPS_LATER);
+		if (StringUtils.isEmpty(addTipsLaterStr)) {
+			return false;
+		}
+		return Boolean.parseBoolean(addTipsLaterStr);
 	}
 }
