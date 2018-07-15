@@ -12,7 +12,7 @@ public class OrderType extends BaseOrderType {
 	public static final String BAR_TAB = "BAR_TAB"; //$NON-NLS-1$
 	public static final String FOR_HERE = "FOR HERE"; //$NON-NLS-1$
 	public static final String TO_GO = "TO GO"; //$NON-NLS-1$
-	public static final String ALLOW_TO_ADD_TIPS_LATER = "ALLOW_TO_ADD_TIPS_LATER";
+	public static final String ALLOW_TO_ADD_TIPS_LATER = "ADD_TIPS_LATER";
 
 	private transient JsonObject propertiesContainer;
 
