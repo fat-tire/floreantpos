@@ -395,7 +395,7 @@ public class PaymentView extends JPanel {
 				try {
 					printTicket();
 				} catch (Exception exception) {
-					POSMessageDialog.showError(POSUtil.getFocusedWindow(), exception.getMessage());
+					PosLog.error(getClass(), exception);
 				}
 			}
 		});
