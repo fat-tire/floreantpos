@@ -429,10 +429,7 @@ public class SettleTicketDialog extends POSDialog implements PaymentListener, Ti
 	}
 
 	private void payUsingPreAuthorizedBartab(PosTransaction bartabTransaction) throws Exception {
-
-		boolean addTipsLater = ticket.getOrderType().isAllowToAddTipsLater();
-		double gratuityAmount = ticket.getGratuityAmount();
-		if (addTipsLater && gratuityAmount <= 0) {
+		if (ticket.getGratuityAmount() <= 0) {
 			ReceiptPrintService.printTicket(ticket, true);
 		}
 		else {
