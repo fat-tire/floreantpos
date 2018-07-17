@@ -43,7 +43,7 @@ public class POSConstants {
 	public static final String EDIT_TICKET_BUTTON_TEXT = Messages.getString("EDIT_TICKET_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String GROUP_SETTLE_BUTTON_TEXT = Messages.getString("GROUP_SETTLE_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String MANAGER_BUTTON_TEXT = Messages.getString("MANAGER_BUTTON_TEXT"); //$NON-NLS-1$
-	public static final String AUTHORIZE_BUTTON_TEXT = Messages.getString("AUTHORIZE_BUTTON_TEXT"); //$NON-NLS-1$
+	public static final String SETTLE_CARD_TRANSACTIONS = Messages.getString("SETTLE_CARD_TRANSACTIONS_TEXT"); //$NON-NLS-1$
 	public static final String KITCHEN_DISPLAY_BUTTON_TEXT = Messages.getString("KITCHEN_DISPLAY_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String PAYOUT_BUTTON_TEXT = Messages.getString("PAYOUT_BUTTON_TEXT"); //$NON-NLS-1$
 	public static final String ORDER_INFO_BUTTON_TEXT = Messages.getString("ORDER_INFO_BUTTON_TEXT"); //$NON-NLS-1$

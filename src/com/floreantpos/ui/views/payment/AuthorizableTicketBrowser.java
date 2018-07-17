@@ -85,9 +85,9 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		JPanel buttonPanel = new JPanel(new MigLayout("al center", "sg, fill", ""));
 		ActionHandler actionHandler = new ActionHandler();
 		buttonPanel.add(new PosButton(ActionCommand.EDIT_TIPS, actionHandler), "grow");
-		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE, actionHandler), "grow");
-		buttonPanel.add(new PosButton(ActionCommand.AUTHORIZE_ALL, actionHandler), "grow");
-		buttonPanel.add(new PosButton(ActionCommand.VOID_TRANS, actionHandler), "grow");
+		buttonPanel.add(new PosButton(ActionCommand.SETTLE, actionHandler), "grow");
+		buttonPanel.add(new PosButton(ActionCommand.SETTLE_ALL, actionHandler), "grow");
+		buttonPanel.add(new PosButton(ActionCommand.VOID, actionHandler), "grow");
 		buttonPanel.add(new PosButton(new CloseDialogAction(this)));
 
 		authWaitingTab.add(buttonPanel, BorderLayout.SOUTH);
@@ -95,13 +95,13 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		JPanel authClosedTab = new JPanel(new BorderLayout());
 		JPanel buttonPanel2 = new JPanel(new MigLayout("al center", "sg, fill", ""));
 		buttonPanel2.add(new PosButton(ActionCommand.TIP_ADJUST, actionHandler), "grow");
-		buttonPanel2.add(new PosButton(ActionCommand.VOID_TRANS, actionHandler), "grow");
+		buttonPanel2.add(new PosButton(ActionCommand.VOID, actionHandler), "grow");
 		buttonPanel2.add(new PosButton(new CloseDialogAction(this)));
 		authClosedTab.add(authClosedListView);
 		authClosedTab.add(buttonPanel2, BorderLayout.SOUTH);
 
-		tabbedPane.addTab("Auth Waiting", authWaitingTab);
-		tabbedPane.addTab("Auth Closed", authClosedTab);
+		tabbedPane.addTab("Unsettled", authWaitingTab);
+		tabbedPane.addTab("Settled", authClosedTab);
 
 		add(tabbedPane);
 
@@ -116,7 +116,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 		}
 		authWaitingListView.setTransactions(PosTransactionDAO.getInstance().findUnauthorizedTransactions(owner));
 		authClosedListView.setTransactions(PosTransactionDAO.getInstance().findAuthorizedTransactions(owner));
-		
+
 	}
 
 	private boolean confirmAuthorize(String message) {
@@ -259,15 +259,15 @@ public class AuthorizableTicketBrowser extends POSDialog {
 						doEditTips();
 						break;
 
-					case AUTHORIZE:
+					case SETTLE:
 						doAuthorize();
 						break;
 
-					case AUTHORIZE_ALL:
+					case SETTLE_ALL:
 						doAuthorizeAll();
 						break;
 
-					case VOID_TRANS:
+					case VOID:
 						doVoidTransaction();
 						break;
 
@@ -307,7 +307,7 @@ public class AuthorizableTicketBrowser extends POSDialog {
 				throw new PosException("Payment Gateway can not process Tip Adjustment!!!");
 			}
 			updateTransactiontList();
-			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(),"Success!");
+			POSMessageDialog.showMessage(POSUtil.getFocusedWindow(), "Success!");
 		}
 	}
 }

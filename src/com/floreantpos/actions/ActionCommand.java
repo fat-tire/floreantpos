@@ -18,10 +18,10 @@
 package com.floreantpos.actions;
 
 public enum ActionCommand {
-	AUTHORIZE,
-	AUTHORIZE_ALL,
+	SETTLE,
+	SETTLE_ALL,
 	EDIT_TIPS,
-	VOID_TRANS,
+	VOID,
 	TIP_ADJUST,
 	CLOSE,
 	OK;

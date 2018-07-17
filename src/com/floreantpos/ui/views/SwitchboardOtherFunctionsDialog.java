@@ -48,7 +48,7 @@ public class SwitchboardOtherFunctionsDialog extends POSDialog implements Action
 	private SwitchboardView switchboardView;
 	
 	private PosButton btnManager = new PosButton(POSConstants.MANAGER_BUTTON_TEXT);
-	private PosButton btnAuthorize = new PosButton(POSConstants.AUTHORIZE_BUTTON_TEXT);
+	private PosButton btnAuthorize = new PosButton(POSConstants.SETTLE_CARD_TRANSACTIONS);
 	private PosButton btnKitchenDisplay = new PosButton(POSConstants.KITCHEN_DISPLAY_BUTTON_TEXT);
 	private PosButton btnPayout = new PosButton(POSConstants.PAYOUT_BUTTON_TEXT);
 	private PosButton btnTableManage = new PosButton(POSConstants.TABLE_MANAGE_BUTTON_TEXT);
