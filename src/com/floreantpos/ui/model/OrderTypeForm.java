@@ -203,7 +203,7 @@ public class OrderTypeForm extends BeanEditor implements ItemListener {
 			chkShowStockCountOnButton.setSelected(orderType.isShowStockCountOnButton());
 			chkShowUnitPriceInTicketGrid.setSelected(orderType.isShowUnitPriceInTicketGrid());
 			chkRetailOrder.setSelected(ordersType.isRetailOrder());
-			chkAllowToAddTipsLater.setSelected(Boolean.parseBoolean(ordersType.getProperty(OrderType.ALLOW_TO_ADD_TIPS_LATER)));
+			chkAllowToAddTipsLater.setSelected(ordersType.isAllowToAddTipsLater());
 		}
 	}
 
