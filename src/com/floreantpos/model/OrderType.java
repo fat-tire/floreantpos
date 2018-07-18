@@ -65,7 +65,9 @@ public class OrderType extends BaseOrderType {
 		if (propertiesContainer == null) {
 			propertiesContainer = new JsonObject();
 		}
-		propertiesContainer.addProperty(key, value);
+		if (StringUtils.isNotEmpty(value)) {
+			propertiesContainer.addProperty(key, value);
+		}
 	}
 
 	public String getProperty(String key) {
@@ -75,11 +77,14 @@ public class OrderType extends BaseOrderType {
 		return propertiesContainer.get(key).getAsString();
 	}
 
-	public boolean isAllowToAddTipsLater() {
-		String addTipsLaterStr = getProperty(OrderType.ALLOW_TO_ADD_TIPS_LATER);
-		if (StringUtils.isEmpty(addTipsLaterStr)) {
-			return false;
+	public Boolean getBoolean(String key, Boolean defaultValue) {
+		if (propertiesContainer == null) {
+			return defaultValue;
 		}
-		return Boolean.parseBoolean(addTipsLaterStr);
+		return propertiesContainer.has(key) ? propertiesContainer.get(key).getAsBoolean() : defaultValue;
+	}
+
+	public boolean isAllowToAddTipsLater() {
+		return getBoolean(OrderType.ALLOW_TO_ADD_TIPS_LATER, true);
 	}
 }
