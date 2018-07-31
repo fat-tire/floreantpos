@@ -52,6 +52,7 @@ import org.jdesktop.swingx.table.TableColumnModelExt;
 
 import com.floreantpos.Messages;
 import com.floreantpos.POSConstants;
+import com.floreantpos.PosException;
 import com.floreantpos.bo.ui.BOMessageDialog;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.model.DrawerPullReport;
@@ -61,7 +62,9 @@ import com.floreantpos.print.PosPrintService;
 import com.floreantpos.swing.ListTableModel;
 import com.floreantpos.swing.TransparentPanel;
 import com.floreantpos.ui.PosTableRenderer;
+import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.ui.util.UiUtil;
+import com.floreantpos.util.POSUtil;
 
 public class DrawerPullReportExplorer extends TransparentPanel {
 	private JXDatePicker fromDatePicker = UiUtil.getCurrentMonthStart();
@@ -103,6 +106,7 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow < 0) {
 					BOMessageDialog.showError(DrawerPullReportExplorer.this, Messages.getString("DrawerPullReportExplorer.1")); //$NON-NLS-1$
@@ -112,6 +116,9 @@ public class DrawerPullReportExplorer extends TransparentPanel {
 				DrawerPullReport report = (DrawerPullReport) model.getRowData(selectedRow);
 
 				PosPrintService.printDrawerPullReport(report, report.getTerminal());
+				}catch (PosException exception) {
+					POSMessageDialog.showError(POSUtil.getFocusedWindow(), exception.getMessage());
+				}
 			}
 		});
 

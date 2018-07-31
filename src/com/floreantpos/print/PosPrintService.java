@@ -21,20 +21,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.DrawerPullReport;
@@ -48,12 +39,26 @@ import com.floreantpos.report.ReportUtil;
 import com.floreantpos.util.NumberUtil;
 import com.floreantpos.util.PrintServiceUtil;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+
 public class PosPrintService {
 	private static Log logger = LogFactory.getLog(PosPrintService.class);
 
 	public static void printDrawerPullReport(DrawerPullReport drawerPullReport, Terminal terminal) {
 
 		try {
+			String reportPrinter = Application.getPrinters().getReportPrinter();
+			if (reportPrinter == null || reportPrinter.isEmpty()) {
+				throw new PosException("No report printer is configured!");
+			}
 			HashMap parameters = new HashMap();
 			Restaurant restaurant = RestaurantDAO.getInstance().get(Integer.valueOf(1));
 
@@ -74,7 +79,7 @@ public class PosPrintService {
 			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Arrays.asList(new DrawerPullReport[] { drawerPullReport }));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
 			//TODO: handle exception
-			jasperPrint.setProperty("printerName", Application.getPrinters().getReceiptPrinter()); //$NON-NLS-1$
+			jasperPrint.setProperty("printerName", Application.getPrinters().getReportPrinter()); //$NON-NLS-1$
 			jasperPrint.setName("DrawerPullReport" + drawerPullReport.getId());
 
 			JRPrintServiceExporter exporter = new JRPrintServiceExporter();
@@ -82,9 +87,12 @@ public class PosPrintService {
 			exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE,
 					PrintServiceUtil.getPrintServiceForPrinter(jasperPrint.getProperty("printerName")));
 			exporter.exportReport();
+
 			//JasperPrintManager.printReport(jasperPrint, false);
 			//JasperViewer.viewReport(jasperPrint, false);
 
+		} catch (PosException e) {
+			throw e;
 		} catch (Exception e) {
 			PosLog.error(PosPrintService.class, e.getMessage());
 			logger.error("error print drawer pull report", e); //$NON-NLS-1$
@@ -94,6 +102,10 @@ public class PosPrintService {
 	public static void printServerTipsReport(TipsCashoutReport report) {
 
 		try {
+			String reportPrinter = Application.getPrinters().getReportPrinter();
+			if (reportPrinter == null || reportPrinter.isEmpty()) {
+				throw new PosException("No report printer is configured!");
+			}
 			HashMap parameters = new HashMap();
 			parameters.put("server", report.getServer()); //$NON-NLS-1$
 			parameters.put("fromDate", Application.formatDate(report.getFromDate())); //$NON-NLS-1$
@@ -109,17 +121,18 @@ public class PosPrintService {
 			parameters.put("headerLine1", restaurant.getName()); //$NON-NLS-1$
 
 			JasperReport mainReport = ReportUtil.getReport("ServerTipsReport"); //$NON-NLS-1$
-			JRDataSource dataSource = new JRTableModelDataSource(new TipsCashoutReportTableModel(report.getDatas(), new String[] {
-					"ticketId", "saleType", "ticketTotal", "tips" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			JRDataSource dataSource = new JRTableModelDataSource(
+					new TipsCashoutReportTableModel(report.getDatas(), new String[] { "ticketId", "saleType", "ticketTotal", "tips" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
-			jasperPrint.setProperty(ReceiptPrintService.PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+			jasperPrint.setProperty(ReceiptPrintService.PROP_PRINTER_NAME, Application.getPrinters().getReportPrinter());
 			ReceiptPrintService.printQuitely(jasperPrint);
 			//JasperViewer.viewReport(jasperPrint, false);
 
+		} catch (PosException e) {
+			throw e;
 		} catch (Exception e) {
 			PosLog.error(PosPrintService.class, e.getMessage());
 			logger.error("error print tips report", e); //$NON-NLS-1$
 		}
-
 	}
 }

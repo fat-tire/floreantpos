@@ -28,6 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosException;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CashDrawer;
@@ -47,6 +48,7 @@ import com.floreantpos.ui.dialog.MultiCurrencyAssignDrawerDialog;
 import com.floreantpos.ui.dialog.NumberSelectionDialog2;
 import com.floreantpos.ui.dialog.POSMessageDialog;
 import com.floreantpos.util.CurrencyUtil;
+import com.floreantpos.util.POSUtil;
 
 public class DrawerAssignmentAction extends PosAction {
 
@@ -76,7 +78,8 @@ public class DrawerAssignmentAction extends PosAction {
 			if (assignedUser != null) {
 				int option = POSMessageDialog.showYesNoQuestionDialog(Application.getPosWindow(),
 						Messages.getString("DrawerAssignmentAction.3") + assignedUser.getFullName() //$NON-NLS-1$
-								+ Messages.getString("DrawerAssignmentAction.4"), Messages.getString("DrawerAssignmentAction.5")); //$NON-NLS-1$ //$NON-NLS-2$
+								+ Messages.getString("DrawerAssignmentAction.4"), //$NON-NLS-1$
+						Messages.getString("DrawerAssignmentAction.5")); //$NON-NLS-1$
 				if (option != JOptionPane.YES_OPTION) {
 					return;
 				}
@@ -129,8 +132,8 @@ public class DrawerAssignmentAction extends PosAction {
 				}
 			}
 			else {
-				drawerBalance = NumberSelectionDialog2.takeDoubleInput(
-						Messages.getString("DrawerAssignmentAction.6"), Messages.getString("DrawerAssignmentAction.7"), 500); //$NON-NLS-1$ //$NON-NLS-2$
+				drawerBalance = NumberSelectionDialog2.takeDoubleInput(Messages.getString("DrawerAssignmentAction.6"), //$NON-NLS-1$
+						Messages.getString("DrawerAssignmentAction.7"), 500); //$NON-NLS-1$
 			}
 			if (Double.isNaN(drawerBalance)) {
 				return;
@@ -198,7 +201,11 @@ public class DrawerAssignmentAction extends PosAction {
 				}
 			}
 
-			PosPrintService.printDrawerPullReport(report, terminal);
+			try {
+				PosPrintService.printDrawerPullReport(report, terminal);
+			} catch (PosException exception) {
+				POSMessageDialog.showError(POSUtil.getFocusedWindow(), exception.getMessage());
+			}
 
 			//			DrawerAssignedHistory history = new DrawerAssignedHistory();
 			//			history.setTime(new Date());

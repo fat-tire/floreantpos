@@ -176,9 +176,9 @@ public class PosPrinters {
 			if (receiptPrinter == null) {
 				receiptPrinter = getDefaultPrinterName();
 			}
-			if (reportPrinter == null) {
-				reportPrinter = getDefaultPrinterName();
-			}
+//			if (reportPrinter == null) {
+//				reportPrinter = getDefaultPrinterName();
+//			}
 			if (kitchenPrinters == null || kitchenPrinters.isEmpty()) {
 				Printer printer = new Printer(new VirtualPrinter(1, "kitchen"), getDefaultPrinterName()); //$NON-NLS-1$
 				kitchenPrinters.add(printer);

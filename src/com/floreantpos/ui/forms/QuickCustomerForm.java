@@ -261,7 +261,7 @@ public class QuickCustomerForm extends BeanEditor<Customer> {
 		//TODO: 
 		tfState.setText(customer.getState());
 		tfZip.setText(customer.getZipCode());
-		//tfCellPhone.setText(customer.getMobileNo());
+		tfCellPhone.setText(customer.getMobileNo());
 		tfAddress.setText(customer.getAddress());
 	}
 

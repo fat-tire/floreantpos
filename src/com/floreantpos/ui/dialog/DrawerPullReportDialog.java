@@ -48,6 +48,7 @@ import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
 
 import com.floreantpos.Messages;
+import com.floreantpos.PosException;
 import com.floreantpos.PosLog;
 import com.floreantpos.config.TerminalConfig;
 import com.floreantpos.main.Application;
@@ -64,6 +65,7 @@ import com.floreantpos.swing.PosScrollPane;
 import com.floreantpos.swing.PosUIManager;
 import com.floreantpos.ui.TitlePanel;
 import com.floreantpos.util.NumberUtil;
+import com.floreantpos.util.POSUtil;
 
 /**
  *
@@ -300,16 +302,14 @@ public class DrawerPullReportDialog extends POSDialog {
 
 		table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table,
-				"-" + "CASH RECEIPTS" + " (" + drawerPullReport.getCashReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCashReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-3$
-		addTableRow(
-				table,
-				"-" + "CREDIT CARDS" + " (" + drawerPullReport.getCreditCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
-		addTableRow(
-				table,
-				"-" + "DEBIT CARDS" + " (" + drawerPullReport.getDebitCardReceiptCount() + ")", decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
-		addTableRow(table,
-				"-" + "GIFT RETURNS" + " (" + drawerPullReport.getGiftCertReturnCount() + ")", decimalFormat.format(drawerPullReport.getGiftCertReturnAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "-" + "CASH RECEIPTS" + " (" + drawerPullReport.getCashReceiptCount() + ")", //$NON-NLS-1$//$NON-NLS-3$
+				decimalFormat.format(drawerPullReport.getCashReceiptAmount()));
+		addTableRow(table, "-" + "CREDIT CARDS" + " (" + drawerPullReport.getCreditCardReceiptCount() + ")", //$NON-NLS-1$//$NON-NLS-3$//$NON-NLS-4$
+				decimalFormat.format(drawerPullReport.getCreditCardReceiptAmount()));
+		addTableRow(table, "-" + "DEBIT CARDS" + " (" + drawerPullReport.getDebitCardReceiptCount() + ")", //$NON-NLS-1$//$NON-NLS-3$//$NON-NLS-4$
+				decimalFormat.format(drawerPullReport.getDebitCardReceiptAmount()));
+		addTableRow(table, "-" + "GIFT RETURNS" + " (" + drawerPullReport.getGiftCertReturnCount() + ")", //$NON-NLS-1$//$NON-NLS-3$//$NON-NLS-4$
+				decimalFormat.format(drawerPullReport.getGiftCertReturnAmount()));
 		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.23"), decimalFormat.format(drawerPullReport.getGiftCertChangeAmount())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.25"), decimalFormat.format(drawerPullReport.getCashBack())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "+" + "REFUND" + " (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -339,8 +339,8 @@ public class DrawerPullReportDialog extends POSDialog {
 		addTableRow(table, "-" + Messages.getString("DrawerPullReportDialog.43"), decimalFormat.format(drawerPullReport.getCashBack())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, "-" + "REFUND" + " (" + drawerPullReport.getRefundReceiptCount() + ")", decimalFormat.format(drawerPullReport.getRefundAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
 		addTableRow(table, "+" + Messages.getString("DrawerPullReportDialog.47"), decimalFormat.format(terminal.getOpeningBalance())); //$NON-NLS-1$ //$NON-NLS-2$
-		addTableRow(table,
-				"-" + "DRAWER BLEED" + "  (" + drawerPullReport.getDrawerBleedCount() + ")", decimalFormat.format(drawerPullReport.getDrawerBleedAmount())); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+		addTableRow(table, "-" + "DRAWER BLEED" + "  (" + drawerPullReport.getDrawerBleedCount() + ")", //$NON-NLS-1$//$NON-NLS-3$//$NON-NLS-4$
+				decimalFormat.format(drawerPullReport.getDrawerBleedAmount()));
 		addTableSeparator(table);
 		addTableRow(table, "=" + Messages.getString("DrawerPullReportDialog.51"), decimalFormat.format(drawerPullReport.getDrawerAccountable())); //$NON-NLS-1$ //$NON-NLS-2$
 		addTableRow(table, ">" + Messages.getString("DrawerPullReportDialog.53"), decimalFormat.format(drawerPullReport.getCashToDeposit())); //$NON-NLS-1$ //$NON-NLS-2$
@@ -361,9 +361,8 @@ public class DrawerPullReportDialog extends POSDialog {
 		createSectionHeader(document, Messages.getString("DrawerPullReportDialog.55")); //$NON-NLS-1$
 		table = new Table();
 		table.addAttribute("width", "100%"); //$NON-NLS-1$ //$NON-NLS-2$
-		addExceptionTableRow(
-				table,
-				Messages.getString("DrawerPullReportDialog.99"), Messages.getString("DrawerPullReportDialog.100"), Messages.getString("DrawerPullReportDialog.101"), Messages.getString("DrawerPullReportDialog.102")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		addExceptionTableRow(table, Messages.getString("DrawerPullReportDialog.99"), Messages.getString("DrawerPullReportDialog.100"), //$NON-NLS-1$//$NON-NLS-2$
+				Messages.getString("DrawerPullReportDialog.101"), Messages.getString("DrawerPullReportDialog.102")); //$NON-NLS-1$ //$NON-NLS-2$
 		addExceptionTableSeparator(table);
 
 		//CONDITIONAL
@@ -408,6 +407,8 @@ public class DrawerPullReportDialog extends POSDialog {
 	private void doPrintReport() {
 		try {
 			PosPrintService.printDrawerPullReport(drawerPullReport, terminal);
+		} catch (PosException exception) {
+			POSMessageDialog.showError(POSUtil.getFocusedWindow(), exception.getMessage());
 		} catch (Exception ex) {
 			POSMessageDialog.showError(DrawerPullReportDialog.this, Messages.getString("DrawerPullReportDialog.122") + ex.getMessage()); //$NON-NLS-1$
 			PosLog.error(getClass(), ex);
