@@ -279,9 +279,9 @@ public class TicketView extends JPanel {
 		btnTotal = new PosButton(POSConstants.TOTAL.toUpperCase());
 		btnTotal.setFont(btnTotal.getFont().deriveFont(Font.BOLD));
 
-		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
-			btnTotal.setEnabled(false);
-		}
+//		if (!Application.getInstance().getTerminal().isHasCashDrawer()) {
+//			btnTotal.setEnabled(false);
+//		}
 
 		btnTotal.addActionListener(new ActionListener() {
 			@Override

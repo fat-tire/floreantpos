@@ -67,7 +67,6 @@ public class ReportUtil {
 				return (JasperReport) JRLoader.loadObject(resource);
 			}
 		} catch (Exception e) {
-			logger.info(Messages.getString("ReportUtil.8") + reportName + " from user directory, loading default report"); //$NON-NLS-1$ //$NON-NLS-2$
 			return getDefaultReport(reportName);
 			
 		} finally {

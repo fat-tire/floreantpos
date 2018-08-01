@@ -188,6 +188,10 @@ public class ReceiptPrintService {
 				}
 				return;
 			}
+			String receiptPrinter = Application.getPrinters().getReceiptPrinter();
+			if (StringUtils.isEmpty(receiptPrinter)) {
+				return;
+			}
 
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
@@ -212,7 +216,7 @@ public class ReceiptPrintService {
 
 				JasperPrint jasperPrint = createPrint(ticket, map, null);
 				jasperPrint.setName(ORDER_ + ticket.getId());
-				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 				printQuitely(jasperPrint);
 
 			}
@@ -242,6 +246,10 @@ public class ReceiptPrintService {
 		}
 
 		try {
+			String receiptPrinter = Application.getPrinters().getReceiptPrinter();
+			if (StringUtils.isEmpty(receiptPrinter)) {
+				return;
+			}
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** ORDER " + ticket.getId() + " ***", false, true, true); //$NON-NLS-1$ //$NON-NLS-2$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, null);
@@ -264,20 +272,21 @@ public class ReceiptPrintService {
 			}
 
 			if (activeReceiptPrinters == null || activeReceiptPrinters.isEmpty()) {
-
 				JasperPrint jasperPrint = createPrint(ticket, map, null);
 				jasperPrint.setName(ORDER_ + ticket.getId());
-				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 				printQuitely(jasperPrint);
 
 			}
 			else {
-
 				for (Printer activeReceiptPrinter : activeReceiptPrinters) {
-
+					String deviceName = activeReceiptPrinter.getDeviceName();
+					if (StringUtils.isEmpty(deviceName)) {
+						continue;
+					}
 					JasperPrint jasperPrint = createPrint(ticket, map, null);
-					jasperPrint.setName(ORDER_ + ticket.getId() + activeReceiptPrinter.getDeviceName());
-					jasperPrint.setProperty(PROP_PRINTER_NAME, activeReceiptPrinter.getDeviceName());
+					jasperPrint.setName(ORDER_ + ticket.getId() + deviceName);
+					jasperPrint.setProperty(PROP_PRINTER_NAME, deviceName);
 					printQuitely(jasperPrint);
 				}
 
@@ -294,7 +303,11 @@ public class ReceiptPrintService {
 
 	public static void printRefundTicket(Ticket ticket, RefundTransaction posTransaction) {
 		try {
-
+			String receiptPrinter = Application.getPrinters().getReceiptPrinter();
+			if (StringUtils.isEmpty(receiptPrinter)) {
+				return;
+			}
+			
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** REFUND RECEIPT ***", true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, posTransaction);
@@ -305,7 +318,7 @@ public class ReceiptPrintService {
 
 			JasperPrint jasperPrint = createRefundPrint(ticket, map);
 			jasperPrint.setName("REFUND_" + ticket.getId()); //$NON-NLS-1$
-			jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+			jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 			printQuitely(jasperPrint);
 
 		} catch (Exception e) {
@@ -319,6 +332,10 @@ public class ReceiptPrintService {
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
 			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
 				paymentGateway.printTransaction(transaction, false, false);
+				return;
+			}
+			String receiptPrinter = Application.getPrinters().getReceiptPrinter();
+			if (StringUtils.isEmpty(receiptPrinter)) {
 				return;
 			}
 
@@ -337,19 +354,19 @@ public class ReceiptPrintService {
 				map.put("copyType", Messages.getString("ReceiptPrintService.4")); //$NON-NLS-1$ //$NON-NLS-2$
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-CustomerCopy"); //$NON-NLS-1$ //$NON-NLS-2$
-				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 				printQuitely(jasperPrint);
 
 				map.put("copyType", Messages.getString("ReceiptPrintService.5")); //$NON-NLS-1$ //$NON-NLS-2$
 				jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId() + "-MerchantCopy"); //$NON-NLS-1$ //$NON-NLS-2$
-				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 				printQuitely(jasperPrint);
 			}
 			else {
 				JasperPrint jasperPrint = createPrint(ticket, map, transaction);
 				jasperPrint.setName("Ticket-" + ticket.getId()); //$NON-NLS-1$
-				jasperPrint.setProperty(PROP_PRINTER_NAME, Application.getPrinters().getReceiptPrinter());
+				jasperPrint.setProperty(PROP_PRINTER_NAME, receiptPrinter);
 				printQuitely(jasperPrint);
 			}
 
@@ -935,9 +952,11 @@ public class ReceiptPrintService {
 			List<KitchenTicket> kitchenTickets = KitchenTicket.fromTicket(ticket);
 
 			for (KitchenTicket kitchenTicket : kitchenTickets) {
-				Printer printer = kitchenTicket.getPrinter();//
+				Printer printer = kitchenTicket.getPrinter();
+				if (printer == null) {
+					continue;
+				}
 				String deviceName = printer.getDeviceName();
-
 				JasperPrint jasperPrint = createKitchenPrint(printer.getVirtualPrinter().getName(), kitchenTicket, deviceName);
 
 				jasperPrint.setName("FP_KitchenReceipt_" + ticket.getId() + "_" + kitchenTicket.getSequenceNumber()); //$NON-NLS-1$ //$NON-NLS-2$ 

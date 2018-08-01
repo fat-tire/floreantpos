@@ -42,7 +42,6 @@ import javax.swing.ButtonGroup;
 import org.apache.log4j.Logger;
 
 import com.floreantpos.IconFactory;
-import com.floreantpos.Messages;
 import com.floreantpos.bo.ui.explorer.QuickMaintenanceExplorer;
 import com.floreantpos.model.MenuCategory;
 import com.floreantpos.model.MenuGroup;
@@ -228,9 +227,6 @@ public class CategoryView extends SelectionView implements ActionListener {
 			button.removeActionListener(this);
 		}
 		buttonMap.clear();
-
-		logger.debug(Messages.getString("CategoryView.4")); //$NON-NLS-1$
-
 	}
 
 	@Override
