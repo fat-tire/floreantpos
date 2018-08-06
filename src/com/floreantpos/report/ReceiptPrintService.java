@@ -43,6 +43,7 @@ import com.floreantpos.model.CardReader;
 import com.floreantpos.model.Currency;
 import com.floreantpos.model.KitchenTicket;
 import com.floreantpos.model.OrderType;
+import com.floreantpos.model.PaymentType;
 import com.floreantpos.model.PosTransaction;
 import com.floreantpos.model.Printer;
 import com.floreantpos.model.RefundTransaction;
@@ -307,7 +308,7 @@ public class ReceiptPrintService {
 			if (StringUtils.isEmpty(receiptPrinter)) {
 				return;
 			}
-			
+
 			TicketPrintProperties printProperties = new TicketPrintProperties("*** REFUND RECEIPT ***", true, true, true); //$NON-NLS-1$
 			printProperties.setPrintCookingInstructions(false);
 			HashMap map = populateTicketProperties(ticket, printProperties, posTransaction);
@@ -330,10 +331,18 @@ public class ReceiptPrintService {
 		try {
 			Ticket ticket = transaction.getTicket();
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+			boolean paymentTypeCash = transaction.getPaymentType().equals(PaymentType.CASH.toString());
+			boolean printUsingPaymentGateway = paymentGateway != null && paymentGateway.printUsingThisTerminal();
+
+			if (printUsingPaymentGateway && paymentTypeCash) {
+				return;
+			}
+
+			if (printUsingPaymentGateway) {
 				paymentGateway.printTransaction(transaction, false, false);
 				return;
 			}
+
 			String receiptPrinter = Application.getPrinters().getReceiptPrinter();
 			if (StringUtils.isEmpty(receiptPrinter)) {
 				return;
@@ -378,9 +387,15 @@ public class ReceiptPrintService {
 	public static void printTransaction(PosTransaction transaction, boolean printStoreCopy, boolean printCustomerCopy) {
 		try {
 			Ticket ticket = transaction.getTicket();
-
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			if (paymentGateway != null && paymentGateway.printUsingThisTerminal()) {
+			boolean paymentTypeCash = transaction.getPaymentType().equals(PaymentType.CASH.toString());
+			boolean printUsingPaymentGateway = paymentGateway != null && paymentGateway.printUsingThisTerminal();
+
+			if (printUsingPaymentGateway && paymentTypeCash) {
+				return;
+			}
+
+			if (printUsingPaymentGateway) {
 				paymentGateway.printTransaction(transaction, printStoreCopy, printCustomerCopy);
 				return;
 			}
