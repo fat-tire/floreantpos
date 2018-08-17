@@ -388,12 +388,7 @@ public class ReceiptPrintService {
 		try {
 			Ticket ticket = transaction.getTicket();
 			PaymentGatewayPlugin paymentGateway = CardConfig.getPaymentGateway();
-			boolean paymentTypeCash = transaction.getPaymentType().equals(PaymentType.CASH.toString());
 			boolean printUsingPaymentGateway = paymentGateway != null && paymentGateway.printUsingThisTerminal();
-
-			if (printUsingPaymentGateway && paymentTypeCash) {
-				return;
-			}
 
 			if (printUsingPaymentGateway) {
 				paymentGateway.printTransaction(transaction, printStoreCopy, printCustomerCopy);
