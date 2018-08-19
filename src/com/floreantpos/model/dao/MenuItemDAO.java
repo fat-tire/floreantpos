@@ -52,9 +52,23 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 	}
 
 	public MenuItem loadInitialized(Integer key) throws HibernateException {
-		MenuItem menuItem = super.get(key);
-		menuItem = initialize(menuItem);
-		return menuItem;
+		Session session = null;
+		try {
+			session = createNewSession();
+			MenuItem menuItem = get(key, session);
+			Hibernate.initialize(menuItem.getMenuItemModiferGroups());
+
+			List<MenuItemModifierGroup> menuItemModiferGroups = menuItem.getMenuItemModiferGroups();
+			if (menuItemModiferGroups != null) {
+				for (MenuItemModifierGroup menuItemModifierGroup : menuItemModiferGroups) {
+					Hibernate.initialize(menuItemModifierGroup.getModifierGroup().getModifiers());
+				}
+			}
+			Hibernate.initialize(menuItem.getShifts());
+			return menuItem;
+		} finally {
+			closeSession(session);
+		}
 	}
 
 	public MenuItem initialize(MenuItem menuItem) {
@@ -184,14 +198,14 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.eq("type.id", orderType.getId()));
 
 				/*List<MenuItem> selectedMenuItems = new ArrayList();
-
+				
 				List<MenuItem> items = findAll();
-
+				
 				for (MenuItem item : items) {
-
+				
 					List<OrderType> types = item.getOrderTypeList();
 					OrderType type = (OrderType) selectedType;
-
+				
 					if (types.contains(type.getName()) || types.isEmpty()) {
 						selectedMenuItems.add(item);
 					}
@@ -233,11 +247,11 @@ public class MenuItemDAO extends BaseMenuItemDAO {
 				criteria.add(Restrictions.eq("type.id", orderType.getId()));
 
 				/*List<MenuItem> selectedMenuItems = new ArrayList();
-
+				
 				List<MenuItem> items = findAll();
-
+				
 				for (MenuItem item : items) {
-
+				
 					List<OrderType> types = item.getOrderTypeList();
 					OrderType type = (OrderType) selectedType;
 					if (types.contains(type.getName()) || types.isEmpty()) {

@@ -213,13 +213,15 @@ public class MenuItemView extends SelectionView {
 					setIcon(IconFactory.getIcon("/ui_icons/", "add+user.png"));
 				}
 				else
-					setText("<html><body><center>"
-							+ menuItem.getName()
-							+ (!showPrice ? "" : "<br><h4>" + "<span style='color:white;background-color:green;margin:1;'>" + "&nbsp;" + "&nbsp;" + "&nbsp;"
-									+ CurrencyUtil.getCurrencySymbol() + menuItem.getPrice() + "&nbsp;" + "&nbsp;" + "&nbsp;" + "</span>")
+					setText("<html><body><center>" + menuItem.getName()
+							+ (!showPrice ? ""
+									: "<br><h4>" + "<span style='color:white;background-color:green;margin:1;'>" + "&nbsp;" + "&nbsp;" + "&nbsp;"
+											+ CurrencyUtil.getCurrencySymbol() + menuItem.getPrice() + "&nbsp;" + "&nbsp;" + "&nbsp;" + "</span>")
 							+ "&nbsp;"
-							+ (!showStockCount ? "" : "<span style='color:white;background-color:red;margin:1;'>" + "&nbsp;" + "&nbsp;" + "&nbsp;"
-									+ menuItem.getStockAmount() + "&nbsp;" + "&nbsp;" + "&nbsp;" + "</span>") + "</h4>" + "</center></body></html>"); //$NON-NLS-1$ //$NON-NLS-2$
+							+ (!showStockCount ? ""
+									: "<span style='color:white;background-color:red;margin:1;'>" + "&nbsp;" + "&nbsp;" + "&nbsp;" + menuItem.getStockAmount()
+											+ "&nbsp;" + "&nbsp;" + "&nbsp;" + "</span>") //$NON-NLS-1$//$NON-NLS-2$
+							+ "</h4>" + "</center></body></html>");
 			}
 
 			Color buttonColor = menuItem.getButtonColor();
@@ -234,7 +236,7 @@ public class MenuItemView extends SelectionView {
 
 		public void actionPerformed(ActionEvent e) {
 			if (OrderView.getInstance().isVisible() && RootView.getInstance().isMaintenanceMode()) {
-				foodItem = MenuItemDAO.getInstance().initialize(foodItem);
+				foodItem = MenuItemDAO.getInstance().loadInitialized(foodItem.getId());
 				QuickMaintenanceExplorer.quickMaintain(foodItem);
 			}
 			fireItemSelected(foodItem);
