@@ -105,7 +105,7 @@ public class ModifierGroupView extends JPanel implements ComponentListener {
 		Collections.sort(modifierGroups, new Comparator<MenuItemModifierGroup>() {
 			@Override
 			public int compare(MenuItemModifierGroup o1, MenuItemModifierGroup o2) {
-				return o2.getMinQuantity() - o1.getMinQuantity();
+				return o2.getSortOrder() - o1.getSortOrder();
 			}
 		});
 
