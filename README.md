@@ -1,5 +1,8 @@
 # FloreantPOS
 
+**Update 1-23-19**:  I did another quick update.  Looks like the source on the /trunk branch hasn't been updated since 8/20/18.  Also, github had a security alert
+for pom.xml (org.apache.httpcomponents was very old) so i patched it.  no idea if it will break the build.  Enjoy.
+
 **Update 2-16-18**:  Even though this repo was set up a few years ago, I've noticed that people are still forking it.  So I figured I'd do an update to the repo.  The official SVN repository has file system errors in revision [1215](https://sourceforge.net/p/floreantpos/code/1215), [1216](https://sourceforge.net/p/floreantpos/code/1216), and [1217](https://sourceforge.net/p/floreantpos/code/1216),
  so the revisions were included in 1218.  Also note that in the original repository there are several branches.  This is the "TRUNK".
 
