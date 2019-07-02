@@ -33,3 +33,4 @@ Finally-- with respect to branches:
 * `master` -- this is the original code from the sourceforge svn repository.  It may not be fully up-to-date as it must be manually synced with upstream's svn repository.
 * `fattire-master` -- This contains my additions, such as the LICENSE file as well as this README.md and anything else I may feel like adding.  See the commit log for details.
 * `2018-fattire-master` -- an update to the previous as of 2/16/18.
+* `2019-fattire-master` -- an update to the previous as of 1/23/19.
