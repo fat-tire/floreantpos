@@ -6,8 +6,6 @@ for pom.xml (org.apache.httpcomponents was very old) so i patched it.  no idea i
 **Update 2-16-18**:  Even though this repo was set up a few years ago, I've noticed that people are still forking it.  So I figured I'd do an update to the repo.  The official SVN repository has file system errors in revision [1215](https://sourceforge.net/p/floreantpos/code/1215), [1216](https://sourceforge.net/p/floreantpos/code/1216), and [1217](https://sourceforge.net/p/floreantpos/code/1216),
  so the revisions were included in 1218.  Also note that in the original repository there are several branches.  This is the "TRUNK".
 
-<img src="http://floreant.org/flopress/wp-content/uploads/2015/01/fp_01-1024x673.jpg" width="400px"/>
-
 A free, open-source point-of-sale application for restaurants (and potentially more)
 
 Licensed under the [MRPL](http://www.floreantpos.org/license.html) (a modified MPL), FloreantPOS is a
