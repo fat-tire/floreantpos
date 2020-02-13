@@ -1,5 +1,7 @@
 # FloreantPOS
 
+**Update 2-12-20**:  Github had another warning related to CVE-2019-17571 and log4j, so a more updated, hopefully patched version was included in pom.xml.  This may break the build.  Not sure.
+
 **Update 1-23-19**:  I did another quick update.  Looks like the source on the /trunk branch hasn't been updated since 8/20/18.  Also, github had a security alert
 for pom.xml (org.apache.httpcomponents was very old) so i patched it.  no idea if it will break the build.  Enjoy.
 
@@ -33,4 +35,4 @@ Finally-- with respect to branches:
 * `master` -- this is the original code from the sourceforge svn repository.  It may not be fully up-to-date as it must be manually synced with upstream's svn repository.
 * `fattire-master` -- This contains my additions, such as the LICENSE file as well as this README.md and anything else I may feel like adding.  See the commit log for details.
 * `2018-fattire-master` -- an update to the previous as of 2/16/18.
-* `2019-fattire-master` -- an update to the previous as of 1/23/19.
+* `2019-fattire-master` -- an update to the previous as of 1/23/19 + a few security patches
