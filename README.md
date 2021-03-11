@@ -1,5 +1,7 @@
 # FloreantPOS
 
+**Update 3-11-21**:  Quick note:  Apparently FloreantPOS's LICENSE's web link to http://floreantpos.org/license.html/ has become broken ("Not Found The requested URL was not found on this server.").  A 10/18/19 archive of that license (with attribution clauses in Exhibits) is [currently available](http://web.archive.org/web/20191018191240/http://floreantpos.org:80/license.html/).
+
 **Update 2-12-20**:  Github had another warning related to CVE-2019-17571 and log4j, so a more updated, hopefully patched version was included in pom.xml.  This may break the build.  Not sure.
 
 **Update 1-23-19**:  I did another quick update.  Looks like the source on the /trunk branch hasn't been updated since 8/20/18.  Also, github had a security alert
