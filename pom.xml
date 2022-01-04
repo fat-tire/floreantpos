@@ -9,7 +9,7 @@
 	</properties>
 
 	<scm>
-		<connection>scm:svn:http://svn.code.sf.net/p/floreantpos/code/trunk</connection>
+		<connection>scm:git:https://github.com/fat-tire/floreantpos.git</connection>
 	</scm>
 
 	<build>
@@ -142,7 +142,7 @@
 						<phase>package</phase>
 						<configuration>
 							<target>
-								<zip destfile="${project.build.directory}/${project.build.finalName}-1.4-build${buildNumber}.zip" basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
+								<zip destfile="${project.build.directory}/${project.build.finalName}-1.4-build-${timestamp}.zip" basedir="${project.build.directory}/${project.build.finalName}-bin/${project.build.finalName}"></zip>
 							</target>
 						</configuration>
 						<goals>
@@ -339,8 +339,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
 			<version>2.8.2</version>
 			<exclusions>
 				<exclusion>
