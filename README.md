@@ -1,5 +1,7 @@
 # FloreantPOS
 
+**Update 2-28-22**: Updated xercesImpl from 2.12.0 to 2.12.2
+
 **Update 1-3-22**:  Updated log4j-core to 2.17.1 due to log4shell vulnerability
 
 **Update 3-11-21**:  Quick note:  Apparently FloreantPOS's LICENSE's web link to http://floreantpos.org/license.html/ has become broken ("Not Found The requested URL was not found on this server.").  A 10/18/19 archive of that license (with attribution clauses in Exhibits) is [currently available](http://web.archive.org/web/20191018191240/http://floreantpos.org:80/license.html/).
