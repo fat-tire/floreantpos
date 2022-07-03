@@ -22,8 +22,8 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 import com.floreantpos.PosLog;
 
@@ -39,7 +39,7 @@ public class AESencrp {
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.ENCRYPT_MODE, key);
 		byte[] encVal = c.doFinal(Data.getBytes());
-		String encryptedValue = new BASE64Encoder().encode(encVal);
+		String encryptedValue = new String(java.util.Base64.getEncoder().encode(encVal), StandardCharsets.UTF_8);
 		return encryptedValue;
 	}
 
@@ -47,7 +47,7 @@ public class AESencrp {
 		Key key = generateKey();
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.DECRYPT_MODE, key);
-		byte[] decordedValue = new BASE64Decoder().decodeBuffer(encryptedData);
+		byte[] decordedValue = java.util.Base64.getDecoder().decode(encryptedData);
 		byte[] decValue = c.doFinal(decordedValue);
 		String decryptedValue = new String(decValue);
 		return decryptedValue;
