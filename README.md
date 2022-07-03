@@ -1,5 +1,7 @@
 # FloreantPOS
 
+**Update 7-3-22**:  Version bumps to postgresql, mysql-connector-java, & derby (security from @dependabot).  Also some changes to make build complete.
+
 **Update 2-28-22**: Updated xercesImpl from 2.12.0 to 2.12.2
 
 **Update 1-3-22**:  Updated log4j-core to 2.17.1 due to log4shell vulnerability
