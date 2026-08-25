@@ -23,6 +23,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.floreantpos.PosException;
+import com.floreantpos.PosSessionFactory;
 
 public class POSDao {
 	public static void save(Object o) throws Exception {
